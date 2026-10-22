@@ -1,0 +1,36 @@
+<figure class="diagram" style="margin:0">
+	<svg viewBox="0 0 960 330" role="img" aria-labelledby="ms-t">
+		<title id="ms-t">One control plane holds identities, organizations and access grants, and proxies to three Sites. Each Site keeps its own data.</title>
+		<rect class="d-box" x="20" y="40" width="150" height="70" rx="10"/>
+		<text class="d-t" x="36" y="70">People</text><text class="d-s" x="36" y="92">SSO · SCIM · MCP</text>
+		<path class="d-arrow" d="M170 75 L318 75" marker-end="url(#ah)"/>
+		<rect class="d-acc" x="320" y="20" width="320" height="110" rx="12"/>
+		<text class="d-t" x="340" y="52">control plane</text>
+		<text class="d-s" x="340" y="76">one login and UI · organizations · teams</text>
+		<text class="d-s" x="340" y="94">per-Site access grants · plans</text>
+		<text class="d-a" x="340" y="116">bootstrap admin: superadmin</text>
+		<path class="d-arrow" d="M400 130 C400 170 150 170 150 196" marker-end="url(#ah)"/>
+		<path class="d-arrow" d="M480 130 L480 196" marker-end="url(#ah)"/>
+		<path class="d-arrow" d="M560 130 C560 170 810 170 810 196" marker-end="url(#ah)"/>
+		<text class="d-a" x="660" y="165">per-user Site token</text>
+		<g>
+			<rect class="d-box" x="40" y="200" width="220" height="110" rx="10"/>
+			<text class="d-t" x="58" y="230">Site · eu-west</text>
+			<text class="d-s" x="58" y="252">api · worker · broker</text>
+			<rect class="d-amb" x="58" y="266" width="130" height="28" rx="5"/><text class="d-s" x="68" y="285">its own bucket</text>
+		</g>
+		<g>
+			<rect class="d-box" x="370" y="200" width="220" height="110" rx="10"/>
+			<text class="d-t" x="388" y="230">Site · us-east</text>
+			<text class="d-s" x="388" y="252">api · worker · broker</text>
+			<rect class="d-amb" x="388" y="266" width="130" height="28" rx="5"/><text class="d-s" x="398" y="285">its own bucket</text>
+		</g>
+		<g>
+			<rect class="d-box" x="700" y="200" width="220" height="110" rx="10"/>
+			<text class="d-t" x="718" y="230">Site · staging</text>
+			<text class="d-s" x="718" y="252">single container</text>
+			<rect class="d-amb" x="718" y="266" width="130" height="28" rx="5"/><text class="d-s" x="728" y="285">local disk</text>
+		</g>
+	</svg>
+	<figcaption>Each Site is a normal installation with a couple of extra settings. Its query and admin API is reached through the control plane rather than exposed directly. A Site's local <code>admin</code> stays as a break-glass account.</figcaption>
+</figure>

@@ -1,0 +1,34 @@
+<figure class="diagram" style="margin:0">
+	<svg viewBox="0 0 960 290" role="img" aria-labelledby="q-t">
+		<title id="q-t">A search goes to an api replica, which uses Postgres file statistics to skip files, then splits the rest into fragments sent to queriers by rendezvous hashing. Bloom filters skip segments that lack a searched ID.</title>
+		<rect class="d-box" x="20" y="110" width="170" height="70" rx="10"/>
+		<text class="d-t" x="36" y="140">Search</text>
+		<text class="d-s" x="36" y="162">order 8f3a… · 7 days</text>
+		<path class="d-arrow" d="M190 145 L218 145" marker-end="url(#ah)"/>
+		<rect class="d-acc" x="220" y="80" width="210" height="130" rx="10"/>
+		<text class="d-t" x="238" y="110">api coordinator</text>
+		<text class="d-s" x="238" y="134">plan from catalog stats</text>
+		<text class="d-s" x="238" y="152">skip files that can't match</text>
+		<text class="d-s" x="238" y="170">newest-first windows</text>
+		<text class="d-a" x="238" y="192">scan budget check</text>
+		<path class="d-arrow" d="M430 120 C460 120 460 52 488 52" marker-end="url(#ah)"/>
+		<path class="d-arrow" d="M430 145 L488 145" marker-end="url(#ah)"/>
+		<path class="d-arrow" d="M430 170 C460 170 460 238 488 238" marker-end="url(#ah)"/>
+		<text class="d-a" x="436" y="100">rendezvous</text><text class="d-a" x="436" y="114">hashing</text>
+		<rect class="d-box" x="490" y="24" width="150" height="56" rx="8"/><text class="d-t" x="506" y="48" style="font-size:14px">querier A</text><text class="d-s" x="506" y="66">warm cache</text>
+		<rect class="d-box" x="490" y="117" width="150" height="56" rx="8"/><text class="d-t" x="506" y="141" style="font-size:14px">querier B</text><text class="d-s" x="506" y="159">warm cache</text>
+		<rect class="d-box" x="490" y="210" width="150" height="56" rx="8"/><text class="d-t" x="506" y="234" style="font-size:14px">querier C</text><text class="d-s" x="506" y="252">retried on failure</text>
+		<text class="d-l" x="680" y="20">Segments · newest first</text>
+		<g>
+			<rect class="d-amb" x="680" y="32" width="56" height="40" rx="5"/><rect class="d-dim" x="744" y="32" width="56" height="40" rx="5"/><rect class="d-dim" x="808" y="32" width="56" height="40" rx="5"/><rect class="d-dim" x="872" y="32" width="56" height="40" rx="5"/>
+			<rect class="d-dim" x="680" y="125" width="56" height="40" rx="5"/><rect class="d-amb" x="744" y="125" width="56" height="40" rx="5"/><rect class="d-dim" x="808" y="125" width="56" height="40" rx="5"/><rect class="d-dim" x="872" y="125" width="56" height="40" rx="5"/>
+			<rect class="d-dim" x="680" y="218" width="56" height="40" rx="5"/><rect class="d-dim" x="744" y="218" width="56" height="40" rx="5"/><rect class="d-dim" x="808" y="218" width="56" height="40" rx="5"/><rect class="d-dim" x="872" y="218" width="56" height="40" rx="5"/>
+		</g>
+		<path class="d-arrow" d="M640 52 L676 52" marker-end="url(#ah)"/>
+		<path class="d-arrow" d="M640 145 L676 145" marker-end="url(#ah)"/>
+		<path class="d-arrow" d="M640 238 L676 238" marker-end="url(#ah)"/>
+		<text class="d-s" x="680" y="96">read</text><text class="d-s" x="744" y="96">bloom filter: skip</text>
+		<text class="d-s" x="680" y="284">greyed = skipped without reading</text>
+	</svg>
+	<figcaption>Every segment keeps going to the same executor, so caches stay warm. Rows stream back as each window is read, and the search stops once the page is full. Result counts come from the histogram, whose finished hours are cached in Valkey.</figcaption>
+</figure>

@@ -1,0 +1,118 @@
+---
+// Shell for the marketing pages (/, /features/, /architecture/): brand header and footer,
+// the shared SVG logo and arrowheads, and a theme toggle that shares Starlight's setting.
+import '@fontsource-variable/jost';
+import '@fontsource-variable/jetbrains-mono';
+import '../styles/marketing.css';
+
+interface Props {
+	title: string;
+	description: string;
+	current?: 'features' | 'architecture';
+}
+
+const { title, description, current } = Astro.props;
+const GITHUB = 'https://github.com/obzly/obzly';
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonical} />
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={new URL('/logo.svg', Astro.site)} />
+		<script is:inline>
+			// Same key as Starlight's theme picker, so the docs and these pages agree.
+			try {
+				const t = localStorage.getItem('starlight-theme');
+				if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+			} catch {}
+		</script>
+	</head>
+	<body>
+		<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+			<defs>
+				<symbol id="logo" viewBox="0 0 200 200">
+					<rect x="1.5" y="1.5" width="197" height="197" rx="44" fill="#14192B" stroke="#3A4560" stroke-width="3"></rect>
+					<g transform="translate(100,100) scale(1.707) translate(-48,-48)">
+						<path d="M10,48 C22,18 74,18 86,48 C74,78 22,78 10,48 Z" fill="none" stroke="#F3F4F6" stroke-width="6" stroke-linejoin="round"></path>
+						<g stroke="#F2A73B" stroke-width="4.6" stroke-linecap="round">
+							<line x1="39" y1="44" x2="39" y2="52"></line><line x1="48" y1="36" x2="48" y2="60"></line><line x1="57" y1="44" x2="57" y2="52"></line>
+						</g>
+					</g>
+				</symbol>
+				<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-head" d="M0,0 L10,5 L0,10 z"></path></marker>
+				<marker id="aha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-head acc" d="M0,0 L10,5 L0,10 z"></path></marker>
+			</defs>
+		</svg>
+
+		<header class="site-header">
+			<div class="wrap">
+				<a class="brand" href="/" aria-label="Obzly home"><svg><use href="#logo"></use></svg>Obzly</a>
+				<nav class="nav" id="nav" aria-label="Main">
+					<a href="/features/" aria-current={current === 'features' ? 'page' : undefined}>Features</a>
+					<a href="/architecture/" aria-current={current === 'architecture' ? 'page' : undefined}>Architecture</a>
+					<a href="/docs/">Docs</a>
+					<span class="spacer"></span>
+					<a class="ext" href={`${GITHUB}/releases`}>Releases</a>
+					<a class="ext" href={GITHUB}>GitHub</a>
+				</nav>
+				<button class="icon-btn" id="theme-btn" type="button" aria-label="Switch colour theme" title="Switch colour theme">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+				</button>
+				<button class="icon-btn menu-btn" id="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+				</button>
+			</div>
+		</header>
+
+		<main>
+			<slot />
+		</main>
+
+		<footer>
+			<div class="wrap">
+				<a class="brand" href="/" style="color:var(--fg);font-size:1.1rem"><svg style="width:26px;height:26px"><use href="#logo"></use></svg>Obzly</a>
+				<nav aria-label="Footer">
+					<a href="/features/">Features</a><a href="/architecture/">Architecture</a><a href="/docs/">Docs</a>
+					<a href={GITHUB}>GitHub</a>
+					<a href={`${GITHUB}/releases`}>Releases</a>
+					<a href={`${GITHUB}/blob/main/LICENSE`}>Apache 2.0</a>
+				</nav>
+			</div>
+		</footer>
+
+		<script>
+			const root = document.documentElement;
+			document.getElementById('theme-btn')!.addEventListener('click', () => {
+				const cur = root.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+				const next = cur === 'dark' ? 'light' : 'dark';
+				root.dataset.theme = next;
+				try {
+					localStorage.setItem('starlight-theme', next);
+				} catch {}
+			});
+
+			const nav = document.getElementById('nav')!;
+			const menuBtn = document.getElementById('menu-btn')!;
+			menuBtn.addEventListener('click', () => {
+				menuBtn.setAttribute('aria-expanded', String(nav.classList.toggle('open')));
+			});
+			nav.addEventListener('click', (e) => {
+				if ((e.target as HTMLElement).closest('a')) {
+					nav.classList.remove('open');
+					menuBtn.setAttribute('aria-expanded', 'false');
+				}
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,49 @@
+/* Obzly brand on Starlight: Jost, emerald accent, navy-tinted greys.
+   Brand values come from obzly-dev: assets/logo.svg (navy #14192B, amber #F2A73B)
+   and frontend/tailwind.config.js (primary #10b981 / #059669). */
+:root {
+	--sl-font: 'Jost Variable', 'Jost', 'Avenir Next', 'Segoe UI', system-ui, sans-serif;
+
+	/* Dark theme (Starlight's default) */
+	--sl-color-accent-low: #10302a;
+	--sl-color-accent: #10b981;
+	--sl-color-accent-high: #a7f3d0;
+	--sl-color-white: #ffffff;
+	--sl-color-gray-1: #e9ecf3;
+	--sl-color-gray-2: #c3c9d8;
+	--sl-color-gray-3: #9aa3b8;
+	--sl-color-gray-4: #566078;
+	--sl-color-gray-5: #262e45;
+	--sl-color-gray-6: #141a2b;
+	--sl-color-black: #0d111d;
+}
+
+:root[data-theme='light'] {
+	--sl-color-accent-low: #d1fae5;
+	--sl-color-accent: #047857;
+	--sl-color-accent-high: #064e3b;
+	--sl-color-white: #14192b;
+	--sl-color-gray-1: #1e2538;
+	--sl-color-gray-2: #353d55;
+	--sl-color-gray-3: #566078;
+	--sl-color-gray-4: #8a93a8;
+	--sl-color-gray-5: #c9ceda;
+	--sl-color-gray-6: #eef1f6;
+	--sl-color-gray-7: #f6f7fa;
+	--sl-color-black: #ffffff;
+}
+
+/* The header stays brand navy in both themes, like the marketing pages. */
+.header {
+	background-color: #14192b;
+	border-bottom-color: #2b3350;
+	--sl-color-white: #f3f4f6;
+	--sl-color-gray-1: #e9ecf3;
+	--sl-color-gray-2: #c3c9d8;
+	--sl-color-gray-5: #2b3350;
+	--sl-color-gray-6: #0f1322;
+	--sl-color-black: #14192b;
+}
+.site-title {
+	font-weight: 600;
+}

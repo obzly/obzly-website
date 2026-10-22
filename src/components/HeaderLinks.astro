@@ -1,0 +1,28 @@
+---
+// Replaces Starlight's SocialIcons slot in the docs header so the docs link back to the
+// marketing pages, the same links as the marketing header.
+import SocialIcons from '@astrojs/starlight/components/SocialIcons.astro';
+---
+
+<nav class="site-links" aria-label="Site">
+	<a href="/features/">Features</a>
+	<a href="/architecture/">Architecture</a>
+	<a href="https://github.com/obzly/obzly/releases">Releases</a>
+</nav>
+<SocialIcons />
+
+<style>
+	.site-links {
+		display: flex;
+		gap: 1.25rem;
+		margin-inline-end: 0.5rem;
+	}
+	.site-links a {
+		color: var(--sl-color-gray-2);
+		text-decoration: none;
+		font-weight: 500;
+	}
+	.site-links a:hover {
+		color: var(--sl-color-white);
+	}
+</style>

@@ -1,0 +1,63 @@
+<figure class="diagram" style="margin:0">
+	<svg viewBox="0 0 960 330" role="img" aria-labelledby="hiw-t">
+		<title id="hiw-t">Data flows from your services into the api role, through the JetStream buffer to workers that write Parquet to object storage; queriers read it back for searches, dashboards, PromQL, Jaeger and MCP.</title>
+		<text class="d-l" x="20" y="20">Your services</text>
+		<rect class="d-box" x="20" y="30" width="184" height="34" rx="7"/><text class="d-s" x="34" y="51">App SDKs · OTLP</text>
+		<rect class="d-box" x="20" y="72" width="184" height="34" rx="7"/><text class="d-s" x="34" y="93">OTel Collector</text>
+		<rect class="d-box" x="20" y="114" width="184" height="34" rx="7"/><text class="d-s" x="34" y="135">Prometheus remote-write</text>
+		<rect class="d-box" x="20" y="156" width="184" height="34" rx="7"/><text class="d-s" x="34" y="177">HTTP JSON · curl</text>
+		<path class="d-arrow" d="M204 47 C218 47 216 100 228 100" marker-end="url(#ah)"/>
+		<path class="d-arrow" d="M204 89 C218 89 216 104 228 104" marker-end="url(#ah)"/>
+		<path class="d-arrow" d="M204 131 C218 131 216 110 228 110" marker-end="url(#ah)"/>
+		<path class="d-arrow" d="M204 173 C218 173 216 114 228 114" marker-end="url(#ah)"/>
+
+		<rect class="d-acc" x="230" y="36" width="140" height="270" rx="10"/>
+		<text class="d-t" x="248" y="64">api</text>
+		<text class="d-s" x="248" y="86">ingest</text>
+		<text class="d-a" x="248" y="104">gRPC :4317</text>
+		<text class="d-a" x="248" y="120">HTTP :4005</text>
+		<line x1="246" y1="170" x2="354" y2="170" stroke="var(--accent)" stroke-dasharray="3 3"/>
+		<text class="d-s" x="248" y="200">query</text>
+		<text class="d-a" x="248" y="218">coordinator</text>
+		<text class="d-s" x="248" y="252">UI · PromQL</text>
+		<text class="d-s" x="248" y="268">Jaeger · /mcp</text>
+
+		<text class="d-l" x="20" y="238">You</text>
+		<rect class="d-box" x="20" y="248" width="184" height="48" rx="7"/>
+		<text class="d-s" x="34" y="268">Browser · Grafana</text><text class="d-s" x="34" y="284">Claude · Cursor</text>
+		<path class="d-arrow" d="M204 272 L228 272" marker-end="url(#ah)" marker-start="url(#ah)"/>
+
+		<path class="d-arrow acc" d="M370 112 L418 112" marker-end="url(#aha)"/>
+		<rect class="d-box" x="420" y="66" width="150" height="92" rx="10"/>
+		<text class="d-t" x="438" y="94">broker</text>
+		<text class="d-s" x="438" y="116">NATS JetStream</text>
+		<text class="d-s" x="438" y="134">3 replicas</text>
+		<g fill="var(--accent)"><circle cx="530" cy="88" r="4"/><circle cx="542" cy="88" r="4"/><circle cx="554" cy="88" r="4"/></g>
+
+		<path class="d-arrow acc" d="M570 112 L608 112" marker-end="url(#aha)"/>
+		<rect class="d-box" x="610" y="66" width="150" height="92" rx="10"/>
+		<text class="d-t" x="628" y="94">worker</text>
+		<text class="d-s" x="628" y="116">Parquet · ZSTD</text>
+		<text class="d-s" x="628" y="134">compaction</text>
+
+		<path class="d-arrow acc" d="M760 112 L798 112" marker-end="url(#aha)"/>
+		<rect class="d-amb" x="800" y="50" width="140" height="124" rx="10"/>
+		<text class="d-t" x="818" y="80">Object storage</text>
+		<text class="d-s" x="818" y="104">S3 · GCS</text>
+		<text class="d-s" x="818" y="122">Azure Blob</text>
+		<text class="d-s" x="818" y="140">MinIO</text>
+
+		<path class="d-arrow" d="M870 174 L870 236 L762 236" marker-end="url(#ah)"/>
+		<rect class="d-box" x="610" y="200" width="150" height="72" rx="10"/>
+		<text class="d-t" x="628" y="228">querier</text>
+		<text class="d-s" x="628" y="250">segment cache</text>
+		<path class="d-arrow" d="M370 226 L608 226" marker-end="url(#ah)"/>
+		<text class="d-a" x="420" y="218">query fragments</text>
+
+		<rect class="d-soft" x="420" y="254" width="172" height="52" rx="8"/>
+		<text class="d-t" x="438" y="278" style="font-size:14px">Postgres</text>
+		<text class="d-s" x="438" y="296">catalog · file stats</text>
+		<path class="d-dash" d="M370 280 L418 280"/>
+	</svg>
+	<figcaption>Small installs run every role in one container. Larger ones run each role on its own and scale it separately, using the same image.</figcaption>
+</figure>

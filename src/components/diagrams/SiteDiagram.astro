@@ -1,0 +1,55 @@
+<figure class="diagram" style="margin:0">
+	<svg viewBox="0 0 960 400" role="img" aria-labelledby="site-t">
+		<title id="site-t">A load balancer sends traffic to stateless api replicas. Ingest goes to three JetStream brokers, then workers write Parquet to object storage. Queriers read object storage. Postgres and Valkey sit beside them.</title>
+		<rect class="d-box" x="20" y="150" width="120" height="70" rx="10"/>
+		<text class="d-t" x="36" y="180">Load</text><text class="d-t" x="36" y="200">balancer</text>
+		<path class="d-arrow" d="M140 185 L186 185" marker-end="url(#ah)"/>
+		<rect class="d-acc" x="198" y="122" width="150" height="110" rx="10" opacity="0.5"/>
+		<rect class="d-acc" x="194" y="126" width="150" height="110" rx="10" opacity="0.75"/>
+		<rect class="d-acc" x="190" y="130" width="150" height="110" rx="10"/>
+		<text class="d-t" x="208" y="160">api × N</text>
+		<text class="d-s" x="208" y="182">UI · REST · OTLP</text>
+		<text class="d-s" x="208" y="200">query coordinator</text>
+		<text class="d-a" x="208" y="222">stateless</text>
+
+		<path class="d-arrow acc" d="M348 150 C368 150 368 95 388 95" marker-end="url(#aha)"/>
+		<text class="d-a" x="352" y="112">ingest</text>
+		<rect class="d-box" x="390" y="40" width="170" height="110" rx="10"/>
+		<text class="d-t" x="408" y="70">broker × 3</text>
+		<text class="d-s" x="408" y="92">NATS JetStream</text>
+		<text class="d-s" x="408" y="110">one per zone</text>
+		<g fill="var(--accent)"><circle cx="414" cy="132" r="5"/><circle cx="430" cy="132" r="5"/><circle cx="446" cy="132" r="5"/></g>
+		<text class="d-a" x="460" y="136">3 replicas</text>
+
+		<path class="d-arrow acc" d="M560 95 L608 95" marker-end="url(#aha)"/>
+		<rect class="d-box" x="610" y="40" width="178" height="110" rx="10"/>
+		<text class="d-t" x="628" y="70">worker × N</text>
+		<text class="d-s" x="628" y="92">Parquet writes</text>
+		<text class="d-s" x="628" y="110">compaction · retention</text>
+		<text class="d-s" x="628" y="128">quotas · uploads</text>
+
+		<path class="d-arrow acc" d="M788 95 C806 95 806 160 818 160" marker-end="url(#aha)"/>
+		<rect class="d-amb" x="820" y="130" width="125" height="110" rx="10"/>
+		<text class="d-t" x="836" y="160">Object</text><text class="d-t" x="836" y="180">storage</text>
+		<text class="d-s" x="836" y="204">ZSTD Parquet</text>
+		<text class="d-s" x="836" y="222">hour-sorted</text>
+
+		<path class="d-arrow" d="M882 240 L882 285 L812 285" marker-end="url(#ah)"/>
+		<rect class="d-box" x="610" y="235" width="200" height="100" rx="10"/>
+		<text class="d-t" x="628" y="265">querier × N</text>
+		<text class="d-s" x="628" y="287">query fragments</text>
+		<text class="d-s" x="628" y="305">segment cache on a volume</text>
+		<path class="d-arrow" d="M340 220 C390 220 560 285 608 285" marker-end="url(#ah)"/>
+		<text class="d-a" x="430" y="262">fragments</text>
+
+		<rect class="d-soft" x="190" y="320" width="140" height="56" rx="8"/>
+		<text class="d-t" x="206" y="344" style="font-size:14px">Postgres</text>
+		<text class="d-s" x="206" y="362">users · catalog</text>
+		<rect class="d-soft" x="390" y="320" width="190" height="56" rx="8"/>
+		<text class="d-t" x="406" y="344" style="font-size:14px">Valkey</text>
+		<text class="d-s" x="406" y="362">leases · histogram cache</text>
+		<path class="d-dash" d="M260 240 L260 318"/>
+		<path class="d-dash" d="M340 236 L420 318"/>
+	</svg>
+	<figcaption>Postgres, Valkey and object storage are yours. The Helm chart can run Valkey inside the release.</figcaption>
+</figure>

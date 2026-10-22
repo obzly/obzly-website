@@ -1,0 +1,70 @@
+---
+// The hero's example live tail. Server-renders a full screen of lines so the page is complete
+// without JavaScript; the script then adds a new line every couple of seconds.
+const LINES: [string, string, string][] = [
+	['info', 'checkout', 'POST /api/orders 201 in 84ms'],
+	['warn', 'checkout', 'payment provider slow: p95 1.8s over 5m'],
+	['info', 'cart', 'cart merged for session 7c1e'],
+	['error', 'payments', 'card authorisation timeout after 3000ms'],
+	['info', 'checkout', 'order 8f3a2c queued for fulfilment'],
+	['warn', 'inventory', 'stock cache miss rate 12%'],
+	['info', 'checkout', 'GET /api/orders/8f3a2c 200 in 12ms'],
+	['error', 'checkout', 'upstream payments returned 504'],
+	['info', 'shipping', 'label printed for order 8f3a2c'],
+	['info', 'checkout', 'POST /api/orders 201 in 91ms'],
+];
+const START = Date.UTC(2026, 9, 22, 14, 2, 11);
+const line = (i: number) => {
+	const [lvl, svc, msg] = LINES[i % LINES.length];
+	return { lvl, text: `${svc} · ${msg}`, ts: new Date(START + i * 1700).toISOString().substring(11, 23) };
+};
+const initial = Array.from({ length: 12 }, (_, i) => line(11 - i));
+const BARS = [6, 9, 7, 12, 10, 14, 8, 11, 16, 13, 9, 18, 12, 15, 22, 17, 12, 10, 14, 19, 26, 21, 16, 13];
+---
+
+<div class="tail" aria-label="Example of the live tail view">
+	<div class="tail-bar"><span class="live">Live tail</span><span>checkout-prod · last 15 min</span></div>
+	<div class="tail-query">level:<span>error</span> OR level:<span>warn</span> service_name:<span>checkout</span></div>
+	<ul class="tail-lines" id="tail" data-lines={JSON.stringify(LINES)} data-start={START}>
+		{
+			initial.map((l) => (
+				<li>
+					<span class="ts">{l.ts}</span>
+					<span class={`lvl ${l.lvl}`}>{l.lvl}</span>
+					<span class="msg">{l.text}</span>
+				</li>
+			))
+		}
+	</ul>
+	<div class="tail-foot" aria-hidden="true">
+		{BARS.map((b) => <i class={b > 18 ? 'e' : undefined} style={`height:${b * 1.6}px`} />)}
+	</div>
+</div>
+
+<script>
+	const tail = document.getElementById('tail');
+	if (tail && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+		const lines: [string, string, string][] = JSON.parse(tail.dataset.lines!);
+		const start = Number(tail.dataset.start);
+		let n = 12;
+		setInterval(() => {
+			if (document.hidden) return;
+			const [lvl, svc, msg] = lines[n % lines.length];
+			const li = document.createElement('li');
+			li.className = 'new';
+			for (const [cls, text] of [
+				['ts', new Date(start + n * 1700).toISOString().substring(11, 23)],
+				[`lvl ${lvl}`, lvl],
+				['msg', `${svc} · ${msg}`],
+			]) {
+				const span = document.createElement('span');
+				span.className = cls;
+				span.textContent = text;
+				li.append(span);
+			}
+			tail.prepend(li);
+			if (tail.children.length > 14) tail.lastElementChild!.remove();
+			n++;
+		}, 1800);
+	}
+</script>

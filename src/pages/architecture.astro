@@ -1,0 +1,62 @@
+---
+import Marketing from '../layouts/Marketing.astro';
+import SiteDiagram from '../components/diagrams/SiteDiagram.astro';
+import QueryPath from '../components/diagrams/QueryPath.astro';
+import MultiSite from '../components/diagrams/MultiSite.astro';
+---
+
+<Marketing
+	title="Architecture · Obzly"
+	description="How Obzly runs: one image with api, worker, broker, querier and control-plane roles, JetStream ingest, Parquet on object storage and multi-site."
+	current="architecture"
+>
+	<div class="wrap">
+		<div class="page-hero">
+			<div class="eyebrow">Architecture</div>
+			<h1>One image, five roles</h1>
+			<p class="lede">The single container is the smallest shape of one design. Set <code>SERVICE_MODE</code> and the same image runs each role on its own, so each part scales and fails independently.</p>
+			<nav class="jump" aria-label="Architecture sections">
+				<a href="#site">A Site</a><a href="#query-path">Query path</a><a href="#multi-site">Multi-site</a><a href="#scaling">Scaling &amp; HA</a>
+			</nav>
+		</div>
+
+		<div class="arch-block" id="site">
+			<h2>A Site</h2>
+			<SiteDiagram />
+			<div class="table-wrap">
+				<table class="roles">
+					<thead><tr><th>Role</th><th>Does</th><th>Scales</th></tr></thead>
+					<tbody>
+						<tr><td>api</td><td>UI, query API, OTLP/HTTP and gRPC ingest, query coordinator</td><td>Stateless, any number behind a load balancer</td></tr>
+						<tr><td>worker</td><td>Writes ingest to Parquet, compaction, retention, quotas, uploads</td><td>Ingest and compaction shards are shared across workers</td></tr>
+						<tr><td>broker</td><td>NATS JetStream ingest buffer</td><td>Three nodes, one per zone</td></tr>
+						<tr><td>querier</td><td>Runs query fragments, with its own segment cache</td><td>Stateless, add replicas for query throughput</td></tr>
+						<tr><td>control-plane</td><td>One login and UI in front of many Sites; organizations, SCIM</td><td>One per company, in front of every Site</td></tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="arch-block" id="query-path">
+			<h2>Query path</h2>
+			<QueryPath />
+		</div>
+
+		<div class="arch-block" id="multi-site">
+			<h2>Multi-site</h2>
+			<MultiSite />
+		</div>
+
+		<div class="arch-block" id="scaling">
+			<h2>Scaling &amp; HA</h2>
+			<div class="two">
+				<div><h3>Durable ingest</h3><p>A batch is acknowledged only after the JetStream buffer has stored it on three replicas. Rows are searchable before they're written to Parquet.</p></div>
+				<div><h3>Backpressure</h3><p>When the buffer is full, clients get <code>429</code> or <code>RESOURCE_EXHAUSTED</code> and OTel Collectors retry.</p></div>
+				<div><h3>One owner per shard</h3><p>Leases give each ingest and compaction shard exactly one worker. Rolling updates drain readiness first.</p></div>
+				<div><h3>Storage layout</h3><p>Parquet is compacted in levels into hour-sorted files of one day each. A partitioned Postgres catalog keeps per-file statistics.</p></div>
+				<div><h3>Cache warmup</h3><p>Queriers keep their cache on a volume, pre-fetch each segment they own as it's uploaded, and warm up on start.</p></div>
+				<div><h3>Self-monitoring</h3><p>Every role serves Prometheus metrics on an internal port and traces its own requests into a system project.</p></div>
+			</div>
+		</div>
+	</div>
+</Marketing>

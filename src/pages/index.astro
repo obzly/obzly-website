@@ -1,0 +1,182 @@
+---
+import Marketing from '../layouts/Marketing.astro';
+import LiveTail from '../components/LiveTail.astro';
+import HowItWorks from '../components/diagrams/HowItWorks.astro';
+---
+
+<Marketing
+	title="Obzly: self-hosted observability"
+	description="Logs, traces and metrics you run yourself. OTLP in, Parquet on S3, from one container to an enterprise cluster. Apache 2.0."
+>
+	<div class="hero">
+		<div class="wrap">
+			<div>
+				<div class="eyebrow" style="color:var(--amber-hero)">Open source · Apache 2.0</div>
+				<h1 style="margin-top:14px">Self-hosted observability, from one container to an <em>enterprise cluster</em></h1>
+				<p class="lede">Logs, traces and metrics in one place you run yourself. Point any OpenTelemetry exporter at it. Data lands as compressed Parquet in your own bucket.</p>
+				<div class="proto" aria-label="Protocols">
+					<span class="chip"><b>OTLP</b> in</span>
+					<span class="chip"><b>Parquet</b> on S3</span>
+					<span class="chip">gRPC <b>:4317</b></span>
+					<span class="chip">HTTP <b>:4005</b></span>
+					<span class="chip">PromQL · Jaeger · MCP</span>
+				</div>
+				<div class="cta">
+					<a class="btn btn-primary" href="/docs/getting-started/quick-install/">Get started</a>
+					<a class="btn btn-ghost" href="https://github.com/obzly/obzly">
+						<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.56-.29-5.25-1.28-5.25-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.7 5.38-5.27 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>
+						Star on GitHub
+					</a>
+				</div>
+			</div>
+			<LiveTail />
+		</div>
+	</div>
+
+	<section>
+		<div class="wrap">
+			<div class="section-head">
+				<div class="eyebrow">/v1/logs · /v1/traces · /v1/metrics</div>
+				<h2>Three signals, one project, one API key</h2>
+				<p class="lede">Every signal arrives over OTLP and is stored the same way, so a log links to its trace and a dashboard can mix all three.</p>
+			</div>
+			<div class="pillars">
+				<article class="pillar">
+					<div class="sig"><h3>Logs</h3>
+						<svg viewBox="0 0 120 36" aria-hidden="true"><g fill="var(--line)"><rect x="0" y="4" width="70" height="4" rx="2"/><rect x="0" y="16" width="100" height="4" rx="2"/><rect x="0" y="28" width="56" height="4" rx="2"/></g><rect x="74" y="4" width="22" height="4" rx="2" fill="var(--amber)"/></svg></div>
+					<ul>
+						<li>Full-text and field search, query builder or SQL</li>
+						<li>Live tail, log patterns and anomalies</li>
+						<li>Logs around any result, and a link to its trace</li>
+					</ul>
+					<a class="more" href="/features/#logs">Logs in detail →</a>
+				</article>
+				<article class="pillar">
+					<div class="sig"><h3>Traces</h3>
+						<svg viewBox="0 0 120 36" aria-hidden="true"><rect x="0" y="3" width="118" height="6" rx="2" fill="var(--accent)"/><rect x="14" y="15" width="60" height="6" rx="2" fill="var(--line)"/><rect x="40" y="27" width="70" height="6" rx="2" fill="var(--amber)"/></svg></div>
+					<ul>
+						<li>OTLP trace ingestion and a trace explorer</li>
+						<li>Service map from real calls</li>
+						<li>Jaeger-compatible query API for existing clients</li>
+					</ul>
+					<a class="more" href="/features/#traces">Traces in detail →</a>
+				</article>
+				<article class="pillar">
+					<div class="sig"><h3>Metrics</h3>
+						<svg viewBox="0 0 120 36" aria-hidden="true"><polyline points="0,30 15,24 30,26 45,14 60,18 75,8 90,12 105,4 120,9" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/></svg></div>
+					<ul>
+						<li>OTLP and Prometheus remote-write ingestion</li>
+						<li>PromQL-compatible API for Grafana</li>
+						<li>5-minute and 1-hour rollups that outlive raw samples</li>
+					</ul>
+					<a class="more" href="/features/#metrics">Metrics in detail →</a>
+				</article>
+			</div>
+		</div>
+	</section>
+
+	<section style="padding-top:0">
+		<div class="wrap">
+			<div class="section-head">
+				<div class="eyebrow">How it works</div>
+				<h2>OTLP in, Parquet on S3</h2>
+				<p class="lede">A batch is acknowledged only once the JetStream buffer has stored it. Workers write ZSTD Parquet to object storage, and queriers read it back with a warm cache.</p>
+			</div>
+			<HowItWorks />
+		</div>
+	</section>
+
+	<section style="padding-top:0">
+		<div class="wrap">
+			<div class="section-head">
+				<div class="eyebrow">What's included</div>
+				<h2>Everything a platform team asks for in the first month</h2>
+			</div>
+			<div class="grid">
+				<div class="cell"><span class="tag">logs</span><h3>Patterns and anomalies</h3><p>New, spiking and dropping patterns compared with an earlier period, with alerts on new error patterns.</p></div>
+				<div class="cell"><span class="tag">logs</span><h3>Log context</h3><p>See the logs around any result from the same source, to find what led up to an error.</p></div>
+				<div class="cell"><span class="tag">logs → traces</span><h3>Log to trace</h3><p>Jump from a log line to its trace. Kubernetes rollout markers show on the histogram.</p></div>
+				<div class="cell"><span class="tag">dashboards</span><h3>Grafana import</h3><p>Build dashboards, or import Grafana and OpenObserve dashboard JSON.</p></div>
+				<div class="cell"><span class="tag">incidents</span><h3>Incidents</h3><p>Error logs, failed spans and their shared traces grouped into incident sessions.</p></div>
+				<div class="cell"><span class="tag">alerting</span><h3>Alerts in ~15 s</h3><p>Rules over PromQL, log searches or trace latency, sent to webhooks, Slack, PagerDuty or email.</p></div>
+				<div class="cell"><span class="tag">ai</span><h3>AI observability</h3><p>Claude Code usage per project: cost, tokens, cache use and sessions.</p></div>
+				<div class="cell"><span class="tag">/mcp</span><h3>MCP server</h3><p>Claude and Cursor search logs, inspect traces and run PromQL with your own access.</p></div>
+				<div class="cell"><span class="tag">35+ sources</span><h3>Generated configs</h3><p>Pick Nginx, Postgres, Kafka, Kubernetes and more; get a ready-to-run Collector config.</p></div>
+				<div class="cell"><span class="tag">lifecycle</span><h3>Retention and sampling</h3><p>Retention per project and signal, tail sampling that keeps whole traces, log head sampling.</p></div>
+				<div class="cell"><span class="tag">governance</span><h3>Audit log and API keys</h3><p>Who changed what and when. Keys show last use, and unused keys are easy to clean up.</p></div>
+				<div class="cell"><span class="tag">self-monitoring</span><h3>Watch Obzly itself</h3><p>Prometheus metrics on every role, a ready Grafana dashboard and SLO alert rules.</p></div>
+			</div>
+		</div>
+	</section>
+
+	<section class="shapes">
+		<div class="wrap">
+			<div class="section-head">
+				<div class="eyebrow">SERVICE_MODE=all → api · worker · broker · querier</div>
+				<h2>From one container to a cluster</h2>
+				<p class="lede">Start small. The same image grows into a highly available deployment when your volume does.</p>
+			</div>
+			<div class="steps">
+				<div class="step">
+					<div class="n"><b>1</b>Install script</div>
+					<h3>One Linux host</h3>
+					<p>Installs Docker if needed, starts Obzly with Postgres and Valkey, and restarts on reboot. About two minutes.</p>
+					<a href="/docs/getting-started/quick-install/">Quick install →</a>
+				</div>
+				<div class="step">
+					<div class="n"><b>2</b>Docker Compose</div>
+					<h3>Your own compose file</h3>
+					<p>Copy the example compose and <code>.env</code>, set a Postgres password, run <code>docker compose up -d</code>.</p>
+					<a href="/docs/getting-started/docker-compose/">Docker Compose →</a>
+				</div>
+				<div class="step">
+					<div class="n"><b>3</b>Helm, mode: ha</div>
+					<h3>A highly available Site</h3>
+					<p>Three brokers, plus api, worker and querier replicas on Kubernetes, with Parquet in your bucket.</p>
+					<a href="/docs/deploy/helm/">Helm chart →</a>
+				</div>
+				<div class="step">
+					<div class="n"><b>4</b>Control plane</div>
+					<h3>Many Sites, one login</h3>
+					<p>One control plane in front of regions, environments or business units. Data stays in each Site.</p>
+					<a href="/docs/deploy/multi-site/">Control plane &amp; Sites →</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="enterprise">
+		<div class="wrap">
+			<div class="section-head">
+				<div class="eyebrow">Enterprise, included</div>
+				<h2>Built for the security review and the 3 a.m. page</h2>
+				<p class="lede">No paid tier holds these back. They ship in the same Apache 2.0 image.</p>
+			</div>
+			<div class="ent-grid">
+				<div><h3>SSO with any OIDC provider</h3><p>Entra ID, Google Workspace, Cognito and others. IdP groups map to project and Site roles.</p></div>
+				<div><h3>SCIM 2.0 provisioning</h3><p>Users and groups from Okta or Entra ID into organizations and teams. Deprovisioning deactivates.</p></div>
+				<div><h3>TOTP MFA</h3><p>Required for admins, optional for members, with a reset path that lands in the audit log.</p></div>
+				<div><h3>Multi-site control plane</h3><p>Central identities and per-Site access grants. A Site's query API never faces the internet.</p></div>
+				<div><h3>Disaster recovery</h3><p>Backup, restore, DR and upgrade runbooks, a measured restore drill and <code style="background:transparent;border-color:var(--hero-line);color:var(--hero-fg)">obzly reconcile</code>.</p></div>
+				<div><h3>Quotas and plans</h3><p>Ingest rate, storage, retention and project limits per organization, enforced on every Site.</p></div>
+			</div>
+			<p style="margin-top:32px"><a class="more" href="/features/#enterprise">All enterprise features →</a></p>
+		</div>
+	</section>
+
+	<section>
+		<div class="wrap">
+			<div class="license">
+				<div style="display:grid;gap:8px">
+					<div class="eyebrow">License</div>
+					<h2>Apache 2.0. Read every line.</h2>
+					<p class="lede">Your data stays on your infrastructure, and you or your security team can audit all of the code.</p>
+				</div>
+				<div class="cta">
+					<a class="btn btn-primary" href="/docs/getting-started/quick-install/">Install Obzly</a>
+					<a class="btn btn-outline" href="https://github.com/obzly/obzly">View source</a>
+				</div>
+			</div>
+		</div>
+	</section>
+</Marketing>
