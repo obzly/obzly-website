@@ -3,7 +3,7 @@ title: Monitoring Obzly
 description: Scrape Obzly's own Prometheus metrics, load its alert rules and Grafana dashboard, and read its self-traces.
 ---
 
-<!-- Source: obzly-dev/deploy/observability/README.md, obzly-dev/README.md, obzly-dev/docs/runbooks/upgrade.md -->
+<!-- Source: obzly-dev/deploy/observability/README.md, obzly-dev/README.md, obzly-dev/docs/runbooks/upgrade.md, obzly-dev/ARCHITECTURE.md, obzly-dev/frontend/src/features/settings/ui/UpdatesComponent.tsx, obzly-dev/frontend/src/features/settings/ui/SettingsOverviewComponent.tsx -->
 
 Every Obzly role serves Prometheus metrics on an internal port, the
 [`deploy/observability`](https://github.com/obzly/obzly/tree/main/deploy/observability) directory
@@ -84,6 +84,11 @@ every replica reports, so aggregate them with `max()`, not `sum()`.
 
 ## Upgrade status
 
-**Settings → Upgrade status** shows schema state, segments waiting to be rewritten or uploaded,
-ingest buffer lag, broker replicas and the last integrity audit. Check it before each deploy; see
+**Obzly settings → Updates** lists each deployment (on a control plane, the control plane and
+every Site) with its version and whether it is **Ready for the next version**. Expand a row for
+the full upgrade status: schema state, segments waiting to be rewritten or uploaded, ingest buffer
+lag, broker replicas and the last integrity audit. Check it before each deploy; see
 [Upgrade](/docs/operations/upgrade/).
+
+**Obzly settings → Overview** shows each deployment's health, CPU, memory and disk, and the data
+ingested and stored, per Site on a control plane.

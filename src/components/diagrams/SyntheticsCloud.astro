@@ -1,0 +1,45 @@
+<figure class="diagram" style="margin:0">
+	<svg viewBox="0 0 960 380" role="img" aria-labelledby="syn-t">
+		<title id="syn-t">A probe group pulls monitors and cloud connections from the control plane, checks your endpoints and scans cloud APIs read-only, and sends results as OTLP to a Site project, where the inventory is built. The control plane reads results back through the Site.</title>
+		<rect class="d-acc" x="340" y="20" width="290" height="100" rx="12"/>
+		<text class="d-t" x="360" y="50">control plane</text>
+		<text class="d-s" x="360" y="72">monitors · probe groups</text>
+		<text class="d-s" x="360" y="90">cloud connections · channels</text>
+		<text class="d-a" x="360" y="110">stores no results</text>
+
+		<path class="d-arrow" d="M340 70 C200 70 165 110 165 166" marker-end="url(#ah)"/>
+		<text class="d-a" x="160" y="62">config · pull every 180 s</text>
+
+		<rect class="d-box" x="40" y="170" width="250" height="150" rx="10"/>
+		<text class="d-t" x="58" y="198">probe group · edge-north</text>
+		<rect class="d-acc" x="58" y="214" width="64" height="36" rx="6"/><text class="d-s" x="68" y="237">pod-1</text>
+		<rect class="d-soft" x="133" y="214" width="64" height="36" rx="6"/><text class="d-s" x="143" y="237">pod-2</text>
+		<rect class="d-soft" x="208" y="214" width="64" height="36" rx="6"/><text class="d-s" x="218" y="237">pod-3</text>
+		<text class="d-s" x="58" y="280">one live instance per monitor</text>
+		<text class="d-a" x="58" y="300">failover within a minute</text>
+
+		<path class="d-arrow" d="M290 222 L338 222" marker-end="url(#ah)"/>
+		<rect class="d-box" x="340" y="190" width="236" height="62" rx="8"/>
+		<text class="d-t" x="356" y="214" style="font-size:14px">Your endpoints</text>
+		<text class="d-s" x="356" y="236">HTTP · TLS · TCP · DNS · ICMP</text>
+
+		<path class="d-arrow" d="M290 294 L338 294" marker-end="url(#ah)"/>
+		<rect class="d-amb" x="340" y="264" width="236" height="62" rx="8"/>
+		<text class="d-t" x="356" y="288" style="font-size:14px">Cloud APIs, read-only</text>
+		<text class="d-s" x="356" y="310">AWS 111122223333 · Azure</text>
+
+		<path class="d-arrow acc" d="M165 320 L165 356 L785 356 L785 334" marker-end="url(#aha)"/>
+		<text class="d-a" x="410" y="349">results · OTLP</text>
+
+		<rect class="d-box" x="660" y="170" width="270" height="162" rx="10"/>
+		<text class="d-t" x="678" y="198">Site · north</text>
+		<text class="d-s" x="678" y="222">project: synthetics</text>
+		<text class="d-s" x="678" y="246">alert rules per monitor</text>
+		<text class="d-s" x="678" y="270">inventory every 5 min</text>
+		<text class="d-a" x="678" y="294">cloud VMs join agent hosts</text>
+
+		<path class="d-dash" d="M795 168 C795 100 700 70 632 70" marker-end="url(#ah)"/>
+		<text class="d-a" x="805" y="134">read through</text><text class="d-a" x="805" y="150">the proxy</text>
+	</svg>
+	<figcaption>Probes push results straight to a Site, so the control plane never carries ingest. Cloud credentials stay with the probe group: its own identity, a role with an external ID, or a short-lived token the control plane signs.</figcaption>
+</figure>

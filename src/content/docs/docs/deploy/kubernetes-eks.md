@@ -3,7 +3,7 @@ title: Kubernetes on EKS
 description: Deploy Obzly on AWS EKS with plain kubectl apply -k manifests, as a single replica or a highly available Site.
 ---
 
-<!-- Source: obzly-dev/deploy/kubernetes/eks/README.md, obzly-dev/deploy/kubernetes/eks/ha/README.md, obzly-dev/deploy/kubernetes/eks/control-plane/README.md -->
+<!-- Source: obzly-dev/deploy/kubernetes/eks/README.md, obzly-dev/deploy/kubernetes/eks/ha/README.md, obzly-dev/deploy/kubernetes/eks/control-plane/README.md, obzly-dev/deploy/kubernetes/eks/common/configmap.yaml, obzly-dev/deploy/kubernetes/eks/secret.yaml -->
 
 [`deploy/kubernetes/eks`](https://github.com/obzly/obzly/tree/main/deploy/kubernetes/eks) holds
 plain manifests for `kubectl apply -k` and GitOps tools that prefer them. They target AWS EKS with
@@ -27,7 +27,7 @@ Both `eks/` and `eks/ha/` share the namespace, service account, ConfigMap and Va
    without `s3:PutObjectTagging`. Put the role ARN in the `eks.amazonaws.com/role-arn` annotation in
    `common/serviceaccount.yaml`.
 2. **Bucket and region**: set `OBJECT_STORAGE_URL` in `common/configmap.yaml` to
-   `s3://my-bucket?region=eu-west-1`. Leave out `endpoint` and `use_path_style`, which are for
+   `s3://harborline-obzly?region=eu-west-1`. Leave out `endpoint` and `use_path_style`, which are for
    MinIO only. The bucket must already exist; Obzly never creates it.
 3. **Postgres**: fill in `DATABASE_DSN` in `secret.yaml`. Obzly runs its own migrations on every
    startup.
@@ -152,7 +152,7 @@ projects, plans, API keys and root admin:
 
 1. Uncomment the `SITE_ID` / `SITE_NAME` / `CONTROL_PLANE_ISSUER` / `CONTROL_PLANE_JWKS_URL` /
    `CONTROL_PLANE_EGRESS_CIDRS` block in `common/configmap.yaml`. `SITE_ID` must match the slug you
-   register the Site under in the control plane's **Sites** tab.
+   register the Site under in the control plane's **Obzly settings → Sites**.
 2. `CONTROL_PLANE_ISSUER` must be the control plane's exact public `PUBLIC_URL`.
    `CONTROL_PLANE_JWKS_URL` is the address this cluster can actually reach the control plane at:
    its public origin, or an internal DNS name if both run in the same or a peered network. It
@@ -174,7 +174,10 @@ with a Site), `PUBLIC_URL` in `configmap.yaml`, and your own Ingress. See
 ## Operate
 
 Every setting is in the [configuration reference](/docs/reference/configuration/): add it to
-`common/configmap.yaml`, or to `secret.yaml` for credentials. After a Postgres restore, reconcile
+`common/configmap.yaml`, or to `secret.yaml` for credentials. Email (SMTP) and notification
+channels are not among them: set them up in Obzly settings (see
+[Alerts & notifications](/docs/how-to/alerts/)). If an older install still has `ALERT_SMTP_*` in
+its ConfigMap or Secret, it was imported on the first start of v0.55.0 and can be removed. After a Postgres restore, reconcile
 the catalog with the bucket from any Obzly pod:
 
 ```bash

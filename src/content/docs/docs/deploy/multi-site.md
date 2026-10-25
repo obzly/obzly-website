@@ -3,7 +3,7 @@ title: Control plane & Sites
 description: Put one sign-in and UI in front of many independently deployed Obzly installs, while each keeps its own data.
 ---
 
-<!-- Source: obzly-dev/README.md, obzly-dev/deploy/README.md, obzly-dev/deploy/kubernetes/eks/control-plane/README.md, obzly-dev/ARCHITECTURE.md, obzly-dev/deploy/docker/docker-compose.multisite.yml.example, obzly-dev/deploy/docker/docker-compose.control-plane.yml.example, obzly-dev/docs/configuration.md -->
+<!-- Source: obzly-dev/README.md, obzly-dev/deploy/README.md, obzly-dev/deploy/kubernetes/eks/control-plane/README.md, obzly-dev/ARCHITECTURE.md, obzly-dev/deploy/docker/docker-compose.multisite.yml.example, obzly-dev/deploy/docker/docker-compose.control-plane.yml.example, obzly-dev/docs/configuration.md, obzly-dev/docs/runbooks/upgrade.md, obzly-dev/frontend/src/features/settings/ui/SettingsComponent.tsx, obzly-dev/frontend/src/features/alerts/ui/NotificationSettingsComponent.tsx -->
 
 Multi-site is optional. Once you run Obzly in more than one region, cluster or environment, a
 **control plane** gives users one place to sign in and one UI for all of them, without moving any
@@ -16,7 +16,9 @@ data and without exposing each install's query and admin API to the internet.
   root admin, local MFA and audit log, and receives its own ingest.
 - **Control plane**: the same image with `SERVICE_MODE=control-plane`. It holds central sign-in
   (users, SSO, MFA, invites), organizations and teams that span Sites, a SCIM 2.0 endpoint at
-  `/scim/v2`, the Site registry and per-Site access grants. It serves the UI and has its own
+  `/scim/v2`, the Site registry and per-Site access grants, the notification channels and email
+  relay every Site uses, [Synthetics](/docs/how-to/synthetics/) monitors and probe groups, and
+  [cloud connections](/docs/how-to/cloud-connections/). It serves the UI and has its own
   Postgres and Valkey, never shared with a Site. It has no ingest, no OTLP listener and no object
   storage: it never stores a log, trace or metric.
 
@@ -37,8 +39,10 @@ keys, so ingest keeps working even when the control plane is down.
 ### Data stays in each Site
 
 Each Site keeps its ingest, projects, plans, API keys, root admin, local break-glass login and
-audit log. The UI addresses one Site at a time; there is no cross-site aggregation, and the control
-plane never stores or caches query results. Sites with the same name (case-insensitive) appear as
+audit log. The UI addresses one Site at a time; there is no cross-site query aggregation, and the
+control plane never stores or caches query results. The exceptions are
+[Infrastructure](/docs/how-to/infrastructure/) and **Obzly settings → Overview**, which read each
+Site you can reach and combine the results in the browser. Sites with the same name (case-insensitive) appear as
 one entry in the Site picker, and the project picker then lists each member Site's projects.
 
 ## Accounts: `superadmin` and `admin`
@@ -92,7 +96,7 @@ docker compose up -d --build
 1. Sign in at `http://localhost:4005` (the control plane) as `superadmin`. The first sign-in asks
    for the bootstrap token from the control plane's log
    (`docker logs obzly-control-plane 2>&1 | grep bootstrapToken`).
-2. Open the **Sites** tab and register `site-a` with the API URL `http://site-a:4005`. Plain
+2. Open **Obzly settings → Sites** and register `site-a` with the API URL `http://site-a:4005`. Plain
    `http://` is allowed here only because the example sets `SITE_ALLOW_INSECURE_URLS`.
 3. Use **check connection**, then grant yourself `ADMIN` on the Site.
 4. Pick the Site in the top bar and use it like a single install. Send data to the Site directly,
@@ -156,8 +160,9 @@ Set these on the Site (in Compose, the commented multi-site block of the `obzly`
 | `CONTROL_PLANE_EGRESS_CIDRS` | Accept token exchange only from these CIDRs |
 | `CONTROL_PLANE_LINK_BY_EMAIL` | Link a central user to an existing local account with the same verified email. Default `true` |
 
-Then, signed in to the control plane, register the Site in the **Sites** tab, check the connection
-and grant access. The Site's API URL must be an absolute `https://` URL with no path (unless
+Then, signed in to the control plane, register the Site in **Obzly settings → Sites**, check the
+connection and grant access. The Site's own **Obzly settings → General** shows the Site ID to
+register it under. The Site's API URL must be an absolute `https://` URL with no path (unless
 `SITE_ALLOW_INSECURE_URLS` is set, for local Compose only) and not a loopback or link-local address;
 private network addresses are allowed. On the control plane, `CONTROL_PLANE_EGRESS_ALLOWLIST`
 limits which CIDRs it may call Sites at.
@@ -180,7 +185,15 @@ slow search ends in a `504` at 60 seconds.
   [Upgrade](/docs/operations/upgrade/).
 - **Backups**: the control plane's Postgres is the identity root for every Site; restore it first.
   See [Disaster recovery](/docs/operations/disaster-recovery/).
-- **Outages**: if the control plane is down, queries through it stop, but ingest and each Site's
-  local break-glass login keep working.
+- **Notification channels and email**: defined once on the control plane, in **Obzly settings →
+  Notifications & alerting**. Each Site fetches them every 5 minutes and keeps the last copy. A
+  Site that had its own channels before keeps them until you use **Move Site's own here** on the
+  control plane. See [Alerts & notifications](/docs/how-to/alerts/#multi-site).
+- **Overview and updates**: the control plane's **Obzly settings → Overview** shows every
+  deployment with ingest and storage per Site, and **Updates** shows whether each one is ready for
+  the next version.
+- **Outages**: if the control plane is down, queries through it stop, but ingest, alert
+  notifications (from each Site's last copy of the channels) and each Site's local break-glass
+  login keep working.
 - **AI assistants**: one MCP endpoint on the control plane covers every Site you can access; see
   [MCP](/docs/how-to/mcp/).

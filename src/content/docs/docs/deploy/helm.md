@@ -3,7 +3,7 @@ title: Helm chart
 description: Deploy an Obzly Site or control plane on any Kubernetes cluster with the Helm chart.
 ---
 
-<!-- Source: obzly-dev/deploy/helm/obzly/README.md, obzly-dev/deploy/helm/obzly/templates/NOTES.txt, obzly-dev/deploy/helm/obzly/values.yaml -->
+<!-- Source: obzly-dev/deploy/helm/obzly/README.md, obzly-dev/deploy/helm/obzly/templates/NOTES.txt, obzly-dev/deploy/helm/obzly/values.yaml, obzly-dev/deploy/helm/obzly/Chart.yaml, obzly-dev/deploy/helm/obzly-probe/values.yaml, obzly-dev/deploy/README.md, obzly-dev/docs/runbooks/upgrade.md -->
 
 One chart, in [`deploy/helm/obzly`](https://github.com/obzly/obzly/tree/main/deploy/helm/obzly),
 deploys every role. It renders the same pods as the
@@ -24,9 +24,9 @@ the chart at your own.
 ```bash
 kubectl create namespace obzly
 helm install obzly deploy/helm/obzly -n obzly \
-  --set config.objectStorageUrl='s3://my-bucket?region=eu-west-1' \
+  --set config.objectStorageUrl='s3://harborline-obzly?region=eu-west-1' \
   --set secrets.databaseDsn='host=... user=obzly password=... dbname=obzly port=5432 sslmode=require' \
-  --set serviceAccount.annotations.eks\.amazonaws\.com/role-arn=arn:aws:iam::123456789012:role/obzly-s3 \
+  --set serviceAccount.annotations.eks\.amazonaws\.com/role-arn=arn:aws:iam::111122223333:role/obzly-s3 \
   --set broker.nodeSelector.karpenter\.sh/capacity-type=on-demand
 ```
 
@@ -41,6 +41,16 @@ one-time bootstrap token for setting its password:
 
 ```bash
 kubectl -n obzly logs -l app.kubernetes.io/instance=obzly --tail=-1 | grep bootstrapToken
+```
+
+The token is logged only once. If that pod is gone, print a new one (this works only while the
+admin has no password yet):
+
+```bash
+# ha mode
+kubectl -n obzly exec deploy/obzly-api -- /app/main --reset-bootstrap-token
+# single or control-plane mode
+kubectl -n obzly exec deploy/obzly -- /app/main --reset-bootstrap-token
 ```
 
 ### S3 permissions
@@ -65,7 +75,9 @@ on upgrade.
 - **`broker.replicas`**: `3` (streams replicated three ways, one pod per zone) or `1` (no
   failover). `2` is refused.
 - **`config.trustedProxies`**: your load balancer's CIDRs, so client IPs are real.
-- **`api.autoscaling`** and **`querier.autoscaling`**: HPA on CPU.
+- **`api.autoscaling`** and **`querier.autoscaling`**: HPA on CPU. The HPA target is a share of
+  the CPU request, which is 500m for `api` by default since chart 0.2.0 (`api.resources`; at 250m it flapped
+  between replica counts and each scale-down cut off running queries).
 - **`querier.networkPolicy`**: limits the executors' result port to `api` pods; needs a CNI that
   enforces NetworkPolicy.
 - **`metrics.serviceMonitor`**: a Prometheus Operator PodMonitor for every tier. See
@@ -73,21 +85,25 @@ on upgrade.
 - **`config.publicUrl`**: the address users reach Obzly at, for [MCP](/docs/how-to/mcp/) clients'
   OAuth.
 
+### Volumes and file ownership
+
+Since chart 0.2.0, pods run with `podSecurityContext.fsGroup: 1000` (and
+`fsGroupChangePolicy: OnRootMismatch`) by default, so new volumes, such as the brokers' JetStream store and the querier cache, are writable
+by the image's user without overrides. A fresh EBS volume is otherwise owned by root.
+
 ## Other settings
 
 Any setting from the [configuration reference](/docs/reference/configuration/) goes in
-`config.extra`, or `secrets.extra` for credentials. For example, alert email:
+`config.extra`, or `secrets.extra` for credentials. For example:
 
 ```yaml
 config:
   extra:
-    ALERT_SMTP_HOST: email-smtp.eu-west-1.amazonaws.com
-    ALERT_SMTP_FROM: alerts@example.com
-    ALERT_SMTP_USERNAME: AKIA...
-secrets:
-  extra:
-    ALERT_SMTP_PASSWORD: ...
+    ALERT_EGRESS_DENYLIST: 172.20.0.0/16
 ```
+
+Email (SMTP) and notification channels are not set here: set them up in Obzly settings (see
+[Alerts & notifications](/docs/how-to/alerts/)).
 
 Use `config.extra` for `QUERY_MAX_SCAN_GB`, or for `SITE_ID` and `CONTROL_PLANE_ISSUER` to enroll
 the release as a Site in a [control plane](/docs/deploy/multi-site/).
@@ -112,6 +128,15 @@ After a Postgres restore, reconcile the catalog with the bucket (see
 ```bash
 kubectl -n obzly exec deploy/obzly-worker -- ./main reconcile
 ```
+
+## Synthetics probe chart
+
+The Synthetics probe has its own chart,
+[`deploy/helm/obzly-probe`](https://github.com/obzly/obzly/tree/main/deploy/helm/obzly-probe). It
+runs a probe group (three replicas sharing one token by default, spread across nodes and zones,
+with a PodDisruptionBudget) and creates a service account for IRSA or Azure workload identity when
+the group scans [cloud connections](/docs/how-to/cloud-connections/). See
+[Synthetics probe](/docs/deploy/probe/).
 
 ## Architectures
 

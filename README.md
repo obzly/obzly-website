@@ -55,7 +55,11 @@ Every docs page is adapted from files in the product repo (obzly-dev) and names 
 | `deploy/helm` | `deploy/helm/obzly/README.md` |
 | `deploy/kubernetes-eks` | `deploy/kubernetes/eks/README.md`, `deploy/kubernetes/eks/ha/README.md` |
 | `deploy/multi-site` | `deploy/README.md`, `deploy/kubernetes/eks/control-plane/README.md`, `ARCHITECTURE.md` (Multi-site) |
+| `deploy/probe` | `deploy/probe/`, `deploy/helm/obzly-probe/`, `docs/configuration.md` |
 | `how-to/kubernetes-otel-collector` | `frontend/src/features/projects/ui/kubernetesOtelConfig.ts`, `deploy/kubernetes/obi/README.md` |
+| `how-to/synthetics` | `docs/SYNTHETICS.md`, `docs/examples/synthetics-checks.yaml` |
+| `how-to/infrastructure` | `docs/INFRASTRUCTURE.md` |
+| `how-to/cloud-connections` | `docs/INFRASTRUCTURE.md`, `deploy/cloud/` |
 | `how-to/grafana-promql` | `README.md` (Metrics, Attribute names) |
 | `how-to/mcp` | `README.md`, `ARCHITECTURE.md` (MCP server, AI observability) |
 | `how-to/alerts` | `README.md` (Alerting), `docs/configuration.md` |
@@ -68,6 +72,9 @@ Every docs page is adapted from files in the product repo (obzly-dev) and names 
 | `reference/configuration` | `docs/configuration.md` |
 | `reference/log-query-api` | `backend/internal/features/logs/querying/readme.md` |
 | `reference/data-sources` | `frontend/src/features/projects/ui/dataSources/` |
+
+Examples use fictional names only: the company Harborline, hosts under `harborline.example`,
+AWS account `111122223333`. Never use real customer, cluster or host names.
 
 Never copy internal material into this repo: `SECURITY_REVIEW.md`, `ROADMAP.md`,
 `docs/ENTERPRISE_SCALE_PLAN.md` or other plans, internal hostnames, or the outdated

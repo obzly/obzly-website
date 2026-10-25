@@ -2,7 +2,7 @@
 title: Data sources
 description: The built-in Data Sources catalog, what each entry generates, and how to send OTLP from anything else.
 ---
-<!-- Source: obzly-dev/frontend/src/features/projects/ui/dataSources/catalog.ts, obzly-dev/frontend/src/features/projects/ui/dataSources/types.ts, obzly-dev/frontend/src/features/projects/ui/dataSources/DataSourceConfigModal.tsx, obzly-dev/frontend/src/features/projects/ui/dataSources/otelCollectorCommon.ts, obzly-dev/frontend/src/features/projects/ui/dataSources/customOtlpDataSource.ts, obzly-dev/README.md -->
+<!-- Source: obzly-dev/frontend/src/features/projects/ui/dataSources/catalog.ts, obzly-dev/frontend/src/features/projects/ui/dataSources/types.ts, obzly-dev/frontend/src/features/projects/ui/dataSources/DataSourceConfigModal.tsx, obzly-dev/frontend/src/features/projects/ui/dataSources/otelCollectorCommon.ts, obzly-dev/frontend/src/features/projects/ui/dataSources/customOtlpDataSource.ts, obzly-dev/frontend/src/features/projects/ui/dataSources/kubernetesDataSource.ts, obzly-dev/README.md -->
 
 Obzly speaks OTLP over gRPC and HTTP, so anything that exports OpenTelemetry can send it logs,
 traces and metrics without a proprietary client library. For common infrastructure you don't
@@ -56,7 +56,7 @@ Attribute names are normalized on arrival (`k8s.pod.name` is stored as `k8s_pod_
 
 | Source | What it collects |
 | --- | --- |
-| Kubernetes | DaemonSet collector: container logs, node metrics, and OTLP from your apps. See [Kubernetes logs & metrics](/docs/how-to/kubernetes-otel-collector/) |
+| Kubernetes | DaemonSet collector plus a read-only cluster agent (on by default): container logs, node and pod metrics, cluster state, and OTLP from your apps. See [Kubernetes logs & metrics](/docs/how-to/kubernetes-otel-collector/) |
 | eBPF Network Map (OBI) | OpenTelemetry eBPF agent: service-to-service network edges for the Service Map, and optional zero-code traces |
 | Docker / Docker Compose | Container logs from the Docker daemon's own JSON log files, via a sidecar collector |
 | Linux Server | systemd journal logs, host metrics (CPU, memory, disk) and OTLP, as a systemd service |
@@ -133,9 +133,9 @@ export OTLP themselves and need no collector. Obzly accepts OTLP/HTTP, protobuf 
 
 | Signal | Endpoint |
 | --- | --- |
-| Logs | `POST https://obzly.example.com/v1/logs` |
-| Traces | `POST https://obzly.example.com/v1/traces` |
-| Metrics | `POST https://obzly.example.com/v1/metrics` |
+| Logs | `POST https://obzly.harborline.example/v1/logs` |
+| Traces | `POST https://obzly.harborline.example/v1/traces` |
+| Metrics | `POST https://obzly.harborline.example/v1/metrics` |
 
 Every request needs the `X-API-Key` header. The API key also identifies the project, so the
 URL has no project ID. OTLP/gRPC is served on port `4317` (`OTLP_GRPC_PORT`) when that port is
@@ -144,7 +144,7 @@ exposed.
 For anything that follows the standard OpenTelemetry SDK environment variables:
 
 ```bash
-export OTEL_EXPORTER_OTLP_ENDPOINT="https://obzly.example.com"
+export OTEL_EXPORTER_OTLP_ENDPOINT="https://obzly.harborline.example"
 export OTEL_EXPORTER_OTLP_HEADERS="X-API-Key=YOUR_API_KEY"
 export OTEL_EXPORTER_OTLP_PROTOCOL="http/protobuf"
 ```
@@ -152,12 +152,12 @@ export OTEL_EXPORTER_OTLP_PROTOCOL="http/protobuf"
 Or test with a single log over curl:
 
 ```bash
-curl -X POST "https://obzly.example.com/v1/logs" \
+curl -X POST "https://obzly.harborline.example/v1/logs" \
   -H "Content-Type: application/json" \
   -H "X-API-Key: YOUR_API_KEY" \
   -d '{
     "resourceLogs": [{
-      "resource": { "attributes": [{ "key": "service.name", "value": { "stringValue": "my-app" } }] },
+      "resource": { "attributes": [{ "key": "service.name", "value": { "stringValue": "checkout" } }] },
       "scopeLogs": [{
         "logRecords": [{
           "timeUnixNano": "'"$(date +%s%N)"'",

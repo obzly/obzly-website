@@ -1,19 +1,24 @@
 ---
 title: Kubernetes logs & metrics with the OTel Collector
-description: Collect pod logs and node and kubelet metrics with an OpenTelemetry Collector DaemonSet, and add zero-code traces with OBI.
+description: Collect pod logs, node and kubelet metrics and cluster state with an OpenTelemetry Collector DaemonSet, and add zero-code traces with OBI.
 ---
-<!-- Source: obzly-dev/frontend/src/features/projects/ui/kubernetesOtelConfig.ts, obzly-dev/frontend/src/features/projects/ui/dataSources/kubernetesDataSource.ts, obzly-dev/frontend/src/features/projects/ui/dataSources/obiDataSource.ts, obzly-dev/deploy/kubernetes/obi/README.md -->
+<!-- Source: obzly-dev/frontend/src/features/projects/ui/kubernetesOtelConfig.ts, obzly-dev/frontend/src/features/projects/ui/dataSources/kubernetesDataSource.ts, obzly-dev/docs/runbooks/upgrade.md, obzly-dev/frontend/src/features/projects/ui/dataSources/obiDataSource.ts, obzly-dev/deploy/kubernetes/obi/README.md -->
 
 This guide runs an OpenTelemetry Collector on every node of a Kubernetes cluster. It sends
 everything to one Obzly project over OTLP/HTTP, authenticated with an API key:
 
 - **Pod logs**: every container's log files on the node, tagged with pod, namespace, node,
-  deployment and container names.
+  workload and container names.
 - **Node metrics**: CPU, memory, disk, filesystem, network and load for the node itself.
 - **Pod and container metrics**: CPU, memory, network and filesystem from the node's kubelet
-  (the same data `kubectl top pod` uses).
+  (the same data `kubectl top pod` uses), with the workload (Deployment, StatefulSet, DaemonSet,
+  Job or CronJob) each pod belongs to, and usage as a share of the pod's and container's limits.
+- **Cluster state**: with the cluster agent (on by default), pod phase, container restarts,
+  replica counts and node readiness from the Kubernetes API.
 - **App telemetry**: OTLP logs, traces and metrics that apps in the cluster push to the
   collector.
+
+[Infrastructure](/docs/how-to/infrastructure/) builds its inventory and health from this data.
 
 You need a project in Obzly (see [Create your first project](/docs/getting-started/first-project/)),
 `kubectl` access to the cluster, and an Obzly URL the cluster's nodes can reach.
@@ -27,16 +32,17 @@ manifest with a dedicated API key already in it.
 2. Leave **API key** empty to create a new key for this collector, or select an existing one and
    paste its value.
 3. Set **Obzly endpoint** to a URL reachable from the cluster, for example
-   `https://obzly.example.com`.
+   `https://obzly.harborline.example`.
 4. Fill in the options:
 
    | Field | Default | What it does |
    | --- | --- | --- |
    | Kubernetes namespace | `obzly-otel` | Namespace the collector is deployed into |
-   | Cluster name | empty | Added to every log and metric as `k8s.cluster.name`. A cluster can't report its own name, so set it if you run more than one |
+   | Cluster name | empty | Added to every log and metric as `k8s.cluster.name`, for example `harbor-prod-1`. A cluster can't report its own name, so set it when one project has several clusters: Infrastructure tells clusters apart by it |
    | Exclude namespaces | empty | Logs and pod metrics from these namespaces are not collected. Comma-separated, `*` and `?` wildcards allowed, for example `kube-system, monitoring-*` |
    | Only these namespaces | empty (all) | If set, only these namespaces are collected, minus any excluded ones. Node-level metrics are always collected |
    | Exclude pods | empty | Skip logs and metrics from pods whose name matches, in any namespace, for example `noisy-batch-*` |
+   | Cluster agent | on | Adds one small Deployment that reads pod phase, restarts, replica counts and node readiness from the Kubernetes API, read-only. Infrastructure uses them for health |
    | Use host network | off | Runs the collector on each node's network. Needed on EKS Auto Mode, and on any node with an instance-metadata hop limit of 1, to get cloud and host attributes. Node network metrics then report the node's interfaces. Ports 4317 and 4318 must be free on every node |
 
 5. Generate the config and save it as `obzly-otel-collector.yaml`.
@@ -52,37 +58,71 @@ safe. To rotate the key, delete it on the project's **API Keys** page and genera
 kubectl apply -f obzly-otel-collector.yaml
 ```
 
-Check that one collector pod is running on each node and that it isn't logging export errors:
+Check that one collector pod is running on each node, plus one cluster agent pod, and that
+neither is logging export errors:
 
 ```bash
 kubectl -n obzly-otel get pods -o wide
 kubectl -n obzly-otel logs daemonset/obzly-otel-collector
+kubectl -n obzly-otel logs deployment/obzly-otel-cluster-agent
 ```
 
-Pod logs appear in **Search** shortly after they are written. The collector tails from the end
-of each file, so lines written before it started are not sent. Metrics appear on the next 30-second
-scrape.
+Pod logs appear in **Search** shortly after they are written. The first time the collector sees a
+log file it starts at the end, so lines written before it started are not sent. After that it
+keeps each file's read offset on the node, so a restart or rollout of the collector neither skips
+nor re-sends lines. Metrics appear on the next 30-second scrape.
 
 For ready-made views, create a dashboard from the **Kubernetes Pods & Nodes** or
 **K8S Cluster Overview (Grafana 15661)** template on the **Dashboards** page.
+
+## Update an existing collector
+
+When Obzly's manifest changes, generate it again from **Data Sources** and re-apply it with
+`kubectl apply -f`. Manifests generated from v0.55.0 on add:
+
+- **Saved file offsets.** The collector keeps its read offsets in `/var/lib/otelcol` on each node.
+  A small `busybox` init container makes that directory writable for the collector.
+- **Workload names on pod metrics.** Pod and container metrics now carry the name of their
+  Deployment, StatefulSet, DaemonSet, Job or CronJob. Because the labels change, each pod and
+  container series starts afresh once after you re-apply. Dashboards are unaffected.
+- **Limit-utilization metrics.** `k8s.pod.cpu_limit_utilization`,
+  `k8s.pod.memory_limit_utilization` and their `k8s.container.*` equivalents, for pods and
+  containers that have limits.
+- **The cluster agent**, on by default. Clear **Cluster agent** to leave it out.
+
+If one project receives several clusters, set **Cluster name** on each.
 
 ## What the manifest deploys
 
 The generated file contains a Namespace, a Secret holding the API key, a ConfigMap with the
 collector config, a ServiceAccount with a ClusterRole and binding, a Service on ports 4317 and
 4318, and the DaemonSet itself (image `otel/opentelemetry-collector-contrib:0.161.0`, requesting
-100m CPU and 128Mi memory, limited to 512Mi memory).
+100m CPU and 128Mi memory, limited to 512Mi memory). The DaemonSet mounts `/var/lib/otelcol` from
+the node (created if missing) for file offsets, and an init container (`busybox:1.37.0`) hands it to
+the collector's user.
+
+With the cluster agent, the file also contains a second ConfigMap, ServiceAccount, ClusterRole and
+binding, and a one-replica Deployment named `obzly-otel-cluster-agent` (same collector image,
+requesting 50m CPU and 128Mi memory, limited to 512Mi memory). It runs the `k8s_cluster` receiver
+every 30 seconds and uses the same API key Secret.
 
 The collector config, abridged. It omits the `transform/severity` statements, so generate the
 full version from Data Sources rather than copying this one:
 
 ```yaml
+extensions:
+  # Keeps file_log's read offsets on the node.
+  file_storage:
+    directory: /var/lib/otelcol/file_storage
+
 receivers:
-  # Tails every container's log files on this node.
+  # Tails every container's log files on this node; start_at applies only
+  # to files with no saved offset yet.
   file_log:
     include: ["/var/log/pods/*/*/*.log"]
     exclude: ["/var/log/pods/obzly-otel_obzly-otel-collector*/*/*.log"]
     start_at: end
+    storage: file_storage
     include_file_path: true
     include_file_name: false
     operators:
@@ -115,6 +155,16 @@ receivers:
     endpoint: "https://${env:KUBE_NODE_IP}:10250"
     insecure_skip_verify: true
     metric_groups: [container, pod, node, volume]
+    # Usage as a share of the pod's or container's limit (when it has one).
+    metrics:
+      k8s.pod.cpu_limit_utilization:
+        enabled: true
+      k8s.pod.memory_limit_utilization:
+        enabled: true
+      k8s.container.cpu_limit_utilization:
+        enabled: true
+      k8s.container.memory_limit_utilization:
+        enabled: true
 
 processors:
   batch:
@@ -136,6 +186,11 @@ processors:
         - k8s.namespace.name
         - k8s.node.name
         - k8s.deployment.name
+        - k8s.replicaset.name
+        - k8s.statefulset.name
+        - k8s.daemonset.name
+        - k8s.job.name
+        - k8s.cronjob.name
         - k8s.container.name
     pod_association:
       - sources:
@@ -144,11 +199,12 @@ processors:
 
 exporters:
   otlp_http:
-    endpoint: "https://obzly.example.com"
+    endpoint: "https://obzly.harborline.example"
     headers:
       X-API-Key: "${env:OBZLY_API_KEY}"
 
 service:
+  extensions: [file_storage]
   pipelines:
     logs:
       receivers: [file_log, otlp]
@@ -160,13 +216,13 @@ service:
       exporters: [otlp_http]
     metrics:
       receivers: [otlp, host_metrics, kubelet_stats]
-      processors: [resource_detection, batch]
+      processors: [resource_detection, k8s_attributes, batch]
       exporters: [otlp_http]
 ```
 
 When you set a cluster name or namespace and pod filters, the generator adds a
 `resource/cluster_name` processor and a `filter/namespaces` processor to the logs and metrics
-pipelines, and narrows the `file_log` include and exclude paths so filtered log files are never
+pipelines (and to the cluster agent's), and narrows the `file_log` include and exclude paths so filtered log files are never
 read.
 
 A few details worth knowing:
@@ -174,10 +230,12 @@ A few details worth knowing:
 - **Batch size.** `send_batch_max_size: 2500` keeps each export under Obzly's per-request batch
   limit. Obzly rejects an oversized request as a whole, so keep this cap if you edit the config.
 - **Kubelet access.** The ClusterRole grants `get` on `nodes/stats` and `nodes/proxy` for
-  `kubelet_stats`, and `get`/`list`/`watch` on pods, namespaces, nodes and ReplicaSets for
-  `k8s_attributes` (ReplicaSets are needed to resolve `k8s.deployment.name`). The kubelet is
+  `kubelet_stats`, and `get`/`list`/`watch` on pods, namespaces, nodes, ReplicaSets and Jobs for
+  `k8s_attributes` (ReplicaSets resolve `k8s.deployment.name`, Jobs resolve `k8s.cronjob.name`). The kubelet is
   reached by the node's IP because node names don't always resolve in DNS, and its certificate
   is self-signed on most clusters, hence `insecure_skip_verify`.
+- **Cluster agent access.** Its own ClusterRole is read-only: `get`/`list`/`watch` on the core
+  objects, workloads, Jobs, CronJobs and HorizontalPodAutoscalers that `k8s_cluster` watches.
 - **EKS detection.** The `eks` detector reads the `aws-auth` ConfigMap in `kube-system`, so the
   ClusterRole also allows `get` on that one ConfigMap. Off EKS the cloud detectors simply find
   nothing.

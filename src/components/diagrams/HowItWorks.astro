@@ -1,15 +1,17 @@
 <figure class="diagram" style="margin:0">
 	<svg viewBox="0 0 960 330" role="img" aria-labelledby="hiw-t">
-		<title id="hiw-t">Data flows from your services into the api role, through the JetStream buffer to workers that write Parquet to object storage; queriers read it back for searches, dashboards, PromQL, Jaeger and MCP.</title>
+		<title id="hiw-t">Data flows from your services and synthetic probes into the api role, through the JetStream buffer to workers that write Parquet to object storage; queriers read it back for searches, dashboards, PromQL, Jaeger and MCP.</title>
 		<text class="d-l" x="20" y="20">Your services</text>
 		<rect class="d-box" x="20" y="30" width="184" height="34" rx="7"/><text class="d-s" x="34" y="51">App SDKs · OTLP</text>
 		<rect class="d-box" x="20" y="72" width="184" height="34" rx="7"/><text class="d-s" x="34" y="93">OTel Collector</text>
 		<rect class="d-box" x="20" y="114" width="184" height="34" rx="7"/><text class="d-s" x="34" y="135">Prometheus remote-write</text>
 		<rect class="d-box" x="20" y="156" width="184" height="34" rx="7"/><text class="d-s" x="34" y="177">HTTP JSON · curl</text>
+		<rect class="d-amb" x="20" y="198" width="184" height="30" rx="7"/><text class="d-s" x="34" y="217">obzly-probe · synthetics</text>
 		<path class="d-arrow" d="M204 47 C218 47 216 100 228 100" marker-end="url(#ah)"/>
 		<path class="d-arrow" d="M204 89 C218 89 216 104 228 104" marker-end="url(#ah)"/>
 		<path class="d-arrow" d="M204 131 C218 131 216 110 228 110" marker-end="url(#ah)"/>
 		<path class="d-arrow" d="M204 173 C218 173 216 114 228 114" marker-end="url(#ah)"/>
+		<path class="d-arrow" d="M204 213 C220 213 216 118 228 118" marker-end="url(#ah)"/>
 
 		<rect class="d-acc" x="230" y="36" width="140" height="270" rx="10"/>
 		<text class="d-t" x="248" y="64">api</text>
@@ -22,10 +24,10 @@
 		<text class="d-s" x="248" y="252">UI · PromQL</text>
 		<text class="d-s" x="248" y="268">Jaeger · /mcp</text>
 
-		<text class="d-l" x="20" y="238">You</text>
-		<rect class="d-box" x="20" y="248" width="184" height="48" rx="7"/>
-		<text class="d-s" x="34" y="268">Browser · Grafana</text><text class="d-s" x="34" y="284">Claude · Cursor</text>
-		<path class="d-arrow" d="M204 272 L228 272" marker-end="url(#ah)" marker-start="url(#ah)"/>
+		<text class="d-l" x="20" y="244">You</text>
+		<rect class="d-box" x="20" y="252" width="184" height="48" rx="7"/>
+		<text class="d-s" x="34" y="272">Browser · Grafana</text><text class="d-s" x="34" y="288">Claude · Cursor</text>
+		<path class="d-arrow" d="M204 276 L228 276" marker-end="url(#ah)" marker-start="url(#ah)"/>
 
 		<path class="d-arrow acc" d="M370 112 L418 112" marker-end="url(#aha)"/>
 		<rect class="d-box" x="420" y="66" width="150" height="92" rx="10"/>
