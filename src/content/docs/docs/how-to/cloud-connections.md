@@ -54,16 +54,20 @@ After the first step, every step shows only the chosen provider's options and te
 6. **Settings and test:**
    - regions (AWS; empty means every enabled region) or locations (Azure; empty means all);
    - resource types (none ticked means all);
-   - **Scan every** 5 minutes, 15 minutes (the default), 30 minutes or 1 hour;
+   - **Full discovery every** 30 minutes to 24 hours (4 hours by default) and **Health scan
+     every** 5 minutes to 1 hour (15 minutes by default, never less often than discovery). See
+     [Scan schedule](#scan-schedule);
    - **Test access** runs one dry scan on a live member of the probe group and shows the result,
-     without sending anything to the Site. Then **Save connection**.
+     without sending anything to the Site. So that it answers quickly, it samples the first
+     account and up to two regions. Then **Save connection**.
 
 **Test access** reports **Works** (with the number of resources found), **Needs permission** or
 **Failed**. After saving, the list shows each connection's status (**Scanning**, **Waiting for the
-first scan**, **Needs permission**, **Late** when no scan has reported for three intervals,
-**Failing** or **Disabled**), with its resource count and last scan. When a call is denied, the
-connection shows **Needs permission** with the exact missing action, and the rest is still
-scanned.
+first discovery**, **Needs permission**, **Late** when no scan has reported for three intervals,
+**Failing** or **Disabled**), with its schedule, resource count and last scans. When a call is
+denied, the connection shows **Needs permission** with the exact missing action, and the rest is
+still scanned. When AWS or Azure throttled calls, the status says how many and how long the probe
+waited.
 
 ## Access methods
 
@@ -99,12 +103,12 @@ to sign in to a Site.
 
 | Provider | Inventory |
 | --- | --- |
-| AWS | The `ViewOnlyAccess` managed policy, plus `elasticloadbalancing:DescribeTargetHealth`, `tag:GetResources` and `eks:DescribeCluster` |
+| AWS | The `ViewOnlyAccess` managed policy, plus `elasticloadbalancing:DescribeTargetHealth`, `tag:GetResources`, `eks:DescribeCluster` and `ec2:DescribeInstanceStatus` |
 | Azure | `Reader` on the subscription or management group |
 
 With the probe's own AWS identity, the wizard writes a policy with exactly the calls discovery
 makes instead (CloudFormation can't attach AWS managed policies to an existing role):
-`ec2:DescribeRegions`, `ec2:DescribeInstances`, `elasticloadbalancing:DescribeLoadBalancers`,
+`ec2:DescribeRegions`, `ec2:DescribeInstances`, `ec2:DescribeInstanceStatus`, `elasticloadbalancing:DescribeLoadBalancers`,
 `elasticloadbalancing:DescribeTargetGroups`, `elasticloadbalancing:DescribeTargetHealth`,
 `eks:ListClusters`, `eks:DescribeCluster`, `rds:DescribeDBInstances`,
 `autoscaling:DescribeAutoScalingGroups`, `lambda:ListFunctions`, `s3:ListAllMyBuckets` and
@@ -204,10 +208,39 @@ az deployment sub show --name obzly-readonly \
 - **AWS:** EC2 instances, Elastic Load Balancing (v2) load balancers with their target health,
   EKS clusters, RDS databases, Auto Scaling groups and Lambda functions in each selected region,
   and the account's S3 buckets. For an **Organization**, the probe lists the accounts with the management account's role,
-  then assumes the role of the same name in each account, up to **200 accounts**.
+  then assumes the role of the same name in each account, up to **200 accounts**, four accounts
+  (and four regions in each) at a time. An account without the role is listed in the scan's
+  errors, and the others are still scanned.
 - **Azure:** one Resource Graph query (paged) over the subscription or management group, for
   virtual machines, scale sets, AKS clusters, load balancers, application gateways, SQL databases,
   PostgreSQL flexible servers, storage accounts and function apps.
+
+## Scan schedule
+
+Each connection runs two kinds of scan, both set in the wizard:
+
+- **Full discovery**, every 4 hours by default (30 minutes to 24 hours), lists everything in scope.
+  New resources appear in Infrastructure after the next discovery.
+- **Health scan**, every 15 minutes by default (5 minutes to 1 hour), re-reads only what the last
+  discovery found, in the accounts, regions and types where it found something:
+  - AWS: instance state and status checks, load balancer state and target health, and EKS, RDS
+    and Auto Scaling state;
+  - Azure: the state of the known resources, plus Resource Health availability.
+
+  Buckets and functions keep what discovery found. A resource that has gone is no longer sent.
+
+A health scan runs straight after each discovery, and only health scans send results to the Site,
+so every resource carries its latest health. The probe keeps the latest inventory in its data
+directory, so a restarted probe waits for the next discovery instead of starting one.
+
+**Throttling.** AWS and Azure limit calls per account and region, so the probe paces its calls per
+endpoint. When a cloud says how long to wait, the probe waits that long (up to 5 minutes) and
+retries. The connection's status shows how many calls were throttled.
+
+**Time limits.** A discovery may run for 80 % of its interval and a health scan for 80 % of its
+own. A scan that runs out of time still sends what it found and is reported as partial; a partial
+discovery keeps the resources the previous one found where it didn't get to. If that keeps
+happening, scan less often or narrow the regions and resource types.
 
 ## How results merge
 
@@ -220,8 +253,10 @@ build merges them with what the agents report:
 - A **load balancer** shows how many of its registered targets are healthy.
 - Everything else is a new asset: load balancer, database, bucket, function or scaling group.
 
-Health comes from the cloud's own state: a stopped or deallocated resource is inactive (blue), an
-unexpected state is amber, a load balancer with no healthy targets is red (amber when only some
-are unhealthy), and a scaling group below its desired size is amber. Since scans run every 15
-minutes by default, a resource that only the cloud reports becomes **not reporting** after 50
-minutes instead of 10.
+Health comes from the cloud's own state and its health checks: a stopped or deallocated resource
+is inactive (blue); a resource the cloud reports as unhealthy (failed status checks, or Azure
+Resource Health unavailable) is red, and degraded is amber; an unexpected state is amber; a load
+balancer with no healthy targets is red (amber when only some are unhealthy); and a scaling group
+below its desired size is amber. A resource that only the cloud reports becomes **not reporting**
+after three of its connection's health scans plus 5 minutes: 50 minutes at the default 15-minute
+health scan.

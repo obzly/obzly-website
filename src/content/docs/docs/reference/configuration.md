@@ -193,8 +193,8 @@ variables:
 | `OBZLY_CONTROL_PLANE_URL` | **required** | The control plane, as the probe reaches it |
 | `OBZLY_PROBE_TOKEN` | **required** | The probe group's token, shown once when the group is added or its token replaced (**Synthetics → Probe groups**). Every instance of a group uses the same token. A replaced token keeps working for 24 hours |
 | `OBZLY_PROBE_INSTANCE` | the host name | This instance's name within its probe group (`[A-Za-z0-9._-]`, up to 128 characters). Each monitor and cloud connection runs on one live instance. The Helm chart sets it to the pod name |
-| `OBZLY_PROBE_DATA_DIR` | `/var/lib/obzly-probe` | Where the last config is cached (secrets included, file mode 0600), so checks keep running while the control plane is unreachable |
-| `OBZLY_PROBE_MAX_CONCURRENCY` | `16` | Checks run at once |
+| `OBZLY_PROBE_DATA_DIR` | `/var/lib/obzly-probe` | Where the last config is cached (secrets included, file mode 0600), so checks keep running while the control plane is unreachable, and each cloud connection's latest inventory, so a restart doesn't rediscover |
+| `OBZLY_PROBE_MAX_CONCURRENCY` | `256` | Checks run at once. Each mostly waits on the network, so a mass outage of slow timeouts still fits |
 | `OBZLY_PROBE_TASK_WAIT` | `25s` | Long-poll for the editor's **Test** runs (1 to 55 seconds). Keep it under the read timeout of any proxy in front of the control plane (CloudFront's default is 30 seconds) |
 | `OBZLY_PROBE_DENY_CIDRS` | empty | CIDRs checks may never reach. Loopback and link-local (cloud metadata) are always refused. [Cloud connection](/docs/how-to/cloud-connections/) scans don't go through this policy: they call the AWS and Azure APIs, and Azure's instance metadata for a managed identity |
 | `OBZLY_PROBE_HEALTH_ADDR` | off | For example `:8080` serves `/healthz`: `200` once the probe has a config and the control plane answered recently |

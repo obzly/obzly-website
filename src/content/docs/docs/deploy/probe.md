@@ -123,7 +123,7 @@ The chart deploys one probe group's instances:
 | `token` / `existingSecret` | required (one of them) | The group token, or a Secret of your own with key `OBZLY_PROBE_TOKEN` |
 | `replicas` | `3` | Instances of the group. Set `1` to keep one |
 | `podDisruptionBudget.enabled` | `true` | Keep all but one replica during drains |
-| `maxConcurrency` | `16` | Checks run at once per instance |
+| `maxConcurrency` | `256` | Checks run at once per instance. Each mostly waits on the network, so a mass outage of slow timeouts still fits; set it lower on a small host |
 | `taskWait` | `25s` | Long-poll for editor **Test** runs |
 | `denyCidrs` | empty | Comma-separated CIDRs monitors must never reach |
 | `netRaw` | `false` | Add `CAP_NET_RAW` for ICMP when the node doesn't allow ping sockets |
@@ -131,7 +131,7 @@ The chart deploys one probe group's instances:
 | `serviceAccount.create` / `.name` / `.annotations` | `true` / release name / `{}` | The service account the probe runs as |
 | `podLabels`, `podAnnotations` | `{}` | Extra pod labels and annotations |
 | `image.tag` | the chart's `appVersion` | Image tag to deploy |
-| `resources` | requests 50m CPU, 64Mi; limit 256Mi | Container resources |
+| `resources` | requests 100m CPU, 128Mi; limit 512Mi | Container resources |
 
 ### The probe group's cloud identity
 
@@ -166,8 +166,8 @@ The probe reads only these (see also
 | `OBZLY_CONTROL_PLANE_URL` | required | The control plane, as the probe reaches it |
 | `OBZLY_PROBE_TOKEN` | required | The probe group's token. Every instance of a group uses the same token |
 | `OBZLY_PROBE_INSTANCE` | the host name | This instance's name in its group (letters, digits, `.`, `_`, `-`; up to 128 characters) |
-| `OBZLY_PROBE_DATA_DIR` | `/var/lib/obzly-probe` | Where the last configuration is cached (secrets included, mode `0600`), so monitors keep running while the control plane is unreachable |
-| `OBZLY_PROBE_MAX_CONCURRENCY` | `16` | Checks run at once |
+| `OBZLY_PROBE_DATA_DIR` | `/var/lib/obzly-probe` | Where the last configuration is cached (secrets included, mode `0600`), so monitors keep running while the control plane is unreachable, and each cloud connection's latest inventory, so a restart doesn't rediscover |
+| `OBZLY_PROBE_MAX_CONCURRENCY` | `256` | Checks run at once |
 | `OBZLY_PROBE_TASK_WAIT` | `25s` | Long-poll for editor **Test** runs, 1 to 55 seconds |
 | `OBZLY_PROBE_DENY_CIDRS` | empty | Comma-separated CIDRs monitors may never reach |
 | `OBZLY_PROBE_HEALTH_ADDR` | off | For example `:8080` serves `/healthz`: `200` once the probe has a configuration and the control plane answered recently |

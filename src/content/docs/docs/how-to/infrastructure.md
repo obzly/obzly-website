@@ -27,7 +27,9 @@ Each asset keeps its resource attributes (OS, instance type, region, zone, Kuber
 image, ...) and the signals it was seen in (metrics, logs, traces).
 
 With [cloud connections](/docs/how-to/cloud-connections/), the inventory also lists cloud resources
-that run no agent: load balancers, databases, buckets, functions and scaling groups.
+that run no agent: load balancers, databases, buckets, functions and scaling groups. Their health
+comes from the cloud's own state and health checks, refreshed every 15 minutes by default; see
+[Scan schedule](/docs/how-to/cloud-connections/#scan-schedule).
 
 ## How it's built
 
@@ -49,8 +51,8 @@ Each asset has a colour and the reasons for it. The default thresholds are:
 | Colour | Health | Reasons |
 | --- | --- | --- |
 | Green | Healthy | Every rule passes |
-| Amber | Warning | Node or host CPU at 90 % or more; memory at 90 % or more (a pod's or container's against its limit, when it has one); filesystem at 85 % or more; 3 or more container restarts in the last hour; error logs above 5 % of a pod's lines in the last 15 minutes; a pod Pending for over 10 minutes or in phase Unknown; fewer replicas available than desired; some of a cluster's nodes critical |
-| Red | Critical | A node, host or cluster not reporting; a node NotReady; memory at 97 % or more or filesystem at 95 % or more on a node or host; 10 or more restarts in an hour (crash looping); pod phase Failed; no replicas available; no healthy node in a cluster |
+| Amber | Warning | Node or host CPU at 90 % or more; memory at 90 % or more (a pod's or container's against its limit, when it has one); filesystem at 85 % or more; 3 or more container restarts in the last hour; error logs above 5 % of a pod's lines in the last 15 minutes; a pod Pending for over 10 minutes or in phase Unknown; fewer replicas available than desired; some of a cluster's nodes critical; a cloud resource its cloud reports as degraded |
+| Red | Critical | A node, host or cluster not reporting; a node NotReady; memory at 97 % or more or filesystem at 95 % or more on a node or host; 10 or more restarts in an hour (crash looping); pod phase Failed; no replicas available; no healthy node in a cluster; a cloud resource its cloud reports as unhealthy (failed status checks, or unavailable in Azure Resource Health) |
 | Blue | Inactive | Terminated, or stopped in the cloud |
 | Grey | Unknown | No data, for example a pod that stopped reporting, or a service seen only in traces |
 

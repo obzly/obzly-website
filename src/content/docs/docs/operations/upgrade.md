@@ -107,7 +107,12 @@ Warnings don't block an upgrade:
     [Rules managed by Synthetics](/docs/how-to/alerts/#rules-managed-by-synthetics).
   - **[Cloud connections](/docs/how-to/cloud-connections/)** (control plane, optional): connections
     that federate through the control plane need `PUBLIC_URL` on HTTPS and reachable from AWS or
-    Azure, which read its `/.well-known/openid-configuration` and `/.well-known/jwks.json`.
+    Azure, which read its `/.well-known/openid-configuration` and `/.well-known/jwks.json`. Each
+    connection runs a full discovery every 4 hours and a health scan every 15 minutes, both
+    adjustable in the wizard, and backs off when AWS or Azure throttles.
+  - **Probe concurrency** now defaults to 256 checks at once (was 16), so a mass outage of slow
+    timeouts no longer drops runs. The `obzly-probe` chart's memory limit is now 512Mi (request
+    128Mi); set `maxConcurrency` lower on a small host.
   - **Obzly settings is now in tabs**: Overview, General, Sites, Cloud connections, Notifications &
     alerting, Identity & access, Updates and Audit logs (Sites and Cloud connections on a control
     plane only). The Sites registry moved from the sidebar to **Obzly settings → Sites**, and
