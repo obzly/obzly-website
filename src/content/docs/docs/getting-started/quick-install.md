@@ -3,7 +3,7 @@ title: Quick install
 description: Install Obzly on a single Debian or Ubuntu host with one command.
 ---
 
-<!-- Source: obzly-dev/README.md, obzly-dev/install-obzly.sh -->
+<!-- Source: obzly-dev/README.md, obzly-dev/install-obzly.sh, obzly-dev/backend/cmd/main.go, obzly-dev/deploy/helm/obzly/templates/NOTES.txt -->
 
 The install script is the fastest way to run Obzly on one Linux host. It works on **Ubuntu,
 Debian and Raspberry Pi OS** and must run as root. On other systems, use
@@ -60,7 +60,7 @@ curl -sSL https://raw.githubusercontent.com/obzly/obzly/main/install-obzly.sh \
 `OBZLY_ROLE` turns the same install into part of a [multi-site setup](/docs/deploy/multi-site/):
 
 - `OBZLY_ROLE=control-plane` requires `PUBLIC_URL`: the control plane's public, browser-facing
-  origin (scheme and host, no path), for example `https://control-plane.example.com`.
+  origin (scheme and host, no path), for example `https://cp.harborline.example`.
 - `OBZLY_ROLE=site` requires `SITE_ID` (the slug you register the Site under in the control plane)
   and `CONTROL_PLANE_ISSUER` (the control plane's exact `PUBLIC_URL`). `SITE_NAME`,
   `CONTROL_PLANE_JWKS_URL` and `CONTROL_PLANE_EGRESS_CIDRS` are optional; see the
@@ -68,7 +68,7 @@ curl -sSL https://raw.githubusercontent.com/obzly/obzly/main/install-obzly.sh \
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/obzly/obzly/main/install-obzly.sh \
-| sudo OBZLY_ROLE=site SITE_ID=eu-west CONTROL_PLANE_ISSUER=https://control-plane.example.com bash
+| sudo OBZLY_ROLE=site SITE_ID=site-north CONTROL_PLANE_ISSUER=https://cp.harborline.example bash
 ```
 
 ## Sign in
@@ -95,6 +95,18 @@ proxy (nginx, Caddy, Nginx Proxy Manager and so on) in front of it, stop exposin
 directly, and set `TRUSTED_PROXIES` so client IPs are real.
 :::
 
+### Lost bootstrap token
+
+The token is logged only once, when the admin account is created, so it is gone if the container
+was replaced or its log rotated. Print a new one (the previous token stops working):
+
+```bash
+docker exec -it obzly ./main --reset-bootstrap-token
+```
+
+This works only while the bootstrap admin has no password yet. Once it has one, use
+[Reset the admin password](#reset-the-admin-password) instead.
+
 ## Manage the install
 
 ```bash
@@ -103,7 +115,7 @@ cd /opt/obzly && docker compose logs -f                     # logs
 cd /opt/obzly && docker compose pull && docker compose up -d   # update to the latest image
 ```
 
-Before updating, check **Settings → Upgrade status** and read [Upgrade](/docs/operations/upgrade/).
+Before updating, check **Obzly settings → Updates** and read [Upgrade](/docs/operations/upgrade/).
 
 ## Reset the admin password
 

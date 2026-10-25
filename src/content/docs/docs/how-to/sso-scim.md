@@ -2,13 +2,13 @@
 title: SSO & SCIM
 description: Set up OIDC single sign-on with group-to-role mapping, TOTP MFA, and SCIM 2.0 provisioning from Okta or Microsoft Entra ID.
 ---
-<!-- Source: obzly-dev/README.md, obzly-dev/ARCHITECTURE.md, obzly-dev/docs/configuration.md, obzly-dev/frontend/src/features/settings/ui/SSOSettingsComponent.tsx, obzly-dev/frontend/src/features/settings/ui/SSOGroupMappingsModal.tsx, obzly-dev/frontend/src/features/organizations/ui/SCIMComponent.tsx, obzly-dev/backend/internal/features/organizations/scim_http.go, obzly-dev/backend/internal/features/organizations/scim_tokens.go -->
+<!-- Source: obzly-dev/README.md, obzly-dev/ARCHITECTURE.md, obzly-dev/docs/configuration.md, obzly-dev/frontend/src/features/settings/ui/SSOSettingsComponent.tsx, obzly-dev/frontend/src/features/settings/ui/IdentityAccessComponent.tsx, obzly-dev/frontend/src/features/settings/ui/GeneralSettingsComponent.tsx, obzly-dev/backend/internal/features/users/models/user.go, obzly-dev/frontend/src/features/settings/ui/SSOGroupMappingsModal.tsx, obzly-dev/frontend/src/features/organizations/ui/SCIMComponent.tsx, obzly-dev/backend/internal/features/organizations/scim_http.go, obzly-dev/backend/internal/features/organizations/scim_tokens.go -->
 
 Obzly has three identity features that work together:
 
 - **Federated SSO** through any OpenID Connect provider (AWS Cognito, Google Workspace,
   Microsoft Entra ID or any standard OIDC provider), with IdP groups mapped to project roles.
-- **TOTP MFA**, required for admins and optional for members.
+- **TOTP MFA**, required for admins and, by default, optional for members.
 - **SCIM 2.0** provisioning of users and groups from Okta or Microsoft Entra ID.
 
 SSO connectors, group mappings, MFA and SCIM tokens are all configured in the UI. The only
@@ -17,21 +17,21 @@ sign-in environment variables are for the built-in GitHub and Google buttons (se
 
 ## Set up an SSO connector
 
-You need to be an admin. In **Obzly settings**, go to the **Single Sign-On** section and choose
-**Add Connector**.
+You need to be an admin. In **Obzly settings → Identity & access**, go to the **Single Sign-On**
+section and choose **Add Connector**.
 
 1. Register an application with your identity provider. Use this redirect URI, which the form
    also shows:
 
    ```text
-   https://obzly.example.com/auth/callback
+   https://obzly.harborline.example/auth/callback
    ```
 
 2. Fill in the connector:
 
    | Field | Notes |
    | --- | --- |
-   | Name | For your reference, for example "Company Cognito" |
+   | Name | For your reference, for example "Harborline Cognito" |
    | Provider Type | AWS Cognito, Google Workspace, Microsoft Entra ID or Generic OIDC. The type only affects labels and defaults, since all of them use standard OIDC discovery |
    | Issuer URL | Must publish `/.well-known/openid-configuration`. For Cognito: `https://cognito-idp.<region>.amazonaws.com/<pool-id>` |
    | Client ID, Client Secret | From your IdP application. The secret is stored encrypted. Leave it blank when editing to keep the existing one |
@@ -66,7 +66,7 @@ Turn the switch off only if you fully control who can register at the provider.
 ### Who gets an account
 
 New users need an invitation unless **Allow external registrations** is on (in **Obzly
-settings**). The exception is SSO users in a group that is mapped to access, who get an account
+settings → General**). The exception is SSO users in a group that is mapped to access, who get an account
 on their first sign-in.
 
 ## Map IdP groups to roles
@@ -117,11 +117,17 @@ removes the grants it created.
 
 ## Multi-factor authentication
 
-Obzly supports TOTP authenticator apps such as Google Authenticator, Authy and 1Password.
+Obzly supports TOTP authenticator apps such as Google Authenticator, Authy and 1Password. The
+policy is in **Obzly settings → Identity & access**, which also shows how many admins and users
+have MFA set up.
 
 - **Admins must use MFA.** An admin without MFA is asked to set it up at their next sign-in, and
-  an already signed-in admin is blocked from everything else until they do. It can't be skipped.
-- **Members can choose.** Members turn MFA on or off for themselves on their profile.
+  an already signed-in admin is blocked from everything else until they do. It can't be skipped
+  or turned off.
+- **Members can choose**, unless **Require MFA for everyone** is on. Members turn MFA on or off
+  for themselves on their profile.
+- **Require MFA for everyone** (off by default) makes MFA mandatory for every account. Users
+  without it set it up at their next sign-in. A change reaches every replica within 15 seconds.
 - **Each code works once.** A code that has been accepted can't be replayed, and neither can an
   older one.
 - **Sensitive actions ask again.** Deleting API keys and creating MCP tokens ask for a current
@@ -178,7 +184,7 @@ plane.
 2. Copy the **Base URL**:
 
    ```text
-   https://obzly.example.com/scim/v2
+   https://obzly.harborline.example/scim/v2
    ```
 
 3. Enter a token name (for example `okta`) and choose **Create token**. The token starts with

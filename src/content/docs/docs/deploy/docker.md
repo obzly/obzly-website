@@ -3,7 +3,7 @@ title: Docker
 description: Run Obzly with Docker Compose as one container, with every role split out for HA, or as a multi-site setup.
 ---
 
-<!-- Source: obzly-dev/deploy/docker/README.md, obzly-dev/deploy/README.md, obzly-dev/deploy/docker/docker-compose.yml.example, obzly-dev/deploy/docker/docker-compose.ha.yml.example, obzly-dev/deploy/docker/.env.example -->
+<!-- Source: obzly-dev/deploy/docker/README.md, obzly-dev/deploy/README.md, obzly-dev/deploy/docker/docker-compose.yml.example, obzly-dev/deploy/docker/docker-compose.ha.yml.example, obzly-dev/deploy/docker/.env.example, obzly-dev/deploy/docker/docker-compose.multisite.yml.example, obzly-dev/deploy/docker/docker-compose.control-plane.yml.example -->
 
 The [`deploy/docker`](https://github.com/obzly/obzly/tree/main/deploy/docker) directory has four
 Compose files. Copy the one you want to `docker-compose.yml` in the **repository root** (the
@@ -32,7 +32,10 @@ docker compose up -d --build
 ```
 
 Obzly listens on `4005` (UI, API, OTLP/HTTP) and `4317` (OTLP/gRPC). Add any setting from the
-[configuration reference](/docs/reference/configuration/) to the `obzly` service's `environment:`.
+[configuration reference](/docs/reference/configuration/) to the `obzly` service's `environment:`,
+for example `PUBLIC_URL` so MCP clients get the right OAuth origin, or `TRUSTED_PROXIES` behind a
+reverse proxy. Email (SMTP) and notification channels are set up in Obzly settings (see
+[Alerts & notifications](/docs/how-to/alerts/)).
 
 ## Object storage (optional)
 
@@ -61,7 +64,7 @@ The MinIO console is published on `127.0.0.1:9001` only.
 
 ### AWS S3, GCS or Azure Blob
 
-Set `OBJECT_STORAGE_URL` to `s3://my-bucket?region=eu-west-1` (or `gs://bucket`,
+Set `OBJECT_STORAGE_URL` to `s3://harborline-obzly?region=eu-west-1` (or `gs://bucket`,
 `azblob://container`) and provide credentials. Outside Kubernetes there is no IRSA, so for S3 use
 static `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` credentials. The bucket must already exist.
 
@@ -115,7 +118,11 @@ Compose:
   a Site, each with its own Postgres and Valkey.
 
 `docker-compose.control-plane.yml.example` is the production shape for a standalone control plane.
-See [Control plane & Sites](/docs/deploy/multi-site/) for the full walkthrough.
+Once signed in to the control plane, register each Site in **Obzly settings → Sites**. See
+[Control plane & Sites](/docs/deploy/multi-site/) for the full walkthrough.
+
+The [Synthetics probe](/docs/deploy/probe/) is a separate image, `ghcr.io/obzly/obzly-probe`, that
+you run wherever you want checks to come from.
 
 ## Upgrade
 

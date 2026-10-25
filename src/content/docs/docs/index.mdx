@@ -13,7 +13,10 @@ Obzly is an Apache 2.0 licensed, self-hosted observability platform for logs, tr
 dashboards. It speaks OTLP over gRPC and HTTP, so anything that can export OpenTelemetry (the
 standard SDK for your language, or an OTel Collector in front of a database, web server or queue
 you don't control) can send it data with no proprietary client library. Data is stored as
-ZSTD-compressed Parquet, on local disk or on object storage such as S3.
+ZSTD-compressed Parquet, on local disk or on object storage such as S3. It also includes
+[synthetic monitoring](/docs/how-to/synthetics/), which checks your endpoints from your own
+locations, and an [infrastructure inventory](/docs/how-to/infrastructure/) built from what your
+agents already send.
 
 Obzly starts as a single app container (plus Postgres and Valkey) with no cluster to operate. The
 same image runs each role on its own (`api`, `worker`, `broker`, `querier`, `control-plane`) when
@@ -95,6 +98,11 @@ For larger volumes, run the roles separately and size each one for its load: see
 		description="One sign-in and UI in front of many independent Sites."
 		href="/docs/deploy/multi-site/"
 	/>
+	<LinkCard
+		title="Synthetics probe"
+		description="Run obzly-probe as a binary, container or Helm chart, in probe groups."
+		href="/docs/deploy/probe/"
+	/>
 </CardGrid>
 
 ## How-tos
@@ -117,8 +125,23 @@ For larger volumes, run the roles separately and size each one for its load: see
 	/>
 	<LinkCard
 		title="Alerts"
-		description="Rules over metrics, logs and traces, and where they notify."
+		description="Rules over metrics, logs and traces, and shared notification channels."
 		href="/docs/how-to/alerts/"
+	/>
+	<LinkCard
+		title="Synthetic monitoring"
+		description="Check APIs and endpoints from your own locations."
+		href="/docs/how-to/synthetics/"
+	/>
+	<LinkCard
+		title="Infrastructure"
+		description="Every cluster, node, host and workload, with health and changes."
+		href="/docs/how-to/infrastructure/"
+	/>
+	<LinkCard
+		title="Cloud connections"
+		description="Read-only discovery of AWS accounts and Azure subscriptions."
+		href="/docs/how-to/cloud-connections/"
 	/>
 	<LinkCard
 		title="SSO and SCIM"

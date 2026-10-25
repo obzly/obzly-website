@@ -3,11 +3,12 @@ import Marketing from '../layouts/Marketing.astro';
 import SiteDiagram from '../components/diagrams/SiteDiagram.astro';
 import QueryPath from '../components/diagrams/QueryPath.astro';
 import MultiSite from '../components/diagrams/MultiSite.astro';
+import SyntheticsCloud from '../components/diagrams/SyntheticsCloud.astro';
 ---
 
 <Marketing
 	title="Architecture · Obzly"
-	description="How Obzly runs: one image with api, worker, broker, querier and control-plane roles, JetStream ingest, Parquet on object storage and multi-site."
+	description="How Obzly runs: one image with api, worker, broker, querier and control-plane roles, JetStream ingest, Parquet on object storage, multi-site, and probes for synthetics and cloud inventory."
 	current="architecture"
 >
 	<div class="wrap">
@@ -16,7 +17,7 @@ import MultiSite from '../components/diagrams/MultiSite.astro';
 			<h1>One image, five roles</h1>
 			<p class="lede">The single container is the smallest shape of one design. Set <code>SERVICE_MODE</code> and the same image runs each role on its own, so each part scales and fails independently.</p>
 			<nav class="jump" aria-label="Architecture sections">
-				<a href="#site">A Site</a><a href="#query-path">Query path</a><a href="#multi-site">Multi-site</a><a href="#scaling">Scaling &amp; HA</a>
+				<a href="#site">A Site</a><a href="#query-path">Query path</a><a href="#multi-site">Multi-site</a><a href="#synthetics">Synthetics &amp; cloud</a><a href="#scaling">Scaling &amp; HA</a>
 			</nav>
 		</div>
 
@@ -31,7 +32,8 @@ import MultiSite from '../components/diagrams/MultiSite.astro';
 						<tr><td>worker</td><td>Writes ingest to Parquet, compaction, retention, quotas, uploads</td><td>Ingest and compaction shards are shared across workers</td></tr>
 						<tr><td>broker</td><td>NATS JetStream ingest buffer</td><td>Three nodes, one per zone</td></tr>
 						<tr><td>querier</td><td>Runs query fragments, with its own segment cache</td><td>Stateless, add replicas for query throughput</td></tr>
-						<tr><td>control-plane</td><td>One login and UI in front of many Sites; organizations, SCIM</td><td>One per company, in front of every Site</td></tr>
+						<tr><td>control-plane</td><td>One login and UI in front of many Sites; organizations, SCIM, shared channels, Synthetics monitors, cloud connections</td><td>One per company, in front of every Site</td></tr>
+						<tr><td>obzly-probe</td><td>Separate image: runs Synthetics checks and cloud scans from your locations</td><td>Probe groups of any size; failover within a minute</td></tr>
 					</tbody>
 				</table>
 			</div>
@@ -47,6 +49,11 @@ import MultiSite from '../components/diagrams/MultiSite.astro';
 			<MultiSite />
 		</div>
 
+		<div class="arch-block" id="synthetics">
+			<h2>Synthetics &amp; cloud</h2>
+			<SyntheticsCloud />
+		</div>
+
 		<div class="arch-block" id="scaling">
 			<h2>Scaling &amp; HA</h2>
 			<div class="two">
@@ -56,6 +63,8 @@ import MultiSite from '../components/diagrams/MultiSite.astro';
 				<div><h3>Storage layout</h3><p>Parquet is compacted in levels into hour-sorted files of one day each. A partitioned Postgres catalog keeps per-file statistics.</p></div>
 				<div><h3>Cache warmup</h3><p>Queriers keep their cache on a volume, pre-fetch each segment they own as it's uploaded, and warm up on start.</p></div>
 				<div><h3>Self-monitoring</h3><p>Every role serves Prometheus metrics on an internal port and traces its own requests into a system project.</p></div>
+				<div><h3>Inventory per Site</h3><p>A worker on each Site rebuilds the inventory every 5 minutes from data already stored. The control plane keeps none of it and merges the Sites in your browser.</p></div>
+				<div><h3>Alerts survive the control plane</h3><p>Sites fetch the shared channels and email relay every 5 minutes, sealed to their own key, and keep the last copy if the control plane is unreachable.</p></div>
 			</div>
 		</div>
 	</div>

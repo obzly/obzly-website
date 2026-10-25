@@ -13,7 +13,7 @@ dashboards built on one, work against Obzly by changing the datasource URL and a
 Each project has its own Prometheus API root:
 
 ```text
-https://obzly.example.com/api/v1/metrics/YOUR_PROJECT_ID
+https://obzly.harborline.example/api/v1/metrics/YOUR_PROJECT_ID
 ```
 
 Under it, Obzly serves the standard Prometheus HTTP API paths:
@@ -35,7 +35,7 @@ Try it with curl:
 
 ```bash
 curl -s -H "X-API-Key: YOUR_API_KEY" \
-  "https://obzly.example.com/api/v1/metrics/YOUR_PROJECT_ID/api/v1/query" \
+  "https://obzly.harborline.example/api/v1/metrics/YOUR_PROJECT_ID/api/v1/query" \
   --data-urlencode 'query=sum by (k8s_pod_name) (rate(system_cpu_time[5m]))'
 ```
 
@@ -48,7 +48,7 @@ Responses follow the documented Prometheus JSON shape (`status`, `data.resultTyp
 2. Set the Prometheus server URL to the project root, **without** a trailing `/api/v1`:
 
    ```text
-   https://obzly.example.com/api/v1/metrics/YOUR_PROJECT_ID
+   https://obzly.harborline.example/api/v1/metrics/YOUR_PROJECT_ID
    ```
 
 3. Under custom HTTP headers, add header `X-API-Key` with your project API key as the value.
@@ -67,7 +67,7 @@ Obzly also serves a Jaeger-compatible query API per project, which a Grafana **J
 datasource can use. Set its URL to:
 
 ```text
-https://obzly.example.com/api/v1/jaeger/YOUR_PROJECT_ID
+https://obzly.harborline.example/api/v1/jaeger/YOUR_PROJECT_ID
 ```
 
 It takes the same `X-API-Key` header or `?api_key=` parameter. Search filters by service,
@@ -78,7 +78,7 @@ operation, duration and errors. Jaeger's `tags` filter is ignored.
 Obzly accepts Prometheus remote-write at the same path Prometheus's own receiver uses:
 
 ```text
-POST https://obzly.example.com/api/v1/write
+POST https://obzly.harborline.example/api/v1/write
 ```
 
 The API key identifies the project, so the URL carries no project ID. Send the key as a Bearer
@@ -87,7 +87,7 @@ token, which Prometheus's `authorization` block does by default, or in an `X-API
 ```yaml
 # prometheus.yml
 remote_write:
-  - url: https://obzly.example.com/api/v1/write
+  - url: https://obzly.harborline.example/api/v1/write
     authorization:
       credentials: YOUR_API_KEY
 ```

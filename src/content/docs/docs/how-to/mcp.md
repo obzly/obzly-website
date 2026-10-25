@@ -24,7 +24,7 @@ Tools that can send a header authenticate with a personal access token.
 **Claude Code:**
 
 ```bash
-claude mcp add --transport http obzly https://obzly.example.com/mcp \
+claude mcp add --transport http obzly https://obzly.harborline.example/mcp \
   --header "Authorization: Bearer obz_pat_..."
 ```
 
@@ -34,7 +34,7 @@ claude mcp add --transport http obzly https://obzly.example.com/mcp \
 {
   "mcpServers": {
     "obzly": {
-      "url": "https://obzly.example.com/mcp",
+      "url": "https://obzly.harborline.example/mcp",
       "headers": {
         "Authorization": "Bearer obz_pat_..."
       }
@@ -50,7 +50,7 @@ profile page.
 
 claude.ai and Claude Desktop sign in through the browser instead of using a token:
 
-1. Add a custom connector with the URL `https://obzly.example.com/mcp`.
+1. Add a custom connector with the URL `https://obzly.harborline.example/mcp`.
 2. Sign in to Obzly when asked, and allow access on the consent page.
 
 Connected apps are listed under **Connected apps** on the same profile page, where you can
@@ -58,7 +58,7 @@ disconnect them.
 
 :::caution[Set PUBLIC_URL]
 Set [`PUBLIC_URL`](/docs/reference/configuration/#core) to the address users reach Obzly at, for
-example `https://obzly.example.com`. OAuth metadata and tokens for MCP clients use this origin.
+example `https://obzly.harborline.example`. OAuth metadata and tokens for MCP clients use this origin.
 Without it, Obzly uses the scheme and host of each request.
 :::
 
@@ -87,7 +87,7 @@ Without it, Obzly uses the scheme and host of each request.
 | `get_correlation_session` | Everything linked to one correlated session |
 
 `search_logs` takes the same syntax as the search bar, for example
-`level:error service_name:api "timeout"`. Matching is case-sensitive except for `level`. See
+`level:error service_name:payments-api "timeout"`. Matching is case-sensitive except for `level`. See
 [Search-bar syntax](/docs/reference/log-query-api/#search-bar-syntax).
 
 To find what led up to an error, an assistant can pass a log's `id` and timestamp to
@@ -137,7 +137,7 @@ export CLAUDE_CODE_ENABLE_TELEMETRY="1"
 export OTEL_METRICS_EXPORTER="otlp"
 export OTEL_LOGS_EXPORTER="otlp"
 export OTEL_EXPORTER_OTLP_PROTOCOL="http/protobuf"
-export OTEL_EXPORTER_OTLP_ENDPOINT="https://obzly.example.com"
+export OTEL_EXPORTER_OTLP_ENDPOINT="https://obzly.harborline.example"
 export OTEL_EXPORTER_OTLP_HEADERS="X-API-Key=YOUR_API_KEY"
 export OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE="cumulative"
 # Added when you set a team:

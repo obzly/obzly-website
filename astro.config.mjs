@@ -37,12 +37,16 @@ export default defineConfig({
 						'docs/deploy/helm',
 						'docs/deploy/kubernetes-eks',
 						'docs/deploy/multi-site',
+						'docs/deploy/probe',
 					],
 				},
 				{
 					label: 'How-tos',
 					items: [
 						'docs/how-to/kubernetes-otel-collector',
+						'docs/how-to/synthetics',
+						'docs/how-to/infrastructure',
+						'docs/how-to/cloud-connections',
 						'docs/how-to/grafana-promql',
 						'docs/how-to/mcp',
 						'docs/how-to/alerts',

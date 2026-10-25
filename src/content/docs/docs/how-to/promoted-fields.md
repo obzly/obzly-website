@@ -92,7 +92,7 @@ The settings page uses these routes, under `/api/v1` with a user session token (
 Promote a field:
 
 ```bash
-curl -X POST "https://obzly.example.com/api/v1/projects/YOUR_PROJECT_ID/promoted-fields" \
+curl -X POST "https://obzly.harborline.example/api/v1/projects/YOUR_PROJECT_ID/promoted-fields" \
   -H "Authorization: Bearer YOUR_SESSION_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"field": "duration_ms", "type": "number"}'

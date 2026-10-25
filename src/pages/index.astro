@@ -6,7 +6,7 @@ import HowItWorks from '../components/diagrams/HowItWorks.astro';
 
 <Marketing
 	title="Obzly: self-hosted observability"
-	description="Logs, traces and metrics you run yourself. OTLP in, Parquet on S3, from one container to an enterprise cluster. Apache 2.0."
+	description="Logs, traces and metrics you run yourself, plus synthetic monitoring and an infrastructure inventory. OTLP in, Parquet on S3, from one container to an enterprise cluster. Apache 2.0."
 >
 	<div class="hero">
 		<div class="wrap">
@@ -78,6 +78,63 @@ import HowItWorks from '../components/diagrams/HowItWorks.astro';
 	<section style="padding-top:0">
 		<div class="wrap">
 			<div class="section-head">
+				<div class="eyebrow">New in v0.55 and v0.56</div>
+				<h2>Beyond the three signals</h2>
+				<p class="lede">Check your endpoints from where your users are, and see every host, pod and cloud resource with its health, from the data you already send.</p>
+			</div>
+			<div class="beyond">
+				<article class="pillar">
+					<h3>Synthetic monitoring</h3>
+					<div class="mini" aria-label="Example monitors list">
+						<div class="folder">Payments/EU</div>
+						<div class="row"><span class="dot up"></span><span class="nm">api-gateway</span><span class="v">99.98% · 182 ms</span></div>
+						<div class="row"><span class="dot imp"></span><span class="nm">quotes-api</span><span class="v">impacted</span></div>
+						<div class="folder">Storefront</div>
+						<div class="row"><span class="dot warn"></span><span class="nm">shop.harborline.example</span><span class="v">cert 12 d</span></div>
+					</div>
+					<ul>
+						<li>HTTP with assertions, TLS, TCP, DNS and ICMP</li>
+						<li>Dependencies: one outage, one page</li>
+						<li>Probe groups that fail over within a minute</li>
+					</ul>
+					<a class="more" href="/features/#synthetics">Synthetics in detail →</a>
+				</article>
+				<article class="pillar">
+					<h3>Infrastructure inventory</h3>
+					<div class="mini" aria-label="Example asset tree">
+						<div class="row"><span class="dot warn"></span><span class="nm">harbor-prod-1</span><span class="v">cluster</span></div>
+						<div class="row ind1"><span class="dot up"></span><span class="nm">shop</span><span class="v">namespace</span></div>
+						<div class="row ind2"><span class="dot warn"></span><span class="nm">cart</span><span class="v">2/3 ready</span></div>
+						<div class="row ind3"><span class="dot down"></span><span class="nm">cart-5d8f-q2x7r</span><span class="v">CrashLoop</span></div>
+					</div>
+					<ul>
+						<li>Clusters to containers, hosts and services</li>
+						<li>Health with the reason, and a change feed</li>
+						<li>Nothing to install: built from your data</li>
+					</ul>
+					<a class="more" href="/features/#infrastructure">Infrastructure in detail →</a>
+				</article>
+				<article class="pillar">
+					<h3>Cloud connections</h3>
+					<div class="mini" aria-label="Example cloud connections">
+						<div class="row"><span class="dot up"></span><span class="nm">AWS · 111122223333</span><span class="v">4 regions</span></div>
+						<div class="row"><span class="dot up"></span><span class="nm">Azure · harborline-prod</span><span class="v">1 subscription</span></div>
+						<div class="row"><span class="dot unk"></span><span class="nm">Load balancers · databases · buckets</span><span class="v">212</span></div>
+					</div>
+					<ul>
+						<li>Read-only access to AWS and Azure</li>
+						<li>A wizard writes the CloudFormation or Bicep</li>
+						<li>Obzly stores identifiers, never cloud keys</li>
+					</ul>
+					<a class="more" href="/features/#infrastructure">Cloud connections in detail →</a>
+				</article>
+			</div>
+		</div>
+	</section>
+
+	<section style="padding-top:0">
+		<div class="wrap">
+			<div class="section-head">
 				<div class="eyebrow">How it works</div>
 				<h2>OTLP in, Parquet on S3</h2>
 				<p class="lede">A batch is acknowledged only once the JetStream buffer has stored it. Workers write ZSTD Parquet to object storage, and queriers read it back with a warm cache.</p>
@@ -93,18 +150,22 @@ import HowItWorks from '../components/diagrams/HowItWorks.astro';
 				<h2>Everything a platform team asks for in the first month</h2>
 			</div>
 			<div class="grid">
-				<div class="cell"><span class="tag">logs</span><h3>Patterns and anomalies</h3><p>New, spiking and dropping patterns compared with an earlier period, with alerts on new error patterns.</p></div>
-				<div class="cell"><span class="tag">logs</span><h3>Log context</h3><p>See the logs around any result from the same source, to find what led up to an error.</p></div>
-				<div class="cell"><span class="tag">logs → traces</span><h3>Log to trace</h3><p>Jump from a log line to its trace. Kubernetes rollout markers show on the histogram.</p></div>
-				<div class="cell"><span class="tag">dashboards</span><h3>Grafana import</h3><p>Build dashboards, or import Grafana and OpenObserve dashboard JSON.</p></div>
-				<div class="cell"><span class="tag">incidents</span><h3>Incidents</h3><p>Error logs, failed spans and their shared traces grouped into incident sessions.</p></div>
-				<div class="cell"><span class="tag">alerting</span><h3>Alerts in ~15 s</h3><p>Rules over PromQL, log searches or trace latency, sent to webhooks, Slack, PagerDuty or email.</p></div>
-				<div class="cell"><span class="tag">ai</span><h3>AI observability</h3><p>Claude Code usage per project: cost, tokens, cache use and sessions.</p></div>
-				<div class="cell"><span class="tag">/mcp</span><h3>MCP server</h3><p>Claude and Cursor search logs, inspect traces and run PromQL with your own access.</p></div>
-				<div class="cell"><span class="tag">35+ sources</span><h3>Generated configs</h3><p>Pick Nginx, Postgres, Kafka, Kubernetes and more; get a ready-to-run Collector config.</p></div>
-				<div class="cell"><span class="tag">lifecycle</span><h3>Retention and sampling</h3><p>Retention per project and signal, tail sampling that keeps whole traces, log head sampling.</p></div>
-				<div class="cell"><span class="tag">governance</span><h3>Audit log and API keys</h3><p>Who changed what and when. Keys show last use, and unused keys are easy to clean up.</p></div>
-				<div class="cell"><span class="tag">self-monitoring</span><h3>Watch Obzly itself</h3><p>Prometheus metrics on every role, a ready Grafana dashboard and SLO alert rules.</p></div>
+				<div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18"/><path d="M6 16v-3M10 16V8M14 16v-5M18 16V5"/><path d="M17 3l2 2 2-2" /></svg><span class="tag">logs</span><h3>Patterns and anomalies</h3><p>New, spiking and dropping patterns compared with an earlier period, with alerts on new error patterns.</p></div>
+				<div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16M4 9h10"/><rect x="3" y="11.5" width="18" height="3.5" rx="1"/><path d="M4 18h12M4 21h8"/></svg><span class="tag">logs</span><h3>Log context</h3><p>See the logs around any result from the same source, to find what led up to an error.</p></div>
+				<div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h8M3 9h6"/><path d="M11 7h3l2 3"/><rect x="9" y="12" width="12" height="3" rx="1"/><rect x="12" y="17" width="7" height="3" rx="1"/></svg><span class="tag">logs → traces</span><h3>Log to trace</h3><p>Jump from a log line to its trace. Kubernetes rollout markers show on the histogram.</p></div>
+				<div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><path d="M17 13v8M13 17h8"/></svg><span class="tag">dashboards</span><h3>Grafana import</h3><p>Build dashboards, or import Grafana and OpenObserve dashboard JSON.</p></div>
+				<div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9.5 16.5h-19z"/><path d="M12 10v4M12 17.2v.3"/></svg><span class="tag">incidents</span><h3>Incidents</h3><p>Error logs, failed spans and their shared traces grouped into incident sessions.</p></div>
+				<div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 21h4"/></svg><span class="tag">alerting</span><h3>Alerts in ~15 s</h3><p>Rules over PromQL, log searches or trace latency, sent to webhooks, Slack, PagerDuty or email.</p></div>
+				<div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2 2.2.8-2.2.8L19 21l-.8-2.2-2.2-.8 2.2-.8z"/></svg><span class="tag">ai</span><h3>AI observability</h3><p>Claude Code usage per project: cost, tokens, cache use and sessions.</p></div>
+				<div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3v5M15 3v5"/><path d="M6 8h12v3a6 6 0 0 1-12 0z"/><path d="M12 17v4"/></svg><span class="tag">/mcp</span><h3>MCP server</h3><p>Claude and Cursor search logs, inspect traces and run PromQL with your own access.</p></div>
+				<div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5.5" rx="8" ry="2.5"/><path d="M4 5.5v6c0 1.4 3.6 2.5 8 2.5s8-1.1 8-2.5v-6"/><path d="M4 11.5v6c0 1.4 3.6 2.5 8 2.5s8-1.1 8-2.5v-6"/></svg><span class="tag">35+ sources</span><h3>Generated configs</h3><p>Pick Nginx, Postgres, Kafka, Kubernetes and more; get a ready-to-run Collector config.</p></div>
+				<div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2"/><path d="M9 2h6"/></svg><span class="tag">lifecycle</span><h3>Retention and sampling</h3><p>Retention per project and signal, tail sampling that keeps whole traces, log head sampling.</p></div>
+				<div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3M21 12v2"/></svg><span class="tag">governance</span><h3>Audit log and API keys</h3><p>Who changed what and when. Keys show last use, and unused keys are easy to clean up.</p></div>
+				<div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5H9l2 2h8.5A1.5 1.5 0 0 1 21 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5z"/><path d="M12 11v4M10 13h4" /></svg><span class="tag">synthetics</span><h3>Folders and dependencies</h3><p>Group monitors in folders. A child of a down parent shows Impacted and stays quiet.</p></div>
+				<div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="2.5"/><circle cx="12" cy="12" r="2.5"/><circle cx="19" cy="12" r="2.5"/><path d="M5 5.5a9 9 0 0 1 14 0M5 18.5a9 9 0 0 0 14 0"/></svg><span class="tag">probe groups</span><h3>Probes that fail over</h3><p>Run several probes per location. If one stops, the others take its monitors within a minute.</p></div>
+				<div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .5-8 6 6 0 0 0-11.4-1.5A4.5 4.5 0 0 0 7 18z"/></svg><span class="tag">inventory</span><h3>Cloud resources</h3><p>Load balancers, databases, buckets and functions from AWS and Azure join your hosts and clusters.</p></div>
+				<div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="2.5"/><circle cx="19" cy="5" r="2.5"/><circle cx="19" cy="12" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="M7.5 12h9M7 10.8l9.6-4.6M7 13.2l9.6 4.6"/></svg><span class="tag">settings</span><h3>Shared channels</h3><p>Slack, PagerDuty, webhook and email channels defined once and shared by every project.</p></div>
+				<div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12h4l2-5 4 10 2-5h8"/></svg><span class="tag">self-monitoring</span><h3>Watch Obzly itself</h3><p>Prometheus metrics on every role, a ready Grafana dashboard and SLO alert rules.</p></div>
 			</div>
 		</div>
 	</section>
@@ -155,7 +216,7 @@ import HowItWorks from '../components/diagrams/HowItWorks.astro';
 			<div class="ent-grid">
 				<div><h3>SSO with any OIDC provider</h3><p>Entra ID, Google Workspace, Cognito and others. IdP groups map to project and Site roles.</p></div>
 				<div><h3>SCIM 2.0 provisioning</h3><p>Users and groups from Okta or Entra ID into organizations and teams. Deprovisioning deactivates.</p></div>
-				<div><h3>TOTP MFA</h3><p>Required for admins, optional for members, with a reset path that lands in the audit log.</p></div>
+				<div><h3>TOTP MFA</h3><p>Required for admins. One switch in Settings requires it for everyone, and every reset lands in the audit log.</p></div>
 				<div><h3>Multi-site control plane</h3><p>Central identities and per-Site access grants. A Site's query API never faces the internet.</p></div>
 				<div><h3>Disaster recovery</h3><p>Backup, restore, DR and upgrade runbooks, a measured restore drill and <code style="background:transparent;border-color:var(--hero-line);color:var(--hero-fg)">obzly reconcile</code>.</p></div>
 				<div><h3>Quotas and plans</h3><p>Ingest rate, storage, retention and project limits per organization, enforced on every Site.</p></div>

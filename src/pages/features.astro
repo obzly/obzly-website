@@ -4,153 +4,309 @@ import Marketing from '../layouts/Marketing.astro';
 
 <Marketing
 	title="Features · Obzly"
-	description="Logs, traces, metrics, dashboards, alerts, MCP and enterprise features in the open source Obzly image."
+	description="Logs, traces, metrics, synthetic monitoring, infrastructure and cloud inventory, dashboards, alerts, MCP and enterprise features in the open source Obzly image."
 	current="features"
 >
-		<div class="wrap">
-			<div class="page-hero">
-				<div class="eyebrow">Features</div>
-				<h1>What Obzly does</h1>
-				<p class="lede">Every feature on this page is in the open source image. Nothing here needs a licence key.</p>
-				<nav class="jump" aria-label="Feature sections">
-					<a href="#logs">Logs</a><a href="#traces">Traces</a><a href="#metrics">Metrics</a>
-					<a href="#dashboards">Dashboards &amp; Alerts</a><a href="#ai">AI observability &amp; MCP</a><a href="#enterprise">Enterprise</a>
-				</nav>
-			</div>
-
-			<article class="feat" id="logs">
-				<div class="txt">
-					<div class="eyebrow">Logs</div>
-					<h2>Search a week of logs in seconds</h2>
-					<ul>
-						<li><b>Search</b> by text and field, with a query builder or SQL and a field sidebar.</li>
-						<li><b>Live tail</b> with cursor paging, so new arrivals don't shift the page you're reading.</li>
-						<li><b>Patterns and anomalies</b>: new, spiking and dropping patterns against an earlier period.</li>
-						<li><b>Log context</b>: the logs before and after any result, from the same pod or service.</li>
-						<li><b>Promoted fields</b>: up to 12 per project become typed columns for fast filters and number ranges.</li>
-						<li><b>Wide searches</b> read newest-first and stop once the page is full. Searching for an ID skips every segment whose bloom filter lacks it.</li>
-					</ul>
-				</div>
-				<div class="specimen">
-					<div class="lbl">Search bar</div>
-					<pre><span class="k">level</span>:error <span class="k">service_name</span>:api <span class="s">"timeout"</span></pre>
-					<div class="lbl">Attribute names are PromQL-safe</div>
-					<pre><span class="c">resource.k8s.pod.name</span>  →  <span class="k">k8s_pod_name</span>
-	<span class="c">system.cpu.time</span>        →  <span class="k">system_cpu_time</span></pre>
-				</div>
-			</article>
-
-			<article class="feat" id="traces">
-				<div class="txt">
-					<div class="eyebrow">Traces</div>
-					<h2>Follow a request across services</h2>
-					<ul>
-						<li><b>OTLP traces</b> over gRPC or HTTP, from any OpenTelemetry SDK.</li>
-						<li><b>Trace explorer</b> and a <b>service map</b> built from real calls.</li>
-						<li><b>Jaeger-compatible query API</b>: existing Jaeger clients work unmodified.</li>
-						<li><b>Tail sampling</b> keeps whole traces, not random spans.</li>
-						<li><b>Zero-code traces</b> on Kubernetes with OpenTelemetry eBPF Instrumentation (OBI).</li>
-					</ul>
-				</div>
-				<div class="specimen">
-					<div class="lbl">Trace · POST /checkout · 412 ms</div>
-					<svg viewBox="0 0 420 150" role="img" aria-label="Example trace waterfall with five spans">
-						<g class="d-s"><text x="0" y="16">frontend</text><text x="0" y="44">checkout</text><text x="0" y="72">payments</text><text x="0" y="100">postgres</text><text x="0" y="128">kafka</text></g>
-						<rect x="90" y="6" width="320" height="14" rx="3" fill="var(--accent)"/>
-						<rect x="110" y="34" width="270" height="14" rx="3" fill="var(--accent)" opacity="0.75"/>
-						<rect x="140" y="62" width="190" height="14" rx="3" fill="var(--amber)"/>
-						<rect x="150" y="90" width="60" height="14" rx="3" fill="var(--accent)" opacity="0.5"/>
-						<rect x="340" y="118" width="34" height="14" rx="3" fill="var(--accent)" opacity="0.5"/>
-						<text class="d-a" x="336" y="73" style="fill:var(--amber)">slow</text>
-					</svg>
-				</div>
-			</article>
-
-			<article class="feat" id="metrics">
-				<div class="txt">
-					<div class="eyebrow">Metrics</div>
-					<h2>Keep Grafana, drop the metrics stack</h2>
-					<ul>
-						<li><b>OTLP and Prometheus remote-write</b> ingestion.</li>
-						<li><b>PromQL-compatible API</b>: point an existing Grafana Prometheus datasource at Obzly.</li>
-						<li><b>Rollups</b> at 5 minutes and 1 hour keep long ranges fast and can outlive raw samples.</li>
-						<li><b>Host and Kubernetes metrics</b> from the generated Collector config.</li>
-					</ul>
-				</div>
-				<div class="specimen">
-					<div class="lbl">PromQL, no quoting needed</div>
-					<pre><span class="k">sum by</span> (k8s_pod_name) (system_cpu_time)</pre>
-					<svg viewBox="0 0 420 110" role="img" aria-label="Example metric line chart">
-						<g stroke="var(--line)" stroke-width="1"><line x1="0" y1="20" x2="420" y2="20"/><line x1="0" y1="55" x2="420" y2="55"/><line x1="0" y1="90" x2="420" y2="90"/></g>
-						<polyline points="0,80 40,70 80,74 120,52 160,58 200,40 240,46 280,28 320,34 360,22 400,30 420,26" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
-						<polyline points="0,92 40,88 80,90 120,82 160,84 200,76 240,80 280,70 320,74 360,66 400,70 420,68" fill="none" stroke="var(--amber)" stroke-width="2"/>
-					</svg>
-				</div>
-			</article>
-
-			<article class="feat" id="dashboards">
-				<div class="txt">
-					<div class="eyebrow">Dashboards &amp; Alerts</div>
-					<h2>Bring your dashboards, get paged quickly</h2>
-					<ul>
-						<li><b>Dashboards</b>: build your own, or import Grafana or OpenObserve dashboard JSON.</li>
-						<li><b>Alert rules</b> over metrics (PromQL), logs (counts of a search, optionally per field) or traces (count, errors, latency percentiles).</li>
-						<li><b>for durations, repeat intervals, labels</b> and a live preview.</li>
-						<li><b>Notifications</b> to webhooks, Slack, PagerDuty or email, through an outbox with retries and silences. About 15 seconds from rule to notification.</li>
-						<li><b>Incidents</b> group error logs, failed spans and their shared traces.</li>
-					</ul>
-				</div>
-				<div class="specimen">
-					<div class="lbl">Example rule</div>
-					<pre><span class="c"># Logs: count of a search</span>
-	search:  <span class="s">level:error service_name:checkout</span>
-	when:    count &gt; 50
-	for:     5m
-	notify:  Slack, PagerDuty</pre>
-				</div>
-			</article>
-
-			<article class="feat" id="ai">
-				<div class="txt">
-					<div class="eyebrow">AI observability &amp; MCP</div>
-					<h2>Let your assistant read production</h2>
-					<ul>
-						<li><b>MCP server at /mcp</b>: Claude Code, Cursor, claude.ai and Claude Desktop can search logs, run SQL over them, inspect traces and service maps, and run PromQL.</li>
-						<li><b>Read-only</b>, with exactly the access your account has. Tokens work only on <code>/mcp</code>.</li>
-						<li><b>Browser sign-in</b> for claude.ai and Claude Desktop, with connected apps listed and revocable in your profile.</li>
-						<li><b>Multi-site aware</b>: one endpoint covers every Site you can access.</li>
-						<li><b>Claude Code usage</b> per project: cost, tokens, cache use and sessions.</li>
-					</ul>
-				</div>
-				<div class="specimen">
-					<div class="lbl">Claude Code</div>
-					<pre>claude mcp add --transport http obzly \
-		https://obzly.example.com/mcp \
-		--header <span class="s">"Authorization: Bearer obz_pat_..."</span></pre>
-				</div>
-			</article>
-
-			<article class="feat" id="enterprise">
-				<div class="txt">
-					<div class="eyebrow">Enterprise</div>
-					<h2>Identity, scale and recovery</h2>
-					<ul>
-						<li><b>SSO</b> through any OIDC provider, with Microsoft Entra ID group mapping.</li>
-						<li><b>SCIM 2.0</b> from Okta or Entra ID; <b>TOTP MFA</b> required for admins.</li>
-						<li><b>Organizations, teams and plans</b> with per-organization quotas.</li>
-						<li><b>High availability</b>: rolling updates with readiness draining, leases so each shard has one owner, no single query node.</li>
-						<li><b>Durable ingest</b>: losing an api pod, a worker or one broker loses no acknowledged data.</li>
-						<li><b>Disaster recovery</b> runbooks with a measured restore drill (RPO under a minute) and a weekly integrity audit.</li>
-						<li><b>Audit log</b> of every change and every denied request.</li>
-					</ul>
-				</div>
-				<div class="specimen">
-					<div class="lbl">When the buffer is full</div>
-					<pre>HTTP 429  /  gRPC RESOURCE_EXHAUSTED
-	<span class="c"># OTel Collectors retry; nothing acknowledged is lost</span></pre>
-					<div class="lbl">Query guardrail</div>
-					<pre>QUERY_MAX_SCAN_GB=<span class="s">100</span>  <span class="c"># refuse runaway queries before reading</span></pre>
-				</div>
-			</article>
+	<div class="wrap">
+		<div class="page-hero">
+			<div class="eyebrow">Features</div>
+			<h1>What Obzly does</h1>
+			<p class="lede">Every feature on this page is in the open source image. Nothing here needs a licence key.</p>
+			<nav class="jump" aria-label="Feature sections">
+				<a href="#logs">Logs</a><a href="#traces">Traces</a><a href="#metrics">Metrics</a>
+				<a href="#synthetics">Synthetics</a><a href="#infrastructure">Infrastructure</a>
+				<a href="#dashboards">Dashboards &amp; Alerts</a><a href="#ai">AI observability &amp; MCP</a><a href="#enterprise">Enterprise</a>
+			</nav>
 		</div>
+
+		<article class="feat" id="logs">
+			<div class="txt">
+				<div class="eyebrow">Logs</div>
+				<h2>Search a week of logs in seconds</h2>
+				<ul>
+					<li><b>Search</b> by text and field, with a query builder or SQL and a field sidebar.</li>
+					<li><b>Live tail</b> with cursor paging, so new arrivals don't shift the page you're reading.</li>
+					<li><b>Patterns and anomalies</b>: new, spiking and dropping patterns against an earlier period.</li>
+					<li><b>Log context</b>: the logs before and after any result, from the same pod or service.</li>
+					<li><b>Promoted fields</b>: up to 12 per project become typed columns for fast filters and number ranges.</li>
+					<li><b>Wide searches</b> read newest-first and stop once the page is full. Searching for an ID skips every segment whose bloom filter lacks it.</li>
+				</ul>
+			</div>
+			<div class="specimen">
+				<div class="lbl">Search bar</div>
+				<pre><span class="k">level</span>:error <span class="k">service_name</span>:checkout <span class="s">"timeout"</span></pre>
+				<div class="lbl">Volume · errors in red · last hour</div>
+				<svg class="g" viewBox="0 0 420 122" role="img" aria-label="Log volume histogram: errors jump right after a rollout of cart v42">
+					<rect x="4.0" y="72.5" width="10" height="26.2" rx="1.5" fill="var(--line)"/><rect x="4.0" y="98.8" width="10" height="1.2" rx="1.5" fill="var(--err)"/><rect x="18.6" y="67.5" width="10" height="30.0" rx="1.5" fill="var(--line)"/><rect x="18.6" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="33.2" y="70.0" width="10" height="28.8" rx="1.5" fill="var(--line)"/><rect x="33.2" y="98.8" width="10" height="1.2" rx="1.5" fill="var(--err)"/><rect x="47.8" y="62.5" width="10" height="35.0" rx="1.5" fill="var(--line)"/><rect x="47.8" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="62.4" y="65.0" width="10" height="33.8" rx="1.5" fill="var(--line)"/><rect x="62.4" y="98.8" width="10" height="1.2" rx="1.5" fill="var(--err)"/><rect x="77.0" y="58.8" width="10" height="38.8" rx="1.5" fill="var(--line)"/><rect x="77.0" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="91.6" y="63.8" width="10" height="33.8" rx="1.5" fill="var(--line)"/><rect x="91.6" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="106.2" y="66.2" width="10" height="32.5" rx="1.5" fill="var(--line)"/><rect x="106.2" y="98.8" width="10" height="1.2" rx="1.5" fill="var(--err)"/><rect x="120.8" y="61.2" width="10" height="36.2" rx="1.5" fill="var(--line)"/><rect x="120.8" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="135.4" y="56.2" width="10" height="41.2" rx="1.5" fill="var(--line)"/><rect x="135.4" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="150.0" y="62.5" width="10" height="36.2" rx="1.5" fill="var(--line)"/><rect x="150.0" y="98.8" width="10" height="1.2" rx="1.5" fill="var(--err)"/><rect x="164.6" y="65.0" width="10" height="32.5" rx="1.5" fill="var(--line)"/><rect x="164.6" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="179.2" y="60.0" width="10" height="37.5" rx="1.5" fill="var(--line)"/><rect x="179.2" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="193.8" y="55.0" width="10" height="42.5" rx="1.5" fill="var(--line)"/><rect x="193.8" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="208.4" y="57.5" width="10" height="41.2" rx="1.5" fill="var(--line)"/><rect x="208.4" y="98.8" width="10" height="1.2" rx="1.5" fill="var(--err)"/><rect x="223.0" y="52.5" width="10" height="45.0" rx="1.5" fill="var(--line)"/><rect x="223.0" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="237.6" y="56.2" width="10" height="41.2" rx="1.5" fill="var(--line)"/><rect x="237.6" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="252.2" y="27.5" width="10" height="46.2" rx="1.5" fill="var(--line)"/><rect x="252.2" y="73.8" width="10" height="26.2" rx="1.5" fill="var(--err)"/><rect x="266.8" y="20.0" width="10" height="47.5" rx="1.5" fill="var(--line)"/><rect x="266.8" y="67.5" width="10" height="32.5" rx="1.5" fill="var(--err)"/><rect x="281.4" y="23.8" width="10" height="48.8" rx="1.5" fill="var(--line)"/><rect x="281.4" y="72.5" width="10" height="27.5" rx="1.5" fill="var(--err)"/><rect x="296.0" y="35.0" width="10" height="47.5" rx="1.5" fill="var(--line)"/><rect x="296.0" y="82.5" width="10" height="17.5" rx="1.5" fill="var(--err)"/><rect x="310.6" y="45.0" width="10" height="46.2" rx="1.5" fill="var(--line)"/><rect x="310.6" y="91.2" width="10" height="8.8" rx="1.5" fill="var(--err)"/><rect x="325.2" y="50.0" width="10" height="45.0" rx="1.5" fill="var(--line)"/><rect x="325.2" y="95.0" width="10" height="5.0" rx="1.5" fill="var(--err)"/><rect x="339.8" y="53.8" width="10" height="42.5" rx="1.5" fill="var(--line)"/><rect x="339.8" y="96.2" width="10" height="3.8" rx="1.5" fill="var(--err)"/><rect x="354.4" y="56.2" width="10" height="41.2" rx="1.5" fill="var(--line)"/><rect x="354.4" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="369.0" y="58.8" width="10" height="38.8" rx="1.5" fill="var(--line)"/><rect x="369.0" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="383.6" y="61.2" width="10" height="36.2" rx="1.5" fill="var(--line)"/><rect x="383.6" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="398.2" y="62.5" width="10" height="36.2" rx="1.5" fill="var(--line)"/><rect x="398.2" y="98.8" width="10" height="1.2" rx="1.5" fill="var(--err)"/>
+					<line x1="249.2" y1="6" x2="249.2" y2="100" stroke="var(--amber)" stroke-width="1.5" stroke-dasharray="4 3"/>
+					<text class="d-a" x="243.2" y="14" text-anchor="end" style="fill:var(--amber)">rollout · cart v42</text>
+					<line x1="0" y1="100.5" x2="420" y2="100.5" stroke="var(--line)"/>
+					<text class="d-s" x="4" y="116">13:30</text><text class="d-s" x="210" y="116" text-anchor="middle">14:00</text><text class="d-s" x="416" y="116" text-anchor="end">14:30</text>
+				</svg>
+				<div class="lbl">Patterns · against yesterday</div>
+				<div class="mini">
+					<div class="row"><span class="dot down"></span><span class="nm"><code>payment provider timeout after &lt;*&gt; ms</code></span><span class="v">new · 1.2k</span></div>
+					<div class="row"><span class="dot warn"></span><span class="nm"><code>upstream payments returned &lt;*&gt;</code></span><span class="v">spiking · ×9</span></div>
+					<div class="row"><span class="dot up"></span><span class="nm"><code>POST /api/orders &lt;*&gt; in &lt;*&gt;ms</code></span><span class="v">steady · 48k</span></div>
+				</div>
+			</div>
+		</article>
+
+		<article class="feat" id="traces">
+			<div class="txt">
+				<div class="eyebrow">Traces</div>
+				<h2>Follow a request across services</h2>
+				<ul>
+					<li><b>OTLP traces</b> over gRPC or HTTP, from any OpenTelemetry SDK.</li>
+					<li><b>Trace explorer</b> and a <b>service map</b> built from real calls.</li>
+					<li><b>Jaeger-compatible query API</b>: existing Jaeger clients work unmodified.</li>
+					<li><b>Tail sampling</b> keeps whole traces, not random spans.</li>
+					<li><b>Zero-code traces</b> on Kubernetes with OpenTelemetry eBPF Instrumentation (OBI).</li>
+				</ul>
+			</div>
+			<div class="specimen">
+				<div class="lbl">Service map · harborline-shop</div>
+				<svg class="g" viewBox="0 0 420 150" role="img" aria-label="Service map: frontend calls checkout, which calls payments-api, cart and orders-db; the payments edge shows errors">
+					<path class="d-arrow" d="M100 75 L148 75" marker-end="url(#ah)"/>
+					<path class="d-arrow" d="M240 70 C270 70 270 25 298 25" marker-end="url(#ah)" style="stroke:var(--amber)"/>
+					<path class="d-arrow" d="M240 75 L298 75" marker-end="url(#ah)"/>
+					<path class="d-arrow" d="M240 80 C270 80 270 125 298 125" marker-end="url(#ah)"/>
+					<rect class="d-box" x="4" y="58" width="96" height="34" rx="17"/><text class="d-s" x="52" y="79" text-anchor="middle">frontend</text>
+					<rect class="d-acc" x="150" y="58" width="90" height="34" rx="17"/><text class="d-s" x="195" y="79" text-anchor="middle">checkout</text>
+					<rect class="d-amb" x="300" y="8" width="116" height="34" rx="17"/><text class="d-s" x="358" y="29" text-anchor="middle">payments-api</text>
+					<rect class="d-box" x="300" y="58" width="116" height="34" rx="17"/><text class="d-s" x="358" y="79" text-anchor="middle">cart</text>
+					<rect class="d-box" x="300" y="108" width="116" height="34" rx="17"/><text class="d-s" x="358" y="129" text-anchor="middle">orders-db</text>
+					<text class="d-a" x="104" y="66">120 rps</text>
+					<text class="d-a" x="244" y="20" style="fill:var(--amber)">2.1% err</text>
+				</svg>
+				<div class="lbl">Trace · POST /checkout · 412 ms</div>
+				<svg class="g" viewBox="0 0 420 150" role="img" aria-label="Example trace waterfall with five spans; the payments span is slow">
+					<g class="d-s"><text x="0" y="16">frontend</text><text x="0" y="44">checkout</text><text x="0" y="72">payments-api</text><text x="0" y="100">orders-db</text><text x="0" y="128">cart</text></g>
+					<rect x="96" y="6" width="314" height="14" rx="3" fill="var(--accent)"/>
+					<rect x="114" y="34" width="266" height="14" rx="3" fill="var(--accent)" opacity="0.75"/>
+					<rect x="140" y="62" width="190" height="14" rx="3" fill="var(--amber)"/>
+					<rect x="150" y="90" width="60" height="14" rx="3" fill="var(--accent)" opacity="0.5"/>
+					<rect x="340" y="118" width="34" height="14" rx="3" fill="var(--accent)" opacity="0.5"/>
+					<text class="d-a" x="336" y="73" style="fill:var(--amber)">slow</text>
+				</svg>
+			</div>
+		</article>
+
+		<article class="feat" id="metrics">
+			<div class="txt">
+				<div class="eyebrow">Metrics</div>
+				<h2>Keep Grafana, drop the metrics stack</h2>
+				<ul>
+					<li><b>OTLP and Prometheus remote-write</b> ingestion.</li>
+					<li><b>PromQL-compatible API</b>: point an existing Grafana Prometheus datasource at Obzly.</li>
+					<li><b>Rollups</b> at 5 minutes and 1 hour keep long ranges fast and can outlive raw samples.</li>
+					<li><b>Host and Kubernetes metrics</b> from the generated Collector config.</li>
+				</ul>
+			</div>
+			<div class="specimen">
+				<div class="lbl">PromQL, no quoting needed</div>
+				<pre><span class="k">sum by</span> (k8s_pod_name) (system_cpu_time)</pre>
+				<svg class="g" viewBox="0 0 420 110" role="img" aria-label="Example metric line chart with two series">
+					<g stroke="var(--line)" stroke-width="1"><line x1="0" y1="20" x2="420" y2="20"/><line x1="0" y1="55" x2="420" y2="55"/><line x1="0" y1="90" x2="420" y2="90"/></g>
+					<polyline points="0,80 40,70 80,74 120,52 160,58 200,40 240,46 280,28 320,34 360,22 400,30 420,26" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+					<polyline points="0,92 40,88 80,90 120,82 160,84 200,76 240,80 280,70 320,74 360,66 400,70 420,68" fill="none" stroke="var(--amber)" stroke-width="2"/>
+				</svg>
+				<div class="lbl">Rollups · long ranges read fewer points</div>
+				<svg class="g" viewBox="0 0 420 84" role="img" aria-label="Raw samples, a 5-minute rollup and a 1-hour rollup, each with fewer points">
+					<text class="d-s" x="0" y="18">raw</text><circle cx="64" cy="14" r="1.6" fill="var(--accent)"/><circle cx="69" cy="14" r="1.6" fill="var(--accent)"/><circle cx="74" cy="14" r="1.6" fill="var(--accent)"/><circle cx="79" cy="14" r="1.6" fill="var(--accent)"/><circle cx="84" cy="14" r="1.6" fill="var(--accent)"/><circle cx="89" cy="14" r="1.6" fill="var(--accent)"/><circle cx="94" cy="14" r="1.6" fill="var(--accent)"/><circle cx="99" cy="14" r="1.6" fill="var(--accent)"/><circle cx="104" cy="14" r="1.6" fill="var(--accent)"/><circle cx="109" cy="14" r="1.6" fill="var(--accent)"/><circle cx="114" cy="14" r="1.6" fill="var(--accent)"/><circle cx="119" cy="14" r="1.6" fill="var(--accent)"/><circle cx="124" cy="14" r="1.6" fill="var(--accent)"/><circle cx="129" cy="14" r="1.6" fill="var(--accent)"/><circle cx="134" cy="14" r="1.6" fill="var(--accent)"/><circle cx="139" cy="14" r="1.6" fill="var(--accent)"/><circle cx="144" cy="14" r="1.6" fill="var(--accent)"/><circle cx="149" cy="14" r="1.6" fill="var(--accent)"/><circle cx="154" cy="14" r="1.6" fill="var(--accent)"/><circle cx="159" cy="14" r="1.6" fill="var(--accent)"/><circle cx="164" cy="14" r="1.6" fill="var(--accent)"/><circle cx="169" cy="14" r="1.6" fill="var(--accent)"/><circle cx="174" cy="14" r="1.6" fill="var(--accent)"/><circle cx="179" cy="14" r="1.6" fill="var(--accent)"/><circle cx="184" cy="14" r="1.6" fill="var(--accent)"/><circle cx="189" cy="14" r="1.6" fill="var(--accent)"/><circle cx="194" cy="14" r="1.6" fill="var(--accent)"/><circle cx="199" cy="14" r="1.6" fill="var(--accent)"/><circle cx="204" cy="14" r="1.6" fill="var(--accent)"/><circle cx="209" cy="14" r="1.6" fill="var(--accent)"/><circle cx="214" cy="14" r="1.6" fill="var(--accent)"/><circle cx="219" cy="14" r="1.6" fill="var(--accent)"/><circle cx="224" cy="14" r="1.6" fill="var(--accent)"/><circle cx="229" cy="14" r="1.6" fill="var(--accent)"/><circle cx="234" cy="14" r="1.6" fill="var(--accent)"/><circle cx="239" cy="14" r="1.6" fill="var(--accent)"/><circle cx="244" cy="14" r="1.6" fill="var(--accent)"/><circle cx="249" cy="14" r="1.6" fill="var(--accent)"/><circle cx="254" cy="14" r="1.6" fill="var(--accent)"/><circle cx="259" cy="14" r="1.6" fill="var(--accent)"/><circle cx="264" cy="14" r="1.6" fill="var(--accent)"/><circle cx="269" cy="14" r="1.6" fill="var(--accent)"/><circle cx="274" cy="14" r="1.6" fill="var(--accent)"/><circle cx="279" cy="14" r="1.6" fill="var(--accent)"/><circle cx="284" cy="14" r="1.6" fill="var(--accent)"/><circle cx="289" cy="14" r="1.6" fill="var(--accent)"/><circle cx="294" cy="14" r="1.6" fill="var(--accent)"/><circle cx="299" cy="14" r="1.6" fill="var(--accent)"/><circle cx="304" cy="14" r="1.6" fill="var(--accent)"/><circle cx="309" cy="14" r="1.6" fill="var(--accent)"/><circle cx="314" cy="14" r="1.6" fill="var(--accent)"/><circle cx="319" cy="14" r="1.6" fill="var(--accent)"/><circle cx="324" cy="14" r="1.6" fill="var(--accent)"/><circle cx="329" cy="14" r="1.6" fill="var(--accent)"/><circle cx="334" cy="14" r="1.6" fill="var(--accent)"/><circle cx="339" cy="14" r="1.6" fill="var(--accent)"/><circle cx="344" cy="14" r="1.6" fill="var(--accent)"/><circle cx="349" cy="14" r="1.6" fill="var(--accent)"/><circle cx="354" cy="14" r="1.6" fill="var(--accent)"/><circle cx="359" cy="14" r="1.6" fill="var(--accent)"/><circle cx="364" cy="14" r="1.6" fill="var(--accent)"/><circle cx="369" cy="14" r="1.6" fill="var(--accent)"/><circle cx="374" cy="14" r="1.6" fill="var(--accent)"/><circle cx="379" cy="14" r="1.6" fill="var(--accent)"/><circle cx="384" cy="14" r="1.6" fill="var(--accent)"/><circle cx="389" cy="14" r="1.6" fill="var(--accent)"/><circle cx="394" cy="14" r="1.6" fill="var(--accent)"/><circle cx="399" cy="14" r="1.6" fill="var(--accent)"/><circle cx="404" cy="14" r="1.6" fill="var(--accent)"/><circle cx="409" cy="14" r="1.6" fill="var(--accent)"/><circle cx="414" cy="14" r="1.6" fill="var(--accent)"/><circle cx="419" cy="14" r="1.6" fill="var(--accent)"/>
+					<text class="d-s" x="0" y="46">5 min</text><circle cx="64" cy="42" r="2.6" fill="var(--accent)"/><circle cx="84" cy="42" r="2.6" fill="var(--accent)"/><circle cx="104" cy="42" r="2.6" fill="var(--accent)"/><circle cx="124" cy="42" r="2.6" fill="var(--accent)"/><circle cx="144" cy="42" r="2.6" fill="var(--accent)"/><circle cx="164" cy="42" r="2.6" fill="var(--accent)"/><circle cx="184" cy="42" r="2.6" fill="var(--accent)"/><circle cx="204" cy="42" r="2.6" fill="var(--accent)"/><circle cx="224" cy="42" r="2.6" fill="var(--accent)"/><circle cx="244" cy="42" r="2.6" fill="var(--accent)"/><circle cx="264" cy="42" r="2.6" fill="var(--accent)"/><circle cx="284" cy="42" r="2.6" fill="var(--accent)"/><circle cx="304" cy="42" r="2.6" fill="var(--accent)"/><circle cx="324" cy="42" r="2.6" fill="var(--accent)"/><circle cx="344" cy="42" r="2.6" fill="var(--accent)"/><circle cx="364" cy="42" r="2.6" fill="var(--accent)"/><circle cx="384" cy="42" r="2.6" fill="var(--accent)"/><circle cx="404" cy="42" r="2.6" fill="var(--accent)"/>
+					<text class="d-s" x="0" y="74">1 hour</text><circle cx="64" cy="70" r="3.6" fill="var(--accent)"/><circle cx="124" cy="70" r="3.6" fill="var(--accent)"/><circle cx="184" cy="70" r="3.6" fill="var(--accent)"/><circle cx="244" cy="70" r="3.6" fill="var(--accent)"/><circle cx="304" cy="70" r="3.6" fill="var(--accent)"/><circle cx="364" cy="70" r="3.6" fill="var(--accent)"/>
+				</svg>
+			</div>
+		</article>
+
+		<article class="feat" id="synthetics">
+			<div class="txt">
+				<div class="eyebrow">Synthetics</div>
+				<h2>Know an endpoint is down before your users do</h2>
+				<ul>
+					<li><b>Checks</b>: HTTP with assertions on status, latency, headers and JSON; TLS certificates (expiry, chain, protocol, self-signed allowed per monitor); TCP; DNS; ICMP.</li>
+					<li><b>Your own locations</b>: <code>obzly-probe</code> runs as a Linux service, a container or a Helm release, inside your network or out on the internet.</li>
+					<li><b>Probe groups</b>: several instances per location share the monitors. If one stops, the others take over within a minute.</li>
+					<li><b>Test</b> runs an unsaved monitor from every location in seconds, with a timing waterfall from DNS to transfer.</li>
+					<li><b>Folders and dependencies</b>: while a parent is down its children show Impacted and their alerts stay quiet, so an outage pages once.</li>
+					<li><b>Alerts per monitor</b> through the shared channels: down, degraded, or a certificate about to expire.</li>
+					<li><b>YAML import and export</b> with a preview, for reviewing monitors in git.</li>
+				</ul>
+				<p class="lede" style="font-size:0.95rem">Synthetics runs on a control plane. Results land in a Site project as ordinary metrics, so dashboards and PromQL work on them too.</p>
+			</div>
+			<div class="specimen">
+				<div class="lbl">Monitors · 3 locations</div>
+				<div class="mini">
+					<div class="folder">Payments/EU</div>
+					<div class="row"><span class="dot down"></span><span class="nm">api-gateway</span><span class="v">down · 2 of 3</span></div>
+					<div class="row ind1"><span class="dot imp"></span><span class="nm">quotes-api</span><span class="v">impacted · muted</span></div>
+					<div class="row ind1"><span class="dot imp"></span><span class="nm">payments-api</span><span class="v">impacted · muted</span></div>
+					<div class="folder">Storefront</div>
+					<div class="row"><span class="dot up"></span><span class="nm">shop.harborline.example</span><span class="v">99.99% · 240 ms</span></div>
+					<div class="row"><span class="dot warn"></span><span class="nm">TLS mail.harborline.example</span><span class="v">cert 12 d</span></div>
+				</div>
+				<div class="lbl">api-gateway · availability, last 2 hours</div>
+				<svg class="g" viewBox="0 0 420 84" role="img" aria-label="Availability strips for three locations: two locations fail for the last few runs">
+					<text class="d-s" x="0" y="17">edge-north</text><rect x="96.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="109.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="123.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="136.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="150.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="163.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="177.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="190.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="204.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="217.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="231.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="244.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="258.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="271.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="285.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="298.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="312.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="325.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="339.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="352.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="366.0" y="4" width="11" height="18" rx="2" fill="var(--err)"/><rect x="379.5" y="4" width="11" height="18" rx="2" fill="var(--err)"/><rect x="393.0" y="4" width="11" height="18" rx="2" fill="var(--err)"/><rect x="406.5" y="4" width="11" height="18" rx="2" fill="var(--err)"/>
+					<text class="d-s" x="0" y="45">edge-south</text><rect x="96.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="109.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="123.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="136.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="150.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="163.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="177.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="190.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="204.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="217.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="231.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="244.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="258.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="271.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="285.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="298.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="312.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="325.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="339.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="352.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="366.0" y="32" width="11" height="18" rx="2" fill="var(--amber)"/><rect x="379.5" y="32" width="11" height="18" rx="2" fill="var(--err)"/><rect x="393.0" y="32" width="11" height="18" rx="2" fill="var(--err)"/><rect x="406.5" y="32" width="11" height="18" rx="2" fill="var(--err)"/>
+					<text class="d-s" x="0" y="73">office-pier</text><rect x="96.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="109.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="123.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="136.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="150.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="163.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="177.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="190.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="204.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="217.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="231.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="244.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="258.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="271.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="285.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="298.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="312.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="325.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="339.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="352.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="366.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="379.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="393.0" y="60" width="11" height="18" rx="2" fill="var(--amber)"/><rect x="406.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/>
+				</svg>
+				<div class="lbl">Run detail · POST /v1/quotes · 182 ms</div>
+				<svg class="g" viewBox="0 0 420 62" role="img" aria-label="Timing waterfall: DNS 12 ms, connect 18, TLS 34, time to first byte 96, transfer 22">
+					<rect x="0.0" y="6" width="26.7" height="18" fill="var(--muted)"/><rect x="27.7" y="6" width="40.5" height="18" fill="#5b8def"/><rect x="69.2" y="6" width="77.5" height="18" fill="var(--amber)"/><rect x="147.7" y="6" width="220.5" height="18" fill="var(--accent)"/><rect x="369.2" y="6" width="49.8" height="18" fill="var(--accent-strong)"/><text class="d-s" x="0.0" y="42" text-anchor="start">DNS 12</text><text class="d-s" x="27.7" y="56" text-anchor="start">connect 18</text><text class="d-s" x="69.2" y="42" text-anchor="start">TLS 34</text><text class="d-s" x="147.7" y="56" text-anchor="start">TTFB 96</text><text class="d-s" x="420.0" y="42" text-anchor="end">transfer 22</text>
+				</svg>
+			</div>
+		</article>
+
+		<article class="feat" id="infrastructure">
+			<div class="txt">
+				<div class="eyebrow">Infrastructure</div>
+				<h2>Every asset, its health and the reason</h2>
+				<ul>
+					<li><b>One inventory</b> of clusters, nodes, hosts, namespaces, workloads, pods, containers and services, built every 5 minutes from data your agents already send.</li>
+					<li><b>Health with the reason</b>: CPU, memory, disk, restarts, replicas, error logs and firing alerts.</li>
+					<li><b>Lifecycle and a change feed</b>: new, not reporting, terminated, restarted.</li>
+					<li><b>Tree or table</b>, with charts per asset and links straight into its logs, traces and dashboards.</li>
+					<li><b>Cloud connections</b> add what runs no agent: load balancers, databases, buckets, functions and scaling groups from AWS accounts and Azure subscriptions. VMs and clusters join the hosts and clusters your agents report.</li>
+					<li><b>Read-only, keyless</b>: a wizard writes the CloudFormation, Bicep or CLI. A probe group scans with its own identity, a role, or a federated token. Obzly stores identifiers only.</li>
+				</ul>
+			</div>
+			<div class="specimen">
+				<div class="lbl">Needs attention</div>
+				<div class="mini">
+					<div class="row"><span class="dot down"></span><span class="nm">cart-5d8f-q2x7r</span><span class="v">CrashLoopBackOff</span></div>
+					<div class="row"><span class="dot warn"></span><span class="nm">node-b7 · harbor-prod-1</span><span class="v">memory 93%</span></div>
+					<div class="row"><span class="dot warn"></span><span class="nm">shop-alb</span><span class="v">1 of 4 targets unhealthy</span></div>
+					<div class="row"><span class="dot up"></span><span class="nm">orders-db</span><span class="v">database · available</span></div>
+				</div>
+				<div class="lbl">Tree · cluster to container</div>
+				<svg class="g" viewBox="0 0 420 150" role="img" aria-label="Asset tree: cluster harbor-prod-1 with two nodes; node-b7 runs cart pods, one crash looping">
+					<g class="d-dash" style="stroke-dasharray:none;stroke:var(--line)"><path d="M14 30 V118"/><path d="M14 58 H34"/><path d="M14 118 H34"/><path d="M44 72 V100"/><path d="M44 86 H64"/><path d="M44 100 H64"/></g>
+					<circle cx="14" cy="16" r="6" fill="var(--amber)"/><text class="d-t" x="28" y="21" style="font-size:14px">harbor-prod-1</text><text class="d-s" x="160" y="21">cluster · 2 nodes · 61 pods</text>
+					<circle cx="44" cy="58" r="5" fill="var(--amber)"/><text class="d-s" x="56" y="62" style="fill:var(--fg)">node-b7</text><text class="d-s" x="160" y="62">memory 93%</text>
+					<circle cx="74" cy="86" r="4.5" fill="var(--err)"/><text class="d-s" x="86" y="90" style="fill:var(--fg)">cart-5d8f-q2x7r</text><text class="d-s" x="236" y="90" style="fill:var(--err)">12 restarts in 1 h</text>
+					<circle cx="74" cy="100" r="4.5" fill="var(--accent)" transform="translate(0,4)"/><text class="d-s" x="86" y="108" style="fill:var(--fg)">cart-5d8f-k8m2w</text><text class="d-s" x="236" y="108">running</text>
+					<circle cx="44" cy="118" r="5" fill="var(--accent)" transform="translate(0,14)"/><text class="d-s" x="56" y="136" style="fill:var(--fg)">node-c2</text><text class="d-s" x="160" y="136">healthy</text>
+				</svg>
+				<div class="lbl">Cloud connections join what your agents report</div>
+				<svg class="g" viewBox="0 0 420 150" role="img" aria-label="A cloud VM found by a cloud connection and a host reported by the Collector merge into one asset">
+					<rect class="d-amb" x="0" y="6" width="190" height="52" rx="8"/><text class="d-t" x="14" y="28" style="font-size:14px">VM · i-0a1b2c3d</text><text class="d-s" x="14" y="47">from AWS 111122223333</text>
+					<rect class="d-box" x="230" y="6" width="190" height="52" rx="8"/><text class="d-t" x="244" y="28" style="font-size:14px">host · node-b7</text><text class="d-s" x="244" y="47">from the Collector</text>
+					<path class="d-arrow" d="M95 58 C95 80 170 80 186 92" marker-end="url(#ah)"/>
+					<path class="d-arrow" d="M325 58 C325 80 250 80 234 92" marker-end="url(#ah)"/>
+					<text class="d-a" x="188" y="80" text-anchor="middle">host_id</text>
+					<rect class="d-acc" x="100" y="94" width="220" height="50" rx="8"/><text class="d-t" x="116" y="116" style="font-size:14px">one asset · node-b7</text><text class="d-s" x="116" y="134">cloud · metrics · logs</text>
+				</svg>
+			</div>
+		</article>
+
+		<article class="feat" id="dashboards">
+			<div class="txt">
+				<div class="eyebrow">Dashboards &amp; Alerts</div>
+				<h2>Bring your dashboards, get paged quickly</h2>
+				<ul>
+					<li><b>Dashboards</b>: build your own, or import Grafana or OpenObserve dashboard JSON.</li>
+					<li><b>Alert rules</b> over metrics (PromQL), logs (counts of a search, optionally per field) or traces (count, errors, latency percentiles).</li>
+					<li><b>for durations, repeat intervals, labels</b> and a live preview.</li>
+					<li><b>Notifications</b> to webhooks, Slack, PagerDuty or email, through an outbox with retries and silences. About 15 seconds from rule to notification.</li>
+					<li><b>Channels and email</b> are set up once in Obzly settings and shared by every project. On a control plane they are central, and each Site keeps a copy so alerts still go out if the control plane is down.</li>
+					<li><b>Incidents</b> group error logs, failed spans and their shared traces.</li>
+				</ul>
+			</div>
+			<div class="specimen">
+				<div class="lbl">Dashboard · imported from Grafana JSON</div>
+				<svg class="g" viewBox="0 0 420 160" role="img" aria-label="A dashboard with four panels: p95 latency, request rate, errors by service and error rate">
+					<rect class="d-box" x="0" y="0" width="205" height="75" rx="8"/><text class="d-s" x="12" y="20">p95 latency · checkout</text><text class="d-t" x="12" y="56" style="font-size:26px">182 ms</text>
+					<rect class="d-box" x="215" y="0" width="205" height="75" rx="8"/><text class="d-s" x="227" y="20">requests / s</text>
+					<polyline points="227,62 250,55 273,58 296,44 319,48 342,36 365,40 388,30 408,34" fill="none" stroke="var(--accent)" stroke-width="2"/>
+					<rect class="d-box" x="0" y="85" width="205" height="75" rx="8"/><text class="d-s" x="12" y="105">errors by service</text>
+					<rect x="12" y="116" width="120" height="9" rx="2" fill="var(--err)"/><rect x="12" y="130" width="64" height="9" rx="2" fill="var(--amber)"/><rect x="12" y="144" width="28" height="9" rx="2" fill="var(--line)"/>
+					<text class="d-s" x="140" y="124">payments</text><text class="d-s" x="84" y="138">cart</text><text class="d-s" x="48" y="152">shop</text>
+					<rect class="d-box" x="215" y="85" width="205" height="75" rx="8"/><text class="d-s" x="227" y="105">error rate</text><text class="d-t" x="227" y="141" style="font-size:26px">0.4%</text>
+					<polyline points="320,140 338,138 356,141 374,132 392,136 408,128" fill="none" stroke="var(--amber)" stroke-width="2"/>
+				</svg>
+				<div class="lbl">Rule to notification · about 15 s</div>
+				<svg class="g" viewBox="0 0 420 108" role="img" aria-label="An alert rule sends through an outbox with retries and silences to Slack, PagerDuty, email or a webhook">
+					<rect class="d-acc" x="0" y="28" width="138" height="52" rx="8"/><text class="d-t" x="12" y="50" style="font-size:14px">rule</text><text class="d-s" x="12" y="68">count &gt; 50 for 5m</text>
+					<path class="d-arrow" d="M138 54 L156 54" marker-end="url(#ah)"/>
+					<rect class="d-box" x="158" y="28" width="142" height="52" rx="8"/><text class="d-t" x="170" y="50" style="font-size:14px">outbox</text><text class="d-s" x="170" y="68">retries · silences</text>
+					<path class="d-arrow" d="M300 54 C310 54 308 15 314 15" marker-end="url(#ah)"/><path class="d-arrow" d="M300 54 C310 54 308 41 314 41" marker-end="url(#ah)"/>
+					<path class="d-arrow" d="M300 54 C310 54 308 67 314 67" marker-end="url(#ah)"/><path class="d-arrow" d="M300 54 C310 54 308 93 314 93" marker-end="url(#ah)"/>
+					<rect class="d-soft" x="316" y="4" width="104" height="22" rx="11"/><text class="d-s" x="368" y="19" text-anchor="middle">Slack</text>
+					<rect class="d-soft" x="316" y="30" width="104" height="22" rx="11"/><text class="d-s" x="368" y="45" text-anchor="middle">PagerDuty</text>
+					<rect class="d-soft" x="316" y="56" width="104" height="22" rx="11"/><text class="d-s" x="368" y="71" text-anchor="middle">Email</text>
+					<rect class="d-soft" x="316" y="82" width="104" height="22" rx="11"/><text class="d-s" x="368" y="97" text-anchor="middle">Webhook</text>
+				</svg>
+			</div>
+		</article>
+
+		<article class="feat" id="ai">
+			<div class="txt">
+				<div class="eyebrow">AI observability &amp; MCP</div>
+				<h2>Let your assistant read production</h2>
+				<ul>
+					<li><b>MCP server at /mcp</b>: Claude Code, Cursor, claude.ai and Claude Desktop can search logs, run SQL over them, inspect traces and service maps, and run PromQL.</li>
+					<li><b>Read-only</b>, with exactly the access your account has. Tokens work only on <code>/mcp</code>.</li>
+					<li><b>Browser sign-in</b> for claude.ai and Claude Desktop, with connected apps listed and revocable in your profile.</li>
+					<li><b>Multi-site aware</b>: one endpoint covers every Site you can access.</li>
+					<li><b>Claude Code usage</b> per project: cost, tokens, cache use and sessions.</li>
+				</ul>
+			</div>
+			<div class="specimen">
+				<div class="lbl">Claude, connected over MCP</div>
+				<div class="chat">
+					<div class="bubble me">Why did checkout start failing at 14:02?</div>
+					<div class="tools"><span>search_logs</span><span>log_patterns</span><span>log_context</span><span>get_trace</span></div>
+					<div class="bubble ai">payments-api timed out after 3 s on 41 requests from one pod, starting 30 s after the cart v42 rollout. Trace 9f2c… shows the wait in the card authorisation call.</div>
+				</div>
+				<div class="lbl">Connect Claude Code</div>
+				<pre>claude mcp add --transport http obzly \
+	https://obzly.harborline.example/mcp \
+	--header <span class="s">"Authorization: Bearer obz_pat_..."</span></pre>
+				<div class="lbl">Claude Code cost · this week</div>
+				<svg class="g" viewBox="0 0 420 108" role="img" aria-label="Claude Code cost per day this week, highest on Friday at 40 dollars">
+					<line x1="0" y1="86.5" x2="420" y2="86.5" stroke="var(--line)"/>
+					<rect x="10" y="58.1" width="40" height="27.9" rx="3" fill="var(--accent)" opacity="0.75"/><text class="d-s" x="30" y="52.1" text-anchor="middle">$18</text><text class="d-s" x="30" y="102" text-anchor="middle">Mon</text><rect x="68" y="48.8" width="40" height="37.2" rx="3" fill="var(--accent)" opacity="0.82"/><text class="d-s" x="88" y="42.8" text-anchor="middle">$24</text><text class="d-s" x="88" y="102" text-anchor="middle">Tue</text><rect x="126" y="38.0" width="40" height="48.0" rx="3" fill="var(--accent)" opacity="0.90"/><text class="d-s" x="146" y="32.0" text-anchor="middle">$31</text><text class="d-s" x="146" y="102" text-anchor="middle">Wed</text><rect x="184" y="51.9" width="40" height="34.1" rx="3" fill="var(--accent)" opacity="0.80"/><text class="d-s" x="204" y="45.9" text-anchor="middle">$22</text><text class="d-s" x="204" y="102" text-anchor="middle">Thu</text><rect x="242" y="24.0" width="40" height="62.0" rx="3" fill="var(--accent)" opacity="1.00"/><text class="d-s" x="262" y="18.0" text-anchor="middle">$40</text><text class="d-s" x="262" y="102" text-anchor="middle">Fri</text><rect x="300" y="67.4" width="40" height="18.6" rx="3" fill="var(--accent)" opacity="0.69"/><text class="d-s" x="320" y="61.4" text-anchor="middle">$12</text><text class="d-s" x="320" y="102" text-anchor="middle">Sat</text><rect x="358" y="72.0" width="40" height="14.0" rx="3" fill="var(--accent)" opacity="0.65"/><text class="d-s" x="378" y="66.0" text-anchor="middle">$9</text><text class="d-s" x="378" y="102" text-anchor="middle">Sun</text>
+				</svg>
+			</div>
+		</article>
+
+		<article class="feat" id="enterprise">
+			<div class="txt">
+				<div class="eyebrow">Enterprise</div>
+				<h2>Identity, scale and recovery</h2>
+				<ul>
+					<li><b>SSO</b> through any OIDC provider, with Microsoft Entra ID group mapping.</li>
+					<li><b>SCIM 2.0</b> from Okta or Entra ID; <b>TOTP MFA</b> required for admins, or for everyone with one switch.</li>
+					<li><b>Settings overview</b>: deployments, ingest and storage per Site, what needs attention, and readiness before each upgrade.</li>
+					<li><b>Organizations, teams and plans</b> with per-organization quotas.</li>
+					<li><b>High availability</b>: rolling updates with readiness draining, leases so each shard has one owner, no single query node.</li>
+					<li><b>Durable ingest</b>: losing an api pod, a worker or one broker loses no acknowledged data.</li>
+					<li><b>Disaster recovery</b> runbooks with a measured restore drill (RPO under a minute) and a weekly integrity audit.</li>
+					<li><b>Audit log</b> of every change and every denied request, with CSV export.</li>
+				</ul>
+			</div>
+			<div class="specimen">
+				<div class="lbl">Identity, from one place</div>
+				<svg class="g" viewBox="0 0 420 150" role="img" aria-label="An identity provider signs users in and provisions them over SCIM to the control plane, which grants access to each Site">
+					<rect class="d-box" x="0" y="48" width="112" height="56" rx="8"/><text class="d-t" x="12" y="69" style="font-size:14px">Identity</text><text class="d-t" x="12" y="91" style="font-size:14px">provider</text>
+					<path class="d-arrow" d="M112 76 L146 76" marker-end="url(#ah)"/><text class="d-a" x="116" y="68">OIDC</text><text class="d-a" x="116" y="94">SCIM</text>
+					<rect class="d-acc" x="148" y="34" width="124" height="84" rx="10"/><text class="d-t" x="162" y="58" style="font-size:14px">control plane</text>
+					<text class="d-s" x="162" y="78">orgs · teams</text><text class="d-s" x="162" y="96">MFA · audit log</text>
+					<path class="d-arrow" d="M272 62 C290 62 290 30 306 30" marker-end="url(#ah)"/><path class="d-arrow" d="M272 92 C290 92 290 122 306 122" marker-end="url(#ah)"/>
+					<text class="d-a" x="276" y="80">grants</text>
+					<rect class="d-box" x="308" y="10" width="112" height="40" rx="8"/><text class="d-s" x="320" y="35" style="fill:var(--fg)">Site · north</text>
+					<rect class="d-box" x="308" y="102" width="112" height="40" rx="8"/><text class="d-s" x="320" y="127" style="fill:var(--fg)">Site · south</text>
+				</svg>
+				<div class="lbl">Guardrails</div>
+				<div class="mini">
+					<div class="row"><span class="dot up"></span><span class="nm">Restore drill, recovery point</span><span class="v">under 1 min</span></div>
+					<div class="row"><span class="dot up"></span><span class="nm">Ingest buffer full</span><span class="v">429, client retries</span></div>
+					<div class="row"><span class="dot up"></span><span class="nm">Runaway query</span><span class="v">refused at 100 GiB</span></div>
+					<div class="row"><span class="dot up"></span><span class="nm">Audit log</span><span class="v">CSV export</span></div>
+				</div>
+			</div>
+		</article>
+	</div>
 </Marketing>

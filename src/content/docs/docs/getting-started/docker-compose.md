@@ -72,7 +72,10 @@ service's `environment:`. Common ones:
   limits and project IP allow-lists see real client IPs. Never use `0.0.0.0/0`.
 - `PUBLIC_URL`: the address users reach Obzly at, so [MCP clients](/docs/how-to/mcp/) get the right
   OAuth origin.
-- `ALERT_SMTP_*`: an SMTP relay so [alert rules](/docs/how-to/alerts/) can send email.
+
+Email (SMTP) for alert notifications and invites, and the notification channels themselves, are
+set up in **Obzly settings → Notifications & alerting**, not in the environment. See
+[Alerts & notifications](/docs/how-to/alerts/).
 
 ## Upgrade
 

@@ -3,7 +3,7 @@ title: Backup & restore
 description: What to back up in an Obzly deployment, how to do it, and the order to restore in.
 ---
 
-<!-- Source: obzly-dev/docs/runbooks/backup-restore.md -->
+<!-- Source: obzly-dev/docs/runbooks/backup-restore.md, obzly-dev/frontend/src/features/settings/ui/UpdatesComponent.tsx -->
 
 The targets: an **RPO of 5 minutes** for the catalog and identity data in Postgres, and **no
 loss** for segments already uploaded to object storage.
@@ -88,8 +88,8 @@ It isn't constrained to a single row, so:
    /app/main reconcile --apply --adopt-since 2026-10-06T11:00:00Z # repair; use your restore point
    ```
 
-5. **Start `api` and `querier`.** Check Settings → Upgrade status: schema up to date, no backlog
-   blockers.
+5. **Start `api` and `querier`.** Check the upgrade status in **Obzly settings → Updates** (expand
+   the deployment): schema up to date, no backlog blockers.
 
 On Docker Compose the same command is `docker exec -it obzly ./main reconcile`; on Kubernetes,
 `kubectl -n obzly exec deploy/obzly-worker -- ./main reconcile` (Helm) or
@@ -113,7 +113,7 @@ possibly in flight; `--projects` and `--streams` narrow a run.
 
 Every `INTEGRITY_AUDIT_HOURS` (168) a worker samples `INTEGRITY_AUDIT_PERCENT` (1%, at most
 `INTEGRITY_AUDIT_MAX_SAMPLES` = 500) of uploaded segments and checks that each object exists with
-the cataloged size and row count. Results appear in Settings → Upgrade status, in the
+the cataloged size and row count. Results appear in the upgrade status (**Obzly settings → Updates**), in the
 `obzly_integrity_audit_*` metrics, and in the `ObzlyIntegrityAuditFailures` /
 `ObzlyIntegrityAuditStale` alerts (see [Monitoring Obzly](/docs/operations/monitoring/)). On any
 failure, run `reconcile` (report only) and follow the findings above.

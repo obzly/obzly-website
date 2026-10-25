@@ -175,6 +175,34 @@ section { padding-block: 72px; }
 @media (max-width: 1000px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .grid { grid-template-columns: minmax(0, 1fr); } }
 
+/* Beyond the three signals */
+.beyond { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.beyond .pillar .note { font: 500 0.72rem var(--font-mono); color: var(--muted); }
+.mini { display: grid; gap: 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; font-size: 0.86rem; background: var(--bg); }
+.mini .row { display: grid; grid-template-columns: 14px minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 7px 10px; border-top: 1px solid var(--line); }
+.mini .row:first-child { border-top: 0; }
+.mini .row .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mini .row .v { font: 0.74rem var(--font-mono); color: var(--muted); white-space: nowrap; }
+.mini .folder { padding: 6px 10px; font: 500 0.72rem var(--font-mono); color: var(--muted); background: var(--surface-2); border-top: 1px solid var(--line); }
+.mini .folder:first-child { border-top: 0; }
+.mini .ind1 .nm { padding-left: 14px; } .mini .ind2 .nm { padding-left: 28px; } .mini .ind3 .nm { padding-left: 42px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.dot.up { background: var(--accent); } .dot.warn { background: var(--amber); } .dot.down { background: var(--err); }
+.dot.off { background: #5b8def; } .dot.unk { background: var(--muted); }
+.dot.imp { background: linear-gradient(90deg, var(--amber) 50%, transparent 50%); box-shadow: inset 0 0 0 1.5px var(--amber); }
+@media (max-width: 960px) { .beyond { grid-template-columns: minmax(0, 1fr); } }
+
+/* Feature graphics */
+.specimen .g { display: block; width: 100%; height: auto; }
+.chat { display: grid; gap: 8px; font-size: 0.9rem; }
+.bubble { padding: 9px 12px; border-radius: 12px; max-width: 92%; line-height: 1.45; }
+.bubble.me { justify-self: end; background: var(--accent-soft); border: 1px solid var(--accent); }
+.bubble.ai { justify-self: start; background: var(--surface-2); border: 1px solid var(--line); }
+.tools { display: flex; flex-wrap: wrap; gap: 6px; }
+.tools span { font: 0.72rem var(--font-mono); color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 2px 9px; background: var(--bg); }
+.tools span::before { content: "⚙ "; color: var(--accent); }
+.cell .ico { width: 30px; height: 30px; color: var(--accent); margin-bottom: 4px; }
+
 /* Shapes strip */
 .shapes { background: var(--surface); border-block: 1px solid var(--line); }
 .steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; position: relative; }
@@ -345,7 +373,7 @@ footer a:hover { color: var(--accent); }
         </div>
       </div>
       <div class="tail" aria-label="Example of the live tail view">
-        <div class="tail-bar"><span class="live">Live tail</span><span>checkout-prod · last 15 min</span></div>
+        <div class="tail-bar"><span class="live">Live tail</span><span>harborline-shop · last 15 min</span></div>
         <div class="tail-query">level:<span>error</span> OR level:<span>warn</span> service_name:<span>checkout</span></div>
         <ul class="tail-lines" id="tail"></ul>
         <div class="tail-foot" id="hist" aria-hidden="true"></div>
@@ -398,22 +426,81 @@ footer a:hover { color: var(--accent); }
   <section style="padding-top:0">
     <div class="wrap">
       <div class="section-head">
+        <div class="eyebrow">New in v0.55 and v0.56</div>
+        <h2>Beyond the three signals</h2>
+        <p class="lede">Check your endpoints from where your users are, and see every host, pod and cloud resource with its health, from the data you already send.</p>
+      </div>
+      <div class="beyond">
+        <article class="pillar">
+          <h3>Synthetic monitoring</h3>
+          <div class="mini" aria-label="Example monitors list">
+            <div class="folder">Payments/EU</div>
+            <div class="row"><span class="dot up"></span><span class="nm">api-gateway</span><span class="v">99.98% · 182 ms</span></div>
+            <div class="row"><span class="dot imp"></span><span class="nm">quotes-api</span><span class="v">impacted</span></div>
+            <div class="folder">Storefront</div>
+            <div class="row"><span class="dot warn"></span><span class="nm">shop.harborline.example</span><span class="v">cert 12 d</span></div>
+          </div>
+          <ul>
+            <li>HTTP with assertions, TLS, TCP, DNS and ICMP</li>
+            <li>Dependencies: one outage, one page</li>
+            <li>Probe groups that fail over within a minute</li>
+          </ul>
+          <a class="more" href="#features-synthetics">Synthetics in detail →</a>
+        </article>
+        <article class="pillar">
+          <h3>Infrastructure inventory</h3>
+          <div class="mini" aria-label="Example asset tree">
+            <div class="row"><span class="dot warn"></span><span class="nm">harbor-prod-1</span><span class="v">cluster</span></div>
+            <div class="row ind1"><span class="dot up"></span><span class="nm">shop</span><span class="v">namespace</span></div>
+            <div class="row ind2"><span class="dot warn"></span><span class="nm">cart</span><span class="v">2/3 ready</span></div>
+            <div class="row ind3"><span class="dot down"></span><span class="nm">cart-5d8f-q2x7r</span><span class="v">CrashLoop</span></div>
+          </div>
+          <ul>
+            <li>Clusters to containers, hosts and services</li>
+            <li>Health with the reason, and a change feed</li>
+            <li>Nothing to install: built from your data</li>
+          </ul>
+          <a class="more" href="#features-infrastructure">Infrastructure in detail →</a>
+        </article>
+        <article class="pillar">
+          <h3>Cloud connections</h3>
+          <div class="mini" aria-label="Example cloud connections">
+            <div class="row"><span class="dot up"></span><span class="nm">AWS · 111122223333</span><span class="v">4 regions</span></div>
+            <div class="row"><span class="dot up"></span><span class="nm">Azure · harborline-prod</span><span class="v">1 subscription</span></div>
+            <div class="row"><span class="dot unk"></span><span class="nm">Load balancers · databases · buckets</span><span class="v">212</span></div>
+          </div>
+          <ul>
+            <li>Read-only access to AWS and Azure</li>
+            <li>A wizard writes the CloudFormation or Bicep</li>
+            <li>Obzly stores identifiers, never cloud keys</li>
+          </ul>
+          <a class="more" href="#features-infrastructure">Cloud connections in detail →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
         <div class="eyebrow">How it works</div>
         <h2>OTLP in, Parquet on S3</h2>
         <p class="lede">A batch is acknowledged only once the JetStream buffer has stored it. Workers write ZSTD Parquet to object storage, and queriers read it back with a warm cache.</p>
       </div>
       <figure class="diagram" style="margin:0">
         <svg viewBox="0 0 960 330" role="img" aria-labelledby="hiw-t">
-          <title id="hiw-t">Data flows from your services into the api role, through the JetStream buffer to workers that write Parquet to object storage; queriers read it back for searches, dashboards, PromQL, Jaeger and MCP.</title>
+          <title id="hiw-t">Data flows from your services and synthetic probes into the api role, through the JetStream buffer to workers that write Parquet to object storage; queriers read it back for searches, dashboards, PromQL, Jaeger and MCP.</title>
           <text class="d-l" x="20" y="20">Your services</text>
           <rect class="d-box" x="20" y="30" width="184" height="34" rx="7"/><text class="d-s" x="34" y="51">App SDKs · OTLP</text>
           <rect class="d-box" x="20" y="72" width="184" height="34" rx="7"/><text class="d-s" x="34" y="93">OTel Collector</text>
           <rect class="d-box" x="20" y="114" width="184" height="34" rx="7"/><text class="d-s" x="34" y="135">Prometheus remote-write</text>
           <rect class="d-box" x="20" y="156" width="184" height="34" rx="7"/><text class="d-s" x="34" y="177">HTTP JSON · curl</text>
+          <rect class="d-amb" x="20" y="198" width="184" height="30" rx="7"/><text class="d-s" x="34" y="217">obzly-probe · synthetics</text>
           <path class="d-arrow" d="M204 47 C218 47 216 100 228 100" marker-end="url(#ah)"/>
           <path class="d-arrow" d="M204 89 C218 89 216 104 228 104" marker-end="url(#ah)"/>
           <path class="d-arrow" d="M204 131 C218 131 216 110 228 110" marker-end="url(#ah)"/>
           <path class="d-arrow" d="M204 173 C218 173 216 114 228 114" marker-end="url(#ah)"/>
+          <path class="d-arrow" d="M204 213 C220 213 216 118 228 118" marker-end="url(#ah)"/>
 
           <rect class="d-acc" x="230" y="36" width="140" height="270" rx="10"/>
           <text class="d-t" x="248" y="64">api</text>
@@ -426,10 +513,10 @@ footer a:hover { color: var(--accent); }
           <text class="d-s" x="248" y="252">UI · PromQL</text>
           <text class="d-s" x="248" y="268">Jaeger · /mcp</text>
 
-          <text class="d-l" x="20" y="238">You</text>
-          <rect class="d-box" x="20" y="248" width="184" height="48" rx="7"/>
-          <text class="d-s" x="34" y="268">Browser · Grafana</text><text class="d-s" x="34" y="284">Claude · Cursor</text>
-          <path class="d-arrow" d="M204 272 L228 272" marker-end="url(#ah)" marker-start="url(#ah)"/>
+          <text class="d-l" x="20" y="244">You</text>
+          <rect class="d-box" x="20" y="252" width="184" height="48" rx="7"/>
+          <text class="d-s" x="34" y="272">Browser · Grafana</text><text class="d-s" x="34" y="288">Claude · Cursor</text>
+          <path class="d-arrow" d="M204 276 L228 276" marker-end="url(#ah)" marker-start="url(#ah)"/>
 
           <path class="d-arrow acc" d="M370 112 L418 112" marker-end="url(#aha)"/>
           <rect class="d-box" x="420" y="66" width="150" height="92" rx="10"/>
@@ -475,18 +562,22 @@ footer a:hover { color: var(--accent); }
         <h2>Everything a platform team asks for in the first month</h2>
       </div>
       <div class="grid">
-        <div class="cell"><span class="tag">logs</span><h3>Patterns and anomalies</h3><p>New, spiking and dropping patterns compared with an earlier period, with alerts on new error patterns.</p></div>
-        <div class="cell"><span class="tag">logs</span><h3>Log context</h3><p>See the logs around any result from the same source, to find what led up to an error.</p></div>
-        <div class="cell"><span class="tag">logs → traces</span><h3>Log to trace</h3><p>Jump from a log line to its trace. Kubernetes rollout markers show on the histogram.</p></div>
-        <div class="cell"><span class="tag">dashboards</span><h3>Grafana import</h3><p>Build dashboards, or import Grafana and OpenObserve dashboard JSON.</p></div>
-        <div class="cell"><span class="tag">incidents</span><h3>Incidents</h3><p>Error logs, failed spans and their shared traces grouped into incident sessions.</p></div>
-        <div class="cell"><span class="tag">alerting</span><h3>Alerts in ~15 s</h3><p>Rules over PromQL, log searches or trace latency, sent to webhooks, Slack, PagerDuty or email.</p></div>
-        <div class="cell"><span class="tag">ai</span><h3>AI observability</h3><p>Claude Code usage per project: cost, tokens, cache use and sessions.</p></div>
-        <div class="cell"><span class="tag">/mcp</span><h3>MCP server</h3><p>Claude and Cursor search logs, inspect traces and run PromQL with your own access.</p></div>
-        <div class="cell"><span class="tag">35+ sources</span><h3>Generated configs</h3><p>Pick Nginx, Postgres, Kafka, Kubernetes and more; get a ready-to-run Collector config.</p></div>
-        <div class="cell"><span class="tag">lifecycle</span><h3>Retention and sampling</h3><p>Retention per project and signal, tail sampling that keeps whole traces, log head sampling.</p></div>
-        <div class="cell"><span class="tag">governance</span><h3>Audit log and API keys</h3><p>Who changed what and when. Keys show last use, and unused keys are easy to clean up.</p></div>
-        <div class="cell"><span class="tag">self-monitoring</span><h3>Watch Obzly itself</h3><p>Prometheus metrics on every role, a ready Grafana dashboard and SLO alert rules.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18"/><path d="M6 16v-3M10 16V8M14 16v-5M18 16V5"/><path d="M17 3l2 2 2-2" /></svg><span class="tag">logs</span><h3>Patterns and anomalies</h3><p>New, spiking and dropping patterns compared with an earlier period, with alerts on new error patterns.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16M4 9h10"/><rect x="3" y="11.5" width="18" height="3.5" rx="1"/><path d="M4 18h12M4 21h8"/></svg><span class="tag">logs</span><h3>Log context</h3><p>See the logs around any result from the same source, to find what led up to an error.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h8M3 9h6"/><path d="M11 7h3l2 3"/><rect x="9" y="12" width="12" height="3" rx="1"/><rect x="12" y="17" width="7" height="3" rx="1"/></svg><span class="tag">logs → traces</span><h3>Log to trace</h3><p>Jump from a log line to its trace. Kubernetes rollout markers show on the histogram.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><path d="M17 13v8M13 17h8"/></svg><span class="tag">dashboards</span><h3>Grafana import</h3><p>Build dashboards, or import Grafana and OpenObserve dashboard JSON.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9.5 16.5h-19z"/><path d="M12 10v4M12 17.2v.3"/></svg><span class="tag">incidents</span><h3>Incidents</h3><p>Error logs, failed spans and their shared traces grouped into incident sessions.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 21h4"/></svg><span class="tag">alerting</span><h3>Alerts in ~15 s</h3><p>Rules over PromQL, log searches or trace latency, sent to webhooks, Slack, PagerDuty or email.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2 2.2.8-2.2.8L19 21l-.8-2.2-2.2-.8 2.2-.8z"/></svg><span class="tag">ai</span><h3>AI observability</h3><p>Claude Code usage per project: cost, tokens, cache use and sessions.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3v5M15 3v5"/><path d="M6 8h12v3a6 6 0 0 1-12 0z"/><path d="M12 17v4"/></svg><span class="tag">/mcp</span><h3>MCP server</h3><p>Claude and Cursor search logs, inspect traces and run PromQL with your own access.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5.5" rx="8" ry="2.5"/><path d="M4 5.5v6c0 1.4 3.6 2.5 8 2.5s8-1.1 8-2.5v-6"/><path d="M4 11.5v6c0 1.4 3.6 2.5 8 2.5s8-1.1 8-2.5v-6"/></svg><span class="tag">35+ sources</span><h3>Generated configs</h3><p>Pick Nginx, Postgres, Kafka, Kubernetes and more; get a ready-to-run Collector config.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2"/><path d="M9 2h6"/></svg><span class="tag">lifecycle</span><h3>Retention and sampling</h3><p>Retention per project and signal, tail sampling that keeps whole traces, log head sampling.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3M21 12v2"/></svg><span class="tag">governance</span><h3>Audit log and API keys</h3><p>Who changed what and when. Keys show last use, and unused keys are easy to clean up.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5H9l2 2h8.5A1.5 1.5 0 0 1 21 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5z"/><path d="M12 11v4M10 13h4" /></svg><span class="tag">synthetics</span><h3>Folders and dependencies</h3><p>Group monitors in folders. A child of a down parent shows Impacted and stays quiet.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="2.5"/><circle cx="12" cy="12" r="2.5"/><circle cx="19" cy="12" r="2.5"/><path d="M5 5.5a9 9 0 0 1 14 0M5 18.5a9 9 0 0 0 14 0"/></svg><span class="tag">probe groups</span><h3>Probes that fail over</h3><p>Run several probes per location. If one stops, the others take its monitors within a minute.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .5-8 6 6 0 0 0-11.4-1.5A4.5 4.5 0 0 0 7 18z"/></svg><span class="tag">inventory</span><h3>Cloud resources</h3><p>Load balancers, databases, buckets and functions from AWS and Azure join your hosts and clusters.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="2.5"/><circle cx="19" cy="5" r="2.5"/><circle cx="19" cy="12" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="M7.5 12h9M7 10.8l9.6-4.6M7 13.2l9.6 4.6"/></svg><span class="tag">settings</span><h3>Shared channels</h3><p>Slack, PagerDuty, webhook and email channels defined once and shared by every project.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12h4l2-5 4 10 2-5h8"/></svg><span class="tag">self-monitoring</span><h3>Watch Obzly itself</h3><p>Prometheus metrics on every role, a ready Grafana dashboard and SLO alert rules.</p></div>
       </div>
     </div>
   </section>
@@ -537,7 +628,7 @@ footer a:hover { color: var(--accent); }
       <div class="ent-grid">
         <div><h3>SSO with any OIDC provider</h3><p>Entra ID, Google Workspace, Cognito and others. IdP groups map to project and Site roles.</p></div>
         <div><h3>SCIM 2.0 provisioning</h3><p>Users and groups from Okta or Entra ID into organizations and teams. Deprovisioning deactivates.</p></div>
-        <div><h3>TOTP MFA</h3><p>Required for admins, optional for members, with a reset path that lands in the audit log.</p></div>
+        <div><h3>TOTP MFA</h3><p>Required for admins. One switch in Settings requires it for everyone, and every reset lands in the audit log.</p></div>
         <div><h3>Multi-site control plane</h3><p>Central identities and per-Site access grants. A Site's query API never faces the internet.</p></div>
         <div><h3>Disaster recovery</h3><p>Backup, restore, DR and upgrade runbooks, a measured restore drill and <code style="background:transparent;border-color:var(--hero-line);color:var(--hero-fg)">obzly reconcile</code>.</p></div>
         <div><h3>Quotas and plans</h3><p>Ingest rate, storage, retention and project limits per organization, enforced on every Site.</p></div>
@@ -572,6 +663,7 @@ footer a:hover { color: var(--accent); }
       <p class="lede">Every feature on this page is in the open source image. Nothing here needs a licence key.</p>
       <nav class="jump" aria-label="Feature sections">
         <a href="#features-logs">Logs</a><a href="#features-traces">Traces</a><a href="#features-metrics">Metrics</a>
+        <a href="#features-synthetics">Synthetics</a><a href="#features-infrastructure">Infrastructure</a>
         <a href="#features-dashboards">Dashboards &amp; Alerts</a><a href="#features-ai">AI observability &amp; MCP</a><a href="#features-enterprise">Enterprise</a>
       </nav>
     </div>
@@ -591,10 +683,21 @@ footer a:hover { color: var(--accent); }
       </div>
       <div class="specimen">
         <div class="lbl">Search bar</div>
-        <pre><span class="k">level</span>:error <span class="k">service_name</span>:api <span class="s">"timeout"</span></pre>
-        <div class="lbl">Attribute names are PromQL-safe</div>
-        <pre><span class="c">resource.k8s.pod.name</span>  →  <span class="k">k8s_pod_name</span>
-<span class="c">system.cpu.time</span>        →  <span class="k">system_cpu_time</span></pre>
+        <pre><span class="k">level</span>:error <span class="k">service_name</span>:checkout <span class="s">"timeout"</span></pre>
+        <div class="lbl">Volume · errors in red · last hour</div>
+        <svg class="g" viewBox="0 0 420 122" role="img" aria-label="Log volume histogram: errors jump right after a rollout of cart v42">
+          <rect x="4.0" y="72.5" width="10" height="26.2" rx="1.5" fill="var(--line)"/><rect x="4.0" y="98.8" width="10" height="1.2" rx="1.5" fill="var(--err)"/><rect x="18.6" y="67.5" width="10" height="30.0" rx="1.5" fill="var(--line)"/><rect x="18.6" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="33.2" y="70.0" width="10" height="28.8" rx="1.5" fill="var(--line)"/><rect x="33.2" y="98.8" width="10" height="1.2" rx="1.5" fill="var(--err)"/><rect x="47.8" y="62.5" width="10" height="35.0" rx="1.5" fill="var(--line)"/><rect x="47.8" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="62.4" y="65.0" width="10" height="33.8" rx="1.5" fill="var(--line)"/><rect x="62.4" y="98.8" width="10" height="1.2" rx="1.5" fill="var(--err)"/><rect x="77.0" y="58.8" width="10" height="38.8" rx="1.5" fill="var(--line)"/><rect x="77.0" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="91.6" y="63.8" width="10" height="33.8" rx="1.5" fill="var(--line)"/><rect x="91.6" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="106.2" y="66.2" width="10" height="32.5" rx="1.5" fill="var(--line)"/><rect x="106.2" y="98.8" width="10" height="1.2" rx="1.5" fill="var(--err)"/><rect x="120.8" y="61.2" width="10" height="36.2" rx="1.5" fill="var(--line)"/><rect x="120.8" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="135.4" y="56.2" width="10" height="41.2" rx="1.5" fill="var(--line)"/><rect x="135.4" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="150.0" y="62.5" width="10" height="36.2" rx="1.5" fill="var(--line)"/><rect x="150.0" y="98.8" width="10" height="1.2" rx="1.5" fill="var(--err)"/><rect x="164.6" y="65.0" width="10" height="32.5" rx="1.5" fill="var(--line)"/><rect x="164.6" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="179.2" y="60.0" width="10" height="37.5" rx="1.5" fill="var(--line)"/><rect x="179.2" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="193.8" y="55.0" width="10" height="42.5" rx="1.5" fill="var(--line)"/><rect x="193.8" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="208.4" y="57.5" width="10" height="41.2" rx="1.5" fill="var(--line)"/><rect x="208.4" y="98.8" width="10" height="1.2" rx="1.5" fill="var(--err)"/><rect x="223.0" y="52.5" width="10" height="45.0" rx="1.5" fill="var(--line)"/><rect x="223.0" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="237.6" y="56.2" width="10" height="41.2" rx="1.5" fill="var(--line)"/><rect x="237.6" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="252.2" y="27.5" width="10" height="46.2" rx="1.5" fill="var(--line)"/><rect x="252.2" y="73.8" width="10" height="26.2" rx="1.5" fill="var(--err)"/><rect x="266.8" y="20.0" width="10" height="47.5" rx="1.5" fill="var(--line)"/><rect x="266.8" y="67.5" width="10" height="32.5" rx="1.5" fill="var(--err)"/><rect x="281.4" y="23.8" width="10" height="48.8" rx="1.5" fill="var(--line)"/><rect x="281.4" y="72.5" width="10" height="27.5" rx="1.5" fill="var(--err)"/><rect x="296.0" y="35.0" width="10" height="47.5" rx="1.5" fill="var(--line)"/><rect x="296.0" y="82.5" width="10" height="17.5" rx="1.5" fill="var(--err)"/><rect x="310.6" y="45.0" width="10" height="46.2" rx="1.5" fill="var(--line)"/><rect x="310.6" y="91.2" width="10" height="8.8" rx="1.5" fill="var(--err)"/><rect x="325.2" y="50.0" width="10" height="45.0" rx="1.5" fill="var(--line)"/><rect x="325.2" y="95.0" width="10" height="5.0" rx="1.5" fill="var(--err)"/><rect x="339.8" y="53.8" width="10" height="42.5" rx="1.5" fill="var(--line)"/><rect x="339.8" y="96.2" width="10" height="3.8" rx="1.5" fill="var(--err)"/><rect x="354.4" y="56.2" width="10" height="41.2" rx="1.5" fill="var(--line)"/><rect x="354.4" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="369.0" y="58.8" width="10" height="38.8" rx="1.5" fill="var(--line)"/><rect x="369.0" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="383.6" y="61.2" width="10" height="36.2" rx="1.5" fill="var(--line)"/><rect x="383.6" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="398.2" y="62.5" width="10" height="36.2" rx="1.5" fill="var(--line)"/><rect x="398.2" y="98.8" width="10" height="1.2" rx="1.5" fill="var(--err)"/>
+          <line x1="249.2" y1="6" x2="249.2" y2="100" stroke="var(--amber)" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <text class="d-a" x="243.2" y="14" text-anchor="end" style="fill:var(--amber)">rollout · cart v42</text>
+          <line x1="0" y1="100.5" x2="420" y2="100.5" stroke="var(--line)"/>
+          <text class="d-s" x="4" y="116">13:30</text><text class="d-s" x="210" y="116" text-anchor="middle">14:00</text><text class="d-s" x="416" y="116" text-anchor="end">14:30</text>
+        </svg>
+        <div class="lbl">Patterns · against yesterday</div>
+        <div class="mini">
+          <div class="row"><span class="dot down"></span><span class="nm"><code>payment provider timeout after &lt;*&gt; ms</code></span><span class="v">new · 1.2k</span></div>
+          <div class="row"><span class="dot warn"></span><span class="nm"><code>upstream payments returned &lt;*&gt;</code></span><span class="v">spiking · ×9</span></div>
+          <div class="row"><span class="dot up"></span><span class="nm"><code>POST /api/orders &lt;*&gt; in &lt;*&gt;ms</code></span><span class="v">steady · 48k</span></div>
+        </div>
       </div>
     </article>
 
@@ -611,11 +714,25 @@ footer a:hover { color: var(--accent); }
         </ul>
       </div>
       <div class="specimen">
+        <div class="lbl">Service map · harborline-shop</div>
+        <svg class="g" viewBox="0 0 420 150" role="img" aria-label="Service map: frontend calls checkout, which calls payments-api, cart and orders-db; the payments edge shows errors">
+          <path class="d-arrow" d="M100 75 L148 75" marker-end="url(#ah)"/>
+          <path class="d-arrow" d="M240 70 C270 70 270 25 298 25" marker-end="url(#ah)" style="stroke:var(--amber)"/>
+          <path class="d-arrow" d="M240 75 L298 75" marker-end="url(#ah)"/>
+          <path class="d-arrow" d="M240 80 C270 80 270 125 298 125" marker-end="url(#ah)"/>
+          <rect class="d-box" x="4" y="58" width="96" height="34" rx="17"/><text class="d-s" x="52" y="79" text-anchor="middle">frontend</text>
+          <rect class="d-acc" x="150" y="58" width="90" height="34" rx="17"/><text class="d-s" x="195" y="79" text-anchor="middle">checkout</text>
+          <rect class="d-amb" x="300" y="8" width="116" height="34" rx="17"/><text class="d-s" x="358" y="29" text-anchor="middle">payments-api</text>
+          <rect class="d-box" x="300" y="58" width="116" height="34" rx="17"/><text class="d-s" x="358" y="79" text-anchor="middle">cart</text>
+          <rect class="d-box" x="300" y="108" width="116" height="34" rx="17"/><text class="d-s" x="358" y="129" text-anchor="middle">orders-db</text>
+          <text class="d-a" x="104" y="66">120 rps</text>
+          <text class="d-a" x="244" y="20" style="fill:var(--amber)">2.1% err</text>
+        </svg>
         <div class="lbl">Trace · POST /checkout · 412 ms</div>
-        <svg viewBox="0 0 420 150" role="img" aria-label="Example trace waterfall with five spans">
-          <g class="d-s"><text x="0" y="16">frontend</text><text x="0" y="44">checkout</text><text x="0" y="72">payments</text><text x="0" y="100">postgres</text><text x="0" y="128">kafka</text></g>
-          <rect x="90" y="6" width="320" height="14" rx="3" fill="var(--accent)"/>
-          <rect x="110" y="34" width="270" height="14" rx="3" fill="var(--accent)" opacity="0.75"/>
+        <svg class="g" viewBox="0 0 420 150" role="img" aria-label="Example trace waterfall with five spans; the payments span is slow">
+          <g class="d-s"><text x="0" y="16">frontend</text><text x="0" y="44">checkout</text><text x="0" y="72">payments-api</text><text x="0" y="100">orders-db</text><text x="0" y="128">cart</text></g>
+          <rect x="96" y="6" width="314" height="14" rx="3" fill="var(--accent)"/>
+          <rect x="114" y="34" width="266" height="14" rx="3" fill="var(--accent)" opacity="0.75"/>
           <rect x="140" y="62" width="190" height="14" rx="3" fill="var(--amber)"/>
           <rect x="150" y="90" width="60" height="14" rx="3" fill="var(--accent)" opacity="0.5"/>
           <rect x="340" y="118" width="34" height="14" rx="3" fill="var(--accent)" opacity="0.5"/>
@@ -638,10 +755,97 @@ footer a:hover { color: var(--accent); }
       <div class="specimen">
         <div class="lbl">PromQL, no quoting needed</div>
         <pre><span class="k">sum by</span> (k8s_pod_name) (system_cpu_time)</pre>
-        <svg viewBox="0 0 420 110" role="img" aria-label="Example metric line chart">
+        <svg class="g" viewBox="0 0 420 110" role="img" aria-label="Example metric line chart with two series">
           <g stroke="var(--line)" stroke-width="1"><line x1="0" y1="20" x2="420" y2="20"/><line x1="0" y1="55" x2="420" y2="55"/><line x1="0" y1="90" x2="420" y2="90"/></g>
           <polyline points="0,80 40,70 80,74 120,52 160,58 200,40 240,46 280,28 320,34 360,22 400,30 420,26" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
           <polyline points="0,92 40,88 80,90 120,82 160,84 200,76 240,80 280,70 320,74 360,66 400,70 420,68" fill="none" stroke="var(--amber)" stroke-width="2"/>
+        </svg>
+        <div class="lbl">Rollups · long ranges read fewer points</div>
+        <svg class="g" viewBox="0 0 420 84" role="img" aria-label="Raw samples, a 5-minute rollup and a 1-hour rollup, each with fewer points">
+          <text class="d-s" x="0" y="18">raw</text><circle cx="64" cy="14" r="1.6" fill="var(--accent)"/><circle cx="69" cy="14" r="1.6" fill="var(--accent)"/><circle cx="74" cy="14" r="1.6" fill="var(--accent)"/><circle cx="79" cy="14" r="1.6" fill="var(--accent)"/><circle cx="84" cy="14" r="1.6" fill="var(--accent)"/><circle cx="89" cy="14" r="1.6" fill="var(--accent)"/><circle cx="94" cy="14" r="1.6" fill="var(--accent)"/><circle cx="99" cy="14" r="1.6" fill="var(--accent)"/><circle cx="104" cy="14" r="1.6" fill="var(--accent)"/><circle cx="109" cy="14" r="1.6" fill="var(--accent)"/><circle cx="114" cy="14" r="1.6" fill="var(--accent)"/><circle cx="119" cy="14" r="1.6" fill="var(--accent)"/><circle cx="124" cy="14" r="1.6" fill="var(--accent)"/><circle cx="129" cy="14" r="1.6" fill="var(--accent)"/><circle cx="134" cy="14" r="1.6" fill="var(--accent)"/><circle cx="139" cy="14" r="1.6" fill="var(--accent)"/><circle cx="144" cy="14" r="1.6" fill="var(--accent)"/><circle cx="149" cy="14" r="1.6" fill="var(--accent)"/><circle cx="154" cy="14" r="1.6" fill="var(--accent)"/><circle cx="159" cy="14" r="1.6" fill="var(--accent)"/><circle cx="164" cy="14" r="1.6" fill="var(--accent)"/><circle cx="169" cy="14" r="1.6" fill="var(--accent)"/><circle cx="174" cy="14" r="1.6" fill="var(--accent)"/><circle cx="179" cy="14" r="1.6" fill="var(--accent)"/><circle cx="184" cy="14" r="1.6" fill="var(--accent)"/><circle cx="189" cy="14" r="1.6" fill="var(--accent)"/><circle cx="194" cy="14" r="1.6" fill="var(--accent)"/><circle cx="199" cy="14" r="1.6" fill="var(--accent)"/><circle cx="204" cy="14" r="1.6" fill="var(--accent)"/><circle cx="209" cy="14" r="1.6" fill="var(--accent)"/><circle cx="214" cy="14" r="1.6" fill="var(--accent)"/><circle cx="219" cy="14" r="1.6" fill="var(--accent)"/><circle cx="224" cy="14" r="1.6" fill="var(--accent)"/><circle cx="229" cy="14" r="1.6" fill="var(--accent)"/><circle cx="234" cy="14" r="1.6" fill="var(--accent)"/><circle cx="239" cy="14" r="1.6" fill="var(--accent)"/><circle cx="244" cy="14" r="1.6" fill="var(--accent)"/><circle cx="249" cy="14" r="1.6" fill="var(--accent)"/><circle cx="254" cy="14" r="1.6" fill="var(--accent)"/><circle cx="259" cy="14" r="1.6" fill="var(--accent)"/><circle cx="264" cy="14" r="1.6" fill="var(--accent)"/><circle cx="269" cy="14" r="1.6" fill="var(--accent)"/><circle cx="274" cy="14" r="1.6" fill="var(--accent)"/><circle cx="279" cy="14" r="1.6" fill="var(--accent)"/><circle cx="284" cy="14" r="1.6" fill="var(--accent)"/><circle cx="289" cy="14" r="1.6" fill="var(--accent)"/><circle cx="294" cy="14" r="1.6" fill="var(--accent)"/><circle cx="299" cy="14" r="1.6" fill="var(--accent)"/><circle cx="304" cy="14" r="1.6" fill="var(--accent)"/><circle cx="309" cy="14" r="1.6" fill="var(--accent)"/><circle cx="314" cy="14" r="1.6" fill="var(--accent)"/><circle cx="319" cy="14" r="1.6" fill="var(--accent)"/><circle cx="324" cy="14" r="1.6" fill="var(--accent)"/><circle cx="329" cy="14" r="1.6" fill="var(--accent)"/><circle cx="334" cy="14" r="1.6" fill="var(--accent)"/><circle cx="339" cy="14" r="1.6" fill="var(--accent)"/><circle cx="344" cy="14" r="1.6" fill="var(--accent)"/><circle cx="349" cy="14" r="1.6" fill="var(--accent)"/><circle cx="354" cy="14" r="1.6" fill="var(--accent)"/><circle cx="359" cy="14" r="1.6" fill="var(--accent)"/><circle cx="364" cy="14" r="1.6" fill="var(--accent)"/><circle cx="369" cy="14" r="1.6" fill="var(--accent)"/><circle cx="374" cy="14" r="1.6" fill="var(--accent)"/><circle cx="379" cy="14" r="1.6" fill="var(--accent)"/><circle cx="384" cy="14" r="1.6" fill="var(--accent)"/><circle cx="389" cy="14" r="1.6" fill="var(--accent)"/><circle cx="394" cy="14" r="1.6" fill="var(--accent)"/><circle cx="399" cy="14" r="1.6" fill="var(--accent)"/><circle cx="404" cy="14" r="1.6" fill="var(--accent)"/><circle cx="409" cy="14" r="1.6" fill="var(--accent)"/><circle cx="414" cy="14" r="1.6" fill="var(--accent)"/><circle cx="419" cy="14" r="1.6" fill="var(--accent)"/>
+          <text class="d-s" x="0" y="46">5 min</text><circle cx="64" cy="42" r="2.6" fill="var(--accent)"/><circle cx="84" cy="42" r="2.6" fill="var(--accent)"/><circle cx="104" cy="42" r="2.6" fill="var(--accent)"/><circle cx="124" cy="42" r="2.6" fill="var(--accent)"/><circle cx="144" cy="42" r="2.6" fill="var(--accent)"/><circle cx="164" cy="42" r="2.6" fill="var(--accent)"/><circle cx="184" cy="42" r="2.6" fill="var(--accent)"/><circle cx="204" cy="42" r="2.6" fill="var(--accent)"/><circle cx="224" cy="42" r="2.6" fill="var(--accent)"/><circle cx="244" cy="42" r="2.6" fill="var(--accent)"/><circle cx="264" cy="42" r="2.6" fill="var(--accent)"/><circle cx="284" cy="42" r="2.6" fill="var(--accent)"/><circle cx="304" cy="42" r="2.6" fill="var(--accent)"/><circle cx="324" cy="42" r="2.6" fill="var(--accent)"/><circle cx="344" cy="42" r="2.6" fill="var(--accent)"/><circle cx="364" cy="42" r="2.6" fill="var(--accent)"/><circle cx="384" cy="42" r="2.6" fill="var(--accent)"/><circle cx="404" cy="42" r="2.6" fill="var(--accent)"/>
+          <text class="d-s" x="0" y="74">1 hour</text><circle cx="64" cy="70" r="3.6" fill="var(--accent)"/><circle cx="124" cy="70" r="3.6" fill="var(--accent)"/><circle cx="184" cy="70" r="3.6" fill="var(--accent)"/><circle cx="244" cy="70" r="3.6" fill="var(--accent)"/><circle cx="304" cy="70" r="3.6" fill="var(--accent)"/><circle cx="364" cy="70" r="3.6" fill="var(--accent)"/>
+        </svg>
+      </div>
+    </article>
+
+    <article class="feat" id="features-synthetics">
+      <div class="txt">
+        <div class="eyebrow">Synthetics</div>
+        <h2>Know an endpoint is down before your users do</h2>
+        <ul>
+          <li><b>Checks</b>: HTTP with assertions on status, latency, headers and JSON; TLS certificates (expiry, chain, protocol, self-signed allowed per monitor); TCP; DNS; ICMP.</li>
+          <li><b>Your own locations</b>: <code>obzly-probe</code> runs as a Linux service, a container or a Helm release, inside your network or out on the internet.</li>
+          <li><b>Probe groups</b>: several instances per location share the monitors. If one stops, the others take over within a minute.</li>
+          <li><b>Test</b> runs an unsaved monitor from every location in seconds, with a timing waterfall from DNS to transfer.</li>
+          <li><b>Folders and dependencies</b>: while a parent is down its children show Impacted and their alerts stay quiet, so an outage pages once.</li>
+          <li><b>Alerts per monitor</b> through the shared channels: down, degraded, or a certificate about to expire.</li>
+          <li><b>YAML import and export</b> with a preview, for reviewing monitors in git.</li>
+        </ul>
+        <p class="lede" style="font-size:0.95rem">Synthetics runs on a control plane. Results land in a Site project as ordinary metrics, so dashboards and PromQL work on them too.</p>
+      </div>
+      <div class="specimen">
+        <div class="lbl">Monitors · 3 locations</div>
+        <div class="mini">
+          <div class="folder">Payments/EU</div>
+          <div class="row"><span class="dot down"></span><span class="nm">api-gateway</span><span class="v">down · 2 of 3</span></div>
+          <div class="row ind1"><span class="dot imp"></span><span class="nm">quotes-api</span><span class="v">impacted · muted</span></div>
+          <div class="row ind1"><span class="dot imp"></span><span class="nm">payments-api</span><span class="v">impacted · muted</span></div>
+          <div class="folder">Storefront</div>
+          <div class="row"><span class="dot up"></span><span class="nm">shop.harborline.example</span><span class="v">99.99% · 240 ms</span></div>
+          <div class="row"><span class="dot warn"></span><span class="nm">TLS mail.harborline.example</span><span class="v">cert 12 d</span></div>
+        </div>
+        <div class="lbl">api-gateway · availability, last 2 hours</div>
+        <svg class="g" viewBox="0 0 420 84" role="img" aria-label="Availability strips for three locations: two locations fail for the last few runs">
+          <text class="d-s" x="0" y="17">edge-north</text><rect x="96.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="109.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="123.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="136.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="150.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="163.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="177.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="190.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="204.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="217.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="231.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="244.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="258.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="271.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="285.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="298.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="312.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="325.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="339.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="352.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="366.0" y="4" width="11" height="18" rx="2" fill="var(--err)"/><rect x="379.5" y="4" width="11" height="18" rx="2" fill="var(--err)"/><rect x="393.0" y="4" width="11" height="18" rx="2" fill="var(--err)"/><rect x="406.5" y="4" width="11" height="18" rx="2" fill="var(--err)"/>
+          <text class="d-s" x="0" y="45">edge-south</text><rect x="96.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="109.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="123.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="136.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="150.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="163.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="177.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="190.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="204.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="217.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="231.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="244.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="258.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="271.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="285.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="298.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="312.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="325.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="339.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="352.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="366.0" y="32" width="11" height="18" rx="2" fill="var(--amber)"/><rect x="379.5" y="32" width="11" height="18" rx="2" fill="var(--err)"/><rect x="393.0" y="32" width="11" height="18" rx="2" fill="var(--err)"/><rect x="406.5" y="32" width="11" height="18" rx="2" fill="var(--err)"/>
+          <text class="d-s" x="0" y="73">office-pier</text><rect x="96.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="109.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="123.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="136.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="150.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="163.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="177.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="190.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="204.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="217.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="231.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="244.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="258.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="271.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="285.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="298.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="312.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="325.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="339.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="352.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="366.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="379.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="393.0" y="60" width="11" height="18" rx="2" fill="var(--amber)"/><rect x="406.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/>
+        </svg>
+        <div class="lbl">Run detail · POST /v1/quotes · 182 ms</div>
+        <svg class="g" viewBox="0 0 420 62" role="img" aria-label="Timing waterfall: DNS 12 ms, connect 18, TLS 34, time to first byte 96, transfer 22">
+          <rect x="0.0" y="6" width="26.7" height="18" fill="var(--muted)"/><rect x="27.7" y="6" width="40.5" height="18" fill="#5b8def"/><rect x="69.2" y="6" width="77.5" height="18" fill="var(--amber)"/><rect x="147.7" y="6" width="220.5" height="18" fill="var(--accent)"/><rect x="369.2" y="6" width="49.8" height="18" fill="var(--accent-strong)"/><text class="d-s" x="0.0" y="42" text-anchor="start">DNS 12</text><text class="d-s" x="27.7" y="56" text-anchor="start">connect 18</text><text class="d-s" x="69.2" y="42" text-anchor="start">TLS 34</text><text class="d-s" x="147.7" y="56" text-anchor="start">TTFB 96</text><text class="d-s" x="420.0" y="42" text-anchor="end">transfer 22</text>
+        </svg>
+      </div>
+    </article>
+
+    <article class="feat" id="features-infrastructure">
+      <div class="txt">
+        <div class="eyebrow">Infrastructure</div>
+        <h2>Every asset, its health and the reason</h2>
+        <ul>
+          <li><b>One inventory</b> of clusters, nodes, hosts, namespaces, workloads, pods, containers and services, built every 5 minutes from data your agents already send.</li>
+          <li><b>Health with the reason</b>: CPU, memory, disk, restarts, replicas, error logs and firing alerts.</li>
+          <li><b>Lifecycle and a change feed</b>: new, not reporting, terminated, restarted.</li>
+          <li><b>Tree or table</b>, with charts per asset and links straight into its logs, traces and dashboards.</li>
+          <li><b>Cloud connections</b> add what runs no agent: load balancers, databases, buckets, functions and scaling groups from AWS accounts and Azure subscriptions. VMs and clusters join the hosts and clusters your agents report.</li>
+          <li><b>Read-only, keyless</b>: a wizard writes the CloudFormation, Bicep or CLI. A probe group scans with its own identity, a role, or a federated token. Obzly stores identifiers only.</li>
+        </ul>
+      </div>
+      <div class="specimen">
+        <div class="lbl">Needs attention</div>
+        <div class="mini">
+          <div class="row"><span class="dot down"></span><span class="nm">cart-5d8f-q2x7r</span><span class="v">CrashLoopBackOff</span></div>
+          <div class="row"><span class="dot warn"></span><span class="nm">node-b7 · harbor-prod-1</span><span class="v">memory 93%</span></div>
+          <div class="row"><span class="dot warn"></span><span class="nm">shop-alb</span><span class="v">1 of 4 targets unhealthy</span></div>
+          <div class="row"><span class="dot up"></span><span class="nm">orders-db</span><span class="v">database · available</span></div>
+        </div>
+        <div class="lbl">Tree · cluster to container</div>
+        <svg class="g" viewBox="0 0 420 150" role="img" aria-label="Asset tree: cluster harbor-prod-1 with two nodes; node-b7 runs cart pods, one crash looping">
+          <g class="d-dash" style="stroke-dasharray:none;stroke:var(--line)"><path d="M14 30 V118"/><path d="M14 58 H34"/><path d="M14 118 H34"/><path d="M44 72 V100"/><path d="M44 86 H64"/><path d="M44 100 H64"/></g>
+          <circle cx="14" cy="16" r="6" fill="var(--amber)"/><text class="d-t" x="28" y="21" style="font-size:14px">harbor-prod-1</text><text class="d-s" x="160" y="21">cluster · 2 nodes · 61 pods</text>
+          <circle cx="44" cy="58" r="5" fill="var(--amber)"/><text class="d-s" x="56" y="62" style="fill:var(--fg)">node-b7</text><text class="d-s" x="160" y="62">memory 93%</text>
+          <circle cx="74" cy="86" r="4.5" fill="var(--err)"/><text class="d-s" x="86" y="90" style="fill:var(--fg)">cart-5d8f-q2x7r</text><text class="d-s" x="236" y="90" style="fill:var(--err)">12 restarts in 1 h</text>
+          <circle cx="74" cy="100" r="4.5" fill="var(--accent)" transform="translate(0,4)"/><text class="d-s" x="86" y="108" style="fill:var(--fg)">cart-5d8f-k8m2w</text><text class="d-s" x="236" y="108">running</text>
+          <circle cx="44" cy="118" r="5" fill="var(--accent)" transform="translate(0,14)"/><text class="d-s" x="56" y="136" style="fill:var(--fg)">node-c2</text><text class="d-s" x="160" y="136">healthy</text>
+        </svg>
+        <div class="lbl">Cloud connections join what your agents report</div>
+        <svg class="g" viewBox="0 0 420 150" role="img" aria-label="A cloud VM found by a cloud connection and a host reported by the Collector merge into one asset">
+          <rect class="d-amb" x="0" y="6" width="190" height="52" rx="8"/><text class="d-t" x="14" y="28" style="font-size:14px">VM · i-0a1b2c3d</text><text class="d-s" x="14" y="47">from AWS 111122223333</text>
+          <rect class="d-box" x="230" y="6" width="190" height="52" rx="8"/><text class="d-t" x="244" y="28" style="font-size:14px">host · node-b7</text><text class="d-s" x="244" y="47">from the Collector</text>
+          <path class="d-arrow" d="M95 58 C95 80 170 80 186 92" marker-end="url(#ah)"/>
+          <path class="d-arrow" d="M325 58 C325 80 250 80 234 92" marker-end="url(#ah)"/>
+          <text class="d-a" x="188" y="80" text-anchor="middle">host_id</text>
+          <rect class="d-acc" x="100" y="94" width="220" height="50" rx="8"/><text class="d-t" x="116" y="116" style="font-size:14px">one asset · node-b7</text><text class="d-s" x="116" y="134">cloud · metrics · logs</text>
         </svg>
       </div>
     </article>
@@ -655,16 +859,34 @@ footer a:hover { color: var(--accent); }
           <li><b>Alert rules</b> over metrics (PromQL), logs (counts of a search, optionally per field) or traces (count, errors, latency percentiles).</li>
           <li><b>for durations, repeat intervals, labels</b> and a live preview.</li>
           <li><b>Notifications</b> to webhooks, Slack, PagerDuty or email, through an outbox with retries and silences. About 15 seconds from rule to notification.</li>
+          <li><b>Channels and email</b> are set up once in Obzly settings and shared by every project. On a control plane they are central, and each Site keeps a copy so alerts still go out if the control plane is down.</li>
           <li><b>Incidents</b> group error logs, failed spans and their shared traces.</li>
         </ul>
       </div>
       <div class="specimen">
-        <div class="lbl">Example rule</div>
-        <pre><span class="c"># Logs: count of a search</span>
-search:  <span class="s">level:error service_name:checkout</span>
-when:    count &gt; 50
-for:     5m
-notify:  Slack, PagerDuty</pre>
+        <div class="lbl">Dashboard · imported from Grafana JSON</div>
+        <svg class="g" viewBox="0 0 420 160" role="img" aria-label="A dashboard with four panels: p95 latency, request rate, errors by service and error rate">
+          <rect class="d-box" x="0" y="0" width="205" height="75" rx="8"/><text class="d-s" x="12" y="20">p95 latency · checkout</text><text class="d-t" x="12" y="56" style="font-size:26px">182 ms</text>
+          <rect class="d-box" x="215" y="0" width="205" height="75" rx="8"/><text class="d-s" x="227" y="20">requests / s</text>
+          <polyline points="227,62 250,55 273,58 296,44 319,48 342,36 365,40 388,30 408,34" fill="none" stroke="var(--accent)" stroke-width="2"/>
+          <rect class="d-box" x="0" y="85" width="205" height="75" rx="8"/><text class="d-s" x="12" y="105">errors by service</text>
+          <rect x="12" y="116" width="120" height="9" rx="2" fill="var(--err)"/><rect x="12" y="130" width="64" height="9" rx="2" fill="var(--amber)"/><rect x="12" y="144" width="28" height="9" rx="2" fill="var(--line)"/>
+          <text class="d-s" x="140" y="124">payments</text><text class="d-s" x="84" y="138">cart</text><text class="d-s" x="48" y="152">shop</text>
+          <rect class="d-box" x="215" y="85" width="205" height="75" rx="8"/><text class="d-s" x="227" y="105">error rate</text><text class="d-t" x="227" y="141" style="font-size:26px">0.4%</text>
+          <polyline points="320,140 338,138 356,141 374,132 392,136 408,128" fill="none" stroke="var(--amber)" stroke-width="2"/>
+        </svg>
+        <div class="lbl">Rule to notification · about 15 s</div>
+        <svg class="g" viewBox="0 0 420 108" role="img" aria-label="An alert rule sends through an outbox with retries and silences to Slack, PagerDuty, email or a webhook">
+          <rect class="d-acc" x="0" y="28" width="138" height="52" rx="8"/><text class="d-t" x="12" y="50" style="font-size:14px">rule</text><text class="d-s" x="12" y="68">count &gt; 50 for 5m</text>
+          <path class="d-arrow" d="M138 54 L156 54" marker-end="url(#ah)"/>
+          <rect class="d-box" x="158" y="28" width="142" height="52" rx="8"/><text class="d-t" x="170" y="50" style="font-size:14px">outbox</text><text class="d-s" x="170" y="68">retries · silences</text>
+          <path class="d-arrow" d="M300 54 C310 54 308 15 314 15" marker-end="url(#ah)"/><path class="d-arrow" d="M300 54 C310 54 308 41 314 41" marker-end="url(#ah)"/>
+          <path class="d-arrow" d="M300 54 C310 54 308 67 314 67" marker-end="url(#ah)"/><path class="d-arrow" d="M300 54 C310 54 308 93 314 93" marker-end="url(#ah)"/>
+          <rect class="d-soft" x="316" y="4" width="104" height="22" rx="11"/><text class="d-s" x="368" y="19" text-anchor="middle">Slack</text>
+          <rect class="d-soft" x="316" y="30" width="104" height="22" rx="11"/><text class="d-s" x="368" y="45" text-anchor="middle">PagerDuty</text>
+          <rect class="d-soft" x="316" y="56" width="104" height="22" rx="11"/><text class="d-s" x="368" y="71" text-anchor="middle">Email</text>
+          <rect class="d-soft" x="316" y="82" width="104" height="22" rx="11"/><text class="d-s" x="368" y="97" text-anchor="middle">Webhook</text>
+        </svg>
       </div>
     </article>
 
@@ -681,10 +903,21 @@ notify:  Slack, PagerDuty</pre>
         </ul>
       </div>
       <div class="specimen">
-        <div class="lbl">Claude Code</div>
+        <div class="lbl">Claude, connected over MCP</div>
+        <div class="chat">
+          <div class="bubble me">Why did checkout start failing at 14:02?</div>
+          <div class="tools"><span>search_logs</span><span>log_patterns</span><span>log_context</span><span>get_trace</span></div>
+          <div class="bubble ai">payments-api timed out after 3 s on 41 requests from one pod, starting 30 s after the cart v42 rollout. Trace 9f2c… shows the wait in the card authorisation call.</div>
+        </div>
+        <div class="lbl">Connect Claude Code</div>
         <pre>claude mcp add --transport http obzly \
-  https://obzly.example.com/mcp \
+  https://obzly.harborline.example/mcp \
   --header <span class="s">"Authorization: Bearer obz_pat_..."</span></pre>
+        <div class="lbl">Claude Code cost · this week</div>
+        <svg class="g" viewBox="0 0 420 108" role="img" aria-label="Claude Code cost per day this week, highest on Friday at 40 dollars">
+          <line x1="0" y1="86.5" x2="420" y2="86.5" stroke="var(--line)"/>
+          <rect x="10" y="58.1" width="40" height="27.9" rx="3" fill="var(--accent)" opacity="0.75"/><text class="d-s" x="30" y="52.1" text-anchor="middle">$18</text><text class="d-s" x="30" y="102" text-anchor="middle">Mon</text><rect x="68" y="48.8" width="40" height="37.2" rx="3" fill="var(--accent)" opacity="0.82"/><text class="d-s" x="88" y="42.8" text-anchor="middle">$24</text><text class="d-s" x="88" y="102" text-anchor="middle">Tue</text><rect x="126" y="38.0" width="40" height="48.0" rx="3" fill="var(--accent)" opacity="0.90"/><text class="d-s" x="146" y="32.0" text-anchor="middle">$31</text><text class="d-s" x="146" y="102" text-anchor="middle">Wed</text><rect x="184" y="51.9" width="40" height="34.1" rx="3" fill="var(--accent)" opacity="0.80"/><text class="d-s" x="204" y="45.9" text-anchor="middle">$22</text><text class="d-s" x="204" y="102" text-anchor="middle">Thu</text><rect x="242" y="24.0" width="40" height="62.0" rx="3" fill="var(--accent)" opacity="1.00"/><text class="d-s" x="262" y="18.0" text-anchor="middle">$40</text><text class="d-s" x="262" y="102" text-anchor="middle">Fri</text><rect x="300" y="67.4" width="40" height="18.6" rx="3" fill="var(--accent)" opacity="0.69"/><text class="d-s" x="320" y="61.4" text-anchor="middle">$12</text><text class="d-s" x="320" y="102" text-anchor="middle">Sat</text><rect x="358" y="72.0" width="40" height="14.0" rx="3" fill="var(--accent)" opacity="0.65"/><text class="d-s" x="378" y="66.0" text-anchor="middle">$9</text><text class="d-s" x="378" y="102" text-anchor="middle">Sun</text>
+        </svg>
       </div>
     </article>
 
@@ -694,20 +927,34 @@ notify:  Slack, PagerDuty</pre>
         <h2>Identity, scale and recovery</h2>
         <ul>
           <li><b>SSO</b> through any OIDC provider, with Microsoft Entra ID group mapping.</li>
-          <li><b>SCIM 2.0</b> from Okta or Entra ID; <b>TOTP MFA</b> required for admins.</li>
+          <li><b>SCIM 2.0</b> from Okta or Entra ID; <b>TOTP MFA</b> required for admins, or for everyone with one switch.</li>
+          <li><b>Settings overview</b>: deployments, ingest and storage per Site, what needs attention, and readiness before each upgrade.</li>
           <li><b>Organizations, teams and plans</b> with per-organization quotas.</li>
           <li><b>High availability</b>: rolling updates with readiness draining, leases so each shard has one owner, no single query node.</li>
           <li><b>Durable ingest</b>: losing an api pod, a worker or one broker loses no acknowledged data.</li>
           <li><b>Disaster recovery</b> runbooks with a measured restore drill (RPO under a minute) and a weekly integrity audit.</li>
-          <li><b>Audit log</b> of every change and every denied request.</li>
+          <li><b>Audit log</b> of every change and every denied request, with CSV export.</li>
         </ul>
       </div>
       <div class="specimen">
-        <div class="lbl">When the buffer is full</div>
-        <pre>HTTP 429  /  gRPC RESOURCE_EXHAUSTED
-<span class="c"># OTel Collectors retry; nothing acknowledged is lost</span></pre>
-        <div class="lbl">Query guardrail</div>
-        <pre>QUERY_MAX_SCAN_GB=<span class="s">100</span>  <span class="c"># refuse runaway queries before reading</span></pre>
+        <div class="lbl">Identity, from one place</div>
+        <svg class="g" viewBox="0 0 420 150" role="img" aria-label="An identity provider signs users in and provisions them over SCIM to the control plane, which grants access to each Site">
+          <rect class="d-box" x="0" y="48" width="112" height="56" rx="8"/><text class="d-t" x="12" y="69" style="font-size:14px">Identity</text><text class="d-t" x="12" y="91" style="font-size:14px">provider</text>
+          <path class="d-arrow" d="M112 76 L146 76" marker-end="url(#ah)"/><text class="d-a" x="116" y="68">OIDC</text><text class="d-a" x="116" y="94">SCIM</text>
+          <rect class="d-acc" x="148" y="34" width="124" height="84" rx="10"/><text class="d-t" x="162" y="58" style="font-size:14px">control plane</text>
+          <text class="d-s" x="162" y="78">orgs · teams</text><text class="d-s" x="162" y="96">MFA · audit log</text>
+          <path class="d-arrow" d="M272 62 C290 62 290 30 306 30" marker-end="url(#ah)"/><path class="d-arrow" d="M272 92 C290 92 290 122 306 122" marker-end="url(#ah)"/>
+          <text class="d-a" x="276" y="80">grants</text>
+          <rect class="d-box" x="308" y="10" width="112" height="40" rx="8"/><text class="d-s" x="320" y="35" style="fill:var(--fg)">Site · north</text>
+          <rect class="d-box" x="308" y="102" width="112" height="40" rx="8"/><text class="d-s" x="320" y="127" style="fill:var(--fg)">Site · south</text>
+        </svg>
+        <div class="lbl">Guardrails</div>
+        <div class="mini">
+          <div class="row"><span class="dot up"></span><span class="nm">Restore drill, recovery point</span><span class="v">under 1 min</span></div>
+          <div class="row"><span class="dot up"></span><span class="nm">Ingest buffer full</span><span class="v">429, client retries</span></div>
+          <div class="row"><span class="dot up"></span><span class="nm">Runaway query</span><span class="v">refused at 100 GiB</span></div>
+          <div class="row"><span class="dot up"></span><span class="nm">Audit log</span><span class="v">CSV export</span></div>
+        </div>
       </div>
     </article>
   </div>
@@ -721,7 +968,7 @@ notify:  Slack, PagerDuty</pre>
       <h1>One image, five roles</h1>
       <p class="lede">The single container is the smallest shape of one design. Set <code>SERVICE_MODE</code> and the same image runs each role on its own, so each part scales and fails independently.</p>
       <nav class="jump" aria-label="Architecture sections">
-        <a href="#arch-site">A Site</a><a href="#arch-query">Query path</a><a href="#arch-multisite">Multi-site</a><a href="#arch-ha">Scaling &amp; HA</a>
+        <a href="#arch-site">A Site</a><a href="#arch-query">Query path</a><a href="#arch-multisite">Multi-site</a><a href="#arch-synthetics">Synthetics &amp; cloud</a><a href="#arch-ha">Scaling &amp; HA</a>
       </nav>
     </div>
 
@@ -790,7 +1037,8 @@ notify:  Slack, PagerDuty</pre>
             <tr><td>worker</td><td>Writes ingest to Parquet, compaction, retention, quotas, uploads</td><td>Ingest and compaction shards are shared across workers</td></tr>
             <tr><td>broker</td><td>NATS JetStream ingest buffer</td><td>Three nodes, one per zone</td></tr>
             <tr><td>querier</td><td>Runs query fragments, with its own segment cache</td><td>Stateless, add replicas for query throughput</td></tr>
-            <tr><td>control-plane</td><td>One login and UI in front of many Sites; organizations, SCIM</td><td>One per company, in front of every Site</td></tr>
+            <tr><td>control-plane</td><td>One login and UI in front of many Sites; organizations, SCIM, shared channels, Synthetics monitors, cloud connections</td><td>One per company, in front of every Site</td></tr>
+            <tr><td>obzly-probe</td><td>Separate image: runs Synthetics checks and cloud scans from your locations</td><td>Probe groups of any size; failover within a minute</td></tr>
           </tbody>
         </table>
       </div>
@@ -853,13 +1101,13 @@ notify:  Slack, PagerDuty</pre>
           <text class="d-a" x="660" y="165">per-user Site token</text>
           <g>
             <rect class="d-box" x="40" y="200" width="220" height="110" rx="10"/>
-            <text class="d-t" x="58" y="230">Site · eu-west</text>
+            <text class="d-t" x="58" y="230">Site · north</text>
             <text class="d-s" x="58" y="252">api · worker · broker</text>
             <rect class="d-amb" x="58" y="266" width="130" height="28" rx="5"/><text class="d-s" x="68" y="285">its own bucket</text>
           </g>
           <g>
             <rect class="d-box" x="370" y="200" width="220" height="110" rx="10"/>
-            <text class="d-t" x="388" y="230">Site · us-east</text>
+            <text class="d-t" x="388" y="230">Site · south</text>
             <text class="d-s" x="388" y="252">api · worker · broker</text>
             <rect class="d-amb" x="388" y="266" width="130" height="28" rx="5"/><text class="d-s" x="398" y="285">its own bucket</text>
           </g>
@@ -874,6 +1122,55 @@ notify:  Slack, PagerDuty</pre>
       </figure>
     </div>
 
+    <div class="arch-block" id="arch-synthetics">
+      <h2>Synthetics &amp; cloud</h2>
+      <figure class="diagram" style="margin:0">
+        <svg viewBox="0 0 960 380" role="img" aria-labelledby="syn-t">
+          <title id="syn-t">A probe group pulls monitors and cloud connections from the control plane, checks your endpoints and scans cloud APIs read-only, and sends results as OTLP to a Site project, where the inventory is built. The control plane reads results back through the Site.</title>
+          <rect class="d-acc" x="340" y="20" width="290" height="100" rx="12"/>
+          <text class="d-t" x="360" y="50">control plane</text>
+          <text class="d-s" x="360" y="72">monitors · probe groups</text>
+          <text class="d-s" x="360" y="90">cloud connections · channels</text>
+          <text class="d-a" x="360" y="110">stores no results</text>
+
+          <path class="d-arrow" d="M340 70 C200 70 165 110 165 166" marker-end="url(#ah)"/>
+          <text class="d-a" x="160" y="62">config · pull every 180 s</text>
+
+          <rect class="d-box" x="40" y="170" width="250" height="150" rx="10"/>
+          <text class="d-t" x="58" y="198">probe group · edge-north</text>
+          <rect class="d-acc" x="58" y="214" width="64" height="36" rx="6"/><text class="d-s" x="68" y="237">pod-1</text>
+          <rect class="d-soft" x="133" y="214" width="64" height="36" rx="6"/><text class="d-s" x="143" y="237">pod-2</text>
+          <rect class="d-soft" x="208" y="214" width="64" height="36" rx="6"/><text class="d-s" x="218" y="237">pod-3</text>
+          <text class="d-s" x="58" y="280">one live instance per monitor</text>
+          <text class="d-a" x="58" y="300">failover within a minute</text>
+
+          <path class="d-arrow" d="M290 222 L338 222" marker-end="url(#ah)"/>
+          <rect class="d-box" x="340" y="190" width="236" height="62" rx="8"/>
+          <text class="d-t" x="356" y="214" style="font-size:14px">Your endpoints</text>
+          <text class="d-s" x="356" y="236">HTTP · TLS · TCP · DNS · ICMP</text>
+
+          <path class="d-arrow" d="M290 294 L338 294" marker-end="url(#ah)"/>
+          <rect class="d-amb" x="340" y="264" width="236" height="62" rx="8"/>
+          <text class="d-t" x="356" y="288" style="font-size:14px">Cloud APIs, read-only</text>
+          <text class="d-s" x="356" y="310">AWS 111122223333 · Azure</text>
+
+          <path class="d-arrow acc" d="M165 320 L165 356 L785 356 L785 334" marker-end="url(#aha)"/>
+          <text class="d-a" x="410" y="349">results · OTLP</text>
+
+          <rect class="d-box" x="660" y="170" width="270" height="162" rx="10"/>
+          <text class="d-t" x="678" y="198">Site · north</text>
+          <text class="d-s" x="678" y="222">project: synthetics</text>
+          <text class="d-s" x="678" y="246">alert rules per monitor</text>
+          <text class="d-s" x="678" y="270">inventory every 5 min</text>
+          <text class="d-a" x="678" y="294">cloud VMs join agent hosts</text>
+
+          <path class="d-dash" d="M795 168 C795 100 700 70 632 70" marker-end="url(#ah)"/>
+          <text class="d-a" x="805" y="134">read through</text><text class="d-a" x="805" y="150">the proxy</text>
+        </svg>
+        <figcaption>Probes push results straight to a Site, so the control plane never carries ingest. Cloud credentials stay with the probe group: its own identity, a role with an external ID, or a short-lived token the control plane signs.</figcaption>
+      </figure>
+    </div>
+
     <div class="arch-block" id="arch-ha">
       <h2>Scaling &amp; HA</h2>
       <div class="two">
@@ -883,6 +1180,8 @@ notify:  Slack, PagerDuty</pre>
         <div><h3>Storage layout</h3><p>Parquet is compacted in levels into hour-sorted files of one day each. A partitioned Postgres catalog keeps per-file statistics.</p></div>
         <div><h3>Cache warmup</h3><p>Queriers keep their cache on a volume, pre-fetch each segment they own as it's uploaded, and warm up on start.</p></div>
         <div><h3>Self-monitoring</h3><p>Every role serves Prometheus metrics on an internal port and traces its own requests into a system project.</p></div>
+        <div><h3>Inventory per Site</h3><p>A worker on each Site rebuilds the inventory every 5 minutes from data already stored. The control plane keeps none of it and merges the Sites in your browser.</p></div>
+        <div><h3>Alerts survive the control plane</h3><p>Sites fetch the shared channels and email relay every 5 minutes, sealed to their own key, and keep the last copy if the control plane is unreachable.</p></div>
       </div>
     </div>
   </div>
@@ -947,7 +1246,7 @@ notify:  Slack, PagerDuty</pre>
   });
 
   /* ---------- Docs content ---------- */
-  var SAMPLE = 'kubernetes-otel-collector';
+  var SAMPLE = 'synthetics';
   var DOCS = [
     { group: 'Getting started', pages: [
       ['overview', 'Overview', 'What Obzly is, system requirements and where to start.', 'README.md'],
@@ -960,24 +1259,29 @@ notify:  Slack, PagerDuty</pre>
       ['docker', 'Docker', 'Single container, the HA compose file with every role, a control plane, and object storage with MinIO.', 'deploy/docker/README.md'],
       ['helm', 'Helm chart', 'Install a Site in mode ha (brokers, api, worker, querier) or single, or a control plane. Postgres and object storage are yours.', 'deploy/helm/obzly/README.md'],
       ['kubernetes-eks', 'Kubernetes on EKS', 'Plain manifests for kubectl apply -k: single replica, ha/ with three brokers, and control-plane/.', 'deploy/kubernetes/eks/README.md'],
-      ['multi-site', 'Control plane & Sites', 'Put one control plane in front of many Sites and enroll each Site with a couple of extra settings.', 'deploy/README.md, ARCHITECTURE.md']
+      ['multi-site', 'Control plane & Sites', 'Put one control plane in front of many Sites and enroll each Site with a couple of extra settings.', 'deploy/README.md, ARCHITECTURE.md'],
+      ['probe', 'Synthetics probe', 'Install obzly-probe as a systemd service, a container or the Helm chart, and run several instances as one probe group.', 'deploy/probe/, deploy/helm/obzly-probe/README.md']
     ]},
     { group: 'How-tos', pages: [
-      [SAMPLE, 'Kubernetes logs & metrics', '', 'frontend/src/features/projects/ui/kubernetesOtelConfig.ts'],
+      ['kubernetes-otel-collector', 'Kubernetes logs & metrics', 'Apply the generated Collector manifest: pod logs with file offsets kept across restarts, node and pod metrics with workload names, and a read-only cluster agent.', 'frontend/src/features/projects/ui/kubernetesOtelConfig.ts'],
+      [SAMPLE, 'Synthetic monitoring', '', 'docs/SYNTHETICS.md, docs/examples/synthetics-checks.yaml'],
+      ['infrastructure', 'Infrastructure inventory', 'What the inventory shows, how health is decided, and how to get pod phase, restarts and replicas from the cluster agent.', 'docs/INFRASTRUCTURE.md'],
+      ['cloud-connections', 'Cloud connections', 'Give a probe group read-only access to an AWS account or Azure subscription with the wizard, and see load balancers, databases and buckets in Infrastructure.', 'docs/INFRASTRUCTURE.md, deploy/cloud/']
+      ,
       ['grafana-promql', 'Grafana via the PromQL API', 'Add Obzly as a Prometheus datasource in Grafana, send Prometheus remote-write, and import existing dashboards.', 'README.md'],
-      ['mcp', 'Claude & Cursor over MCP', 'Create a token in Profile → AI assistant access (MCP), then add https://obzly.example.com/mcp to your assistant.', 'README.md, ARCHITECTURE.md'],
-      ['alerts', 'Alerts & notifications', 'Write rules over PromQL, log searches or trace latency, and route them to webhooks, Slack, PagerDuty or email.', 'README.md'],
+      ['mcp', 'Claude & Cursor over MCP', 'Create a token in Profile → AI assistant access (MCP), then add https://obzly.harborline.example/mcp to your assistant.', 'README.md, ARCHITECTURE.md'],
+      ['alerts', 'Alerts & notifications', 'Set up email and shared channels in Obzly settings, then write rules over PromQL, log searches or trace latency.', 'README.md, docs/configuration.md'],
       ['sso-scim', 'SSO & SCIM', 'Add an OIDC connector, map IdP groups to roles, and provision users and groups from Okta or Entra ID.', 'README.md, ARCHITECTURE.md'],
       ['promoted-fields', 'Promoting fields', 'Promote up to 12 fields per project to typed columns for fast filters and number ranges.', 'README.md']
     ]},
     { group: 'Operations', pages: [
-      ['upgrade', 'Upgrade', 'Check Settings → Upgrade status, then upgrade roles in order. Rollback rules included.', 'docs/runbooks/upgrade.md'],
+      ['upgrade', 'Upgrade', 'Check Settings → Updates, then upgrade roles in order. What v0.55.0 and v0.56.0 need from you, and rollback rules.', 'docs/runbooks/upgrade.md'],
       ['backup-restore', 'Backup & restore', 'Back up Postgres and object storage, restore, then run obzly reconcile.', 'docs/runbooks/backup-restore.md'],
       ['disaster-recovery', 'Disaster recovery', 'Recover a Site in another region, with a measured restore drill.', 'docs/runbooks/dr.md'],
       ['monitoring', 'Monitoring Obzly', 'Scrape every role\'s internal metrics port, import the Grafana dashboard and load the SLO alert rules.', 'deploy/observability/README.md']
     ]},
     { group: 'Reference', pages: [
-      ['configuration', 'Configuration', 'Every environment variable with its default, from SERVICE_MODE to QUERY_MAX_SCAN_GB.', 'docs/configuration.md'],
+      ['configuration', 'Configuration', 'Every environment variable with its default, from SERVICE_MODE to INVENTORY_RETENTION_DAYS, plus the probe\'s settings.', 'docs/configuration.md'],
       ['log-query-api', 'Log query API', 'Endpoints, authentication, query syntax and response shapes for searching logs.', 'backend/internal/features/logs/querying/readme.md'],
       ['data-sources', 'Data sources', 'The 35+ sources with generated OTel Collector configs, grouped by category.', 'frontend/src/features/projects/ui/dataSources/']
     ]}
@@ -994,34 +1298,35 @@ notify:  Slack, PagerDuty</pre>
 
   var SAMPLE_HTML = [
     '<div class="crumbs">Docs / How-tos</div>',
-    '<h1>Kubernetes logs &amp; metrics with the OTel Collector</h1>',
-    '<p class="lede">Run an OpenTelemetry Collector on every node to send pod logs, node metrics and per-pod resource metrics to an Obzly project. Obzly generates the whole manifest for you.</p>',
-    '<h2 id="doc-what">What you get</h2>',
-    '<ul><li>Every container\'s logs, tailed from <code>/var/log/pods</code> on each node, with a log level filled in when the line has none.</li>',
-    '<li>Node CPU, memory, disk, filesystem, network and load from <code>host_metrics</code>.</li>',
-    '<li>Per-pod and per-container usage from each kubelet (<code>kubelet_stats</code>), the same data <code>kubectl top pod</code> shows.</li>',
-    '<li>An OTLP endpoint inside the cluster for app SDKs: <code>:4317</code> for gRPC, <code>:4318</code> for HTTP.</li></ul>',
-    '<h2 id="doc-generate">Generate the manifest</h2>',
-    '<ol><li>In Obzly, open your project and go to <b>Data Sources → Kubernetes</b>.</li>',
-    '<li>Enter the namespace for the collector and, optionally, a cluster name. Nothing in a cluster reliably exposes its own name, so you set it here.</li>',
-    '<li>Optionally list namespaces to include or exclude and pods to skip. Wildcards <code>*</code> and <code>?</code> work.</li>',
-    '<li>Generate the config. Obzly creates a dedicated API key for this collector and bakes it into the manifest.</li></ol>',
-    '<div class="aside caution"><b>The API key is shown once</b>Save the manifest somewhere safe. To rotate it, delete the key on the API Keys page and generate a new config.</div>',
-    '<h2 id="doc-apply">Apply it</h2>',
-    '<pre>kubectl apply -f obzly-otel-collector.yaml</pre>',
-    '<p>This creates a namespace, a Secret holding the key, a ConfigMap, RBAC rules and a DaemonSet running <code>otel/opentelemetry-collector-contrib</code>. The exporter sends everything over OTLP/HTTP to the same address you use for the UI:</p>',
-    '<pre><span class="k">exporters</span>:\n  <span class="k">otlp_http</span>:\n    endpoint: <span class="s">"https://obzly.example.com"</span>\n    headers:\n      X-API-Key: <span class="s">"${env:OBZLY_API_KEY}"</span>\n\n<span class="k">service</span>:\n  pipelines:\n    logs:\n      receivers: [file_log, otlp]\n      processors: [transform/severity, resource_detection, k8s_attributes, batch]\n      exporters: [otlp_http]\n    metrics:\n      receivers: [otlp, host_metrics, kubelet_stats]\n      processors: [resource_detection, batch]\n      exporters: [otlp_http]</pre>',
-    '<div class="aside"><b>Why OTLP/HTTP</b>It shares the host and port of the UI, so whatever TLS and reverse proxy already front Obzly just work. Port 4317 may not be exposed in every deployment.</div>',
-    '<h2 id="doc-check">Check the data</h2>',
-    '<p>Within a minute, open <b>Logs</b> and filter by namespace or pod. Attribute names are stored in a PromQL-safe form, so <code>k8s.pod.name</code> becomes <code>k8s_pod_name</code>:</p>',
-    '<pre>k8s_namespace_name:checkout level:error</pre>',
-    '<p>For metrics, query the PromQL API or a dashboard:</p>',
-    '<pre>sum by (k8s_pod_name) (k8s_pod_cpu_usage)</pre>',
-    '<h2 id="doc-eks">Notes for EKS Auto Mode</h2>',
-    '<p>EKS Auto Mode sets the instance metadata hop limit to 1, so cloud and region detection can\'t reach it from pod networking. Turn on <b>host network</b> when generating the config. It also makes node network metrics show the node\'s interfaces.</p>',
-    '<div class="aside"><b>Batch size</b>The generated config caps each export at 2,500 records. Obzly rejects any single request over 5,000, so leave this setting as generated.</div>'
+    '<h1>Synthetic monitoring</h1>',
+    '<p class="lede">Check APIs and endpoints on a schedule from your own locations. Probes send results to a Site project as metrics, so dashboards, PromQL and alert rules work on them like on any other data.</p>',
+    '<div class="aside"><b>Needs a control plane</b>Monitors, probes and destinations live on the control plane. To try it on one machine, start the multi-site example: <code>deploy/docker/docker-compose.multisite.yml.example</code>.</div>',
+    '<h2 id="doc-dest">1. Add a destination</h2>',
+    '<p>A destination is where results go: a Site, a project on it, and that project\'s ingest API key. In <b>Synthetics → Destinations</b>, pick the Site and project, then create a key through the control plane or paste one you have.</p>',
+    '<h2 id="doc-probe">2. Add a probe group</h2>',
+    '<p>A probe group is one location, such as <code>edge-north</code> or <code>office-pier</code>, with any number of instances. In <b>Synthetics → Probe groups</b>, choose <b>Add probe group</b> and copy the token. It starts with <code>obz_prb_</code> and is shown once.</p>',
+    '<p>On a Linux VM, the install script sets up a systemd service:</p>',
+    '<pre>curl -fsSL -o install.sh \\\n  https://github.com/obzly/obzly/releases/latest/download/install.sh\nsudo OBZLY_CONTROL_PLANE_URL=<span class="s">https://obzly.harborline.example</span> \\\n  OBZLY_PROBE_TOKEN=<span class="s">obz_prb_...</span> sh install.sh</pre>',
+    '<p>On Kubernetes, the chart runs three instances of the group by default and keeps two running through node drains:</p>',
+    '<pre>helm install edge-north deploy/helm/obzly-probe -n obzly-probe --create-namespace \\\n  --set controlPlaneUrl=<span class="s">https://obzly.harborline.example</span> \\\n  --set token=<span class="s">obz_prb_...</span></pre>',
+    '<p>Each monitor runs on one live instance per interval. If an instance stops, the others take over its monitors within a minute.</p>',
+    '<h2 id="doc-monitor">3. Create a monitor</h2>',
+    '<ol><li>Choose <b>New monitor</b> and a type: HTTP, TLS, TCP, DNS or ICMP.</li>',
+    '<li>Set the target and assertions, for example status <code>200</code> and a response time below 800 ms.</li>',
+    '<li>Pick locations and an interval. The default is 180 s and the minimum is 30 s.</li>',
+    '<li>Optionally put it in a folder, such as <code>Payments/EU</code>, and name its parents.</li>',
+    '<li>Choose <b>Test</b> to run it from every location before saving, then <b>Save</b>, or <b>Test &amp; save</b>.</li></ol>',
+    '<h2 id="doc-deps">Dependencies</h2>',
+    '<p>When <code>quotes-api</code> depends on <code>api-gateway</code> and the gateway goes down, <code>quotes-api</code> shows <b>Impacted</b> and its alerts stay quiet. You get one page, for the root cause.</p>',
+    '<div class="aside caution"><b>Same project for muted alerts</b>Alerts are muted only when parent and child send results to the same destination project. Across projects the child still shows Impacted, but its alerts are sent.</div>',
+    '<h2 id="doc-alerts">Alerts</h2>',
+    '<p>In the editor\'s <b>Alerts</b> section, pick channels from Obzly settings and when to notify: down, degraded, or a certificate expiring within a number of days. The rule is created on the destination Site within 5 minutes and shows in Alerts with a Synthetics tag. Change it from the monitor, not from Alerts.</p>',
+    '<h2 id="doc-yaml">Manage monitors as YAML</h2>',
+    '<p><b>Import YAML</b> previews what will be created, updated or left alone, then applies the whole file or none of it. Monitors match by name, so importing again updates them.</p>',
+    '<pre><span class="k">apiVersion</span>: obzly.com/synthetics/v1\n<span class="k">kind</span>: MonitorList\n<span class="k">monitors</span>:\n  - name: <span class="s">quotes-api</span>\n    type: http\n    folder: <span class="s">Payments/EU</span>\n    depends_on: [<span class="s">api-gateway</span>]\n    request:\n      method: POST\n      url: <span class="s">https://api.harborline.example/v1/quotes</span>\n      headers:\n        Authorization: <span class="s">"Bearer ${env:QUOTES_TOKEN}"</span>\n    assertions:\n      - status: 201\n      - response_time_ms: {below: 800}\n    locations: [edge-north, office-pier]</pre>',
+    '<p>Secrets stay as <code>${env:NAME}</code> placeholders. The importer asks for their values once and stores them encrypted, and exports never contain them.</p>'
   ].join('');
-  var SAMPLE_TOC = [['doc-what', 'What you get'], ['doc-generate', 'Generate the manifest'], ['doc-apply', 'Apply it'], ['doc-check', 'Check the data'], ['doc-eks', 'Notes for EKS Auto Mode']];
+  var SAMPLE_TOC = [['doc-dest', '1. Add a destination'], ['doc-probe', '2. Add a probe group'], ['doc-monitor', '3. Create a monitor'], ['doc-deps', 'Dependencies'], ['doc-alerts', 'Alerts'], ['doc-yaml', 'Manage monitors as YAML']];
 
   var docEl = document.getElementById('doc'), tocEl = document.getElementById('toc');
   function renderDoc(slug) {

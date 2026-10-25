@@ -8,7 +8,7 @@ The log query API is what Obzly's own **Search** page uses. It takes a structure
 over a time range and returns matching logs, newest first, with cursor paging. The same
 project's logs can also be queried with SQL.
 
-All paths below are relative to `https://obzly.example.com/api/v1`.
+All paths below are relative to `https://obzly.harborline.example/api/v1`.
 
 :::tip
 With `ENV_MODE=development`, Obzly serves interactive Swagger docs for every endpoint at
@@ -26,16 +26,16 @@ Authorization: Bearer YOUR_SESSION_TOKEN
 Get one by signing in:
 
 ```bash
-curl -X POST "https://obzly.example.com/api/v1/users/signin" \
+curl -X POST "https://obzly.harborline.example/api/v1/users/signin" \
   -H "Content-Type: application/json" \
-  -d '{"email": "you@example.com", "password": "YOUR_PASSWORD"}'
+  -d '{"email": "ops@harborline.example", "password": "YOUR_PASSWORD"}'
 ```
 
 The response carries `token`. If the account has MFA, the response instead has
 `mfaRequired: true` and an `mfaToken`. Complete the sign-in with a current authenticator code:
 
 ```bash
-curl -X POST "https://obzly.example.com/api/v1/users/mfa/login-verify" \
+curl -X POST "https://obzly.harborline.example/api/v1/users/mfa/login-verify" \
   -H "Content-Type: application/json" \
   -d '{"mfaToken": "MFA_TOKEN_FROM_SIGNIN", "code": "123456"}'
 ```
@@ -101,7 +101,7 @@ POST /logs/query/execute/{projectId}
 A full example:
 
 ```bash
-curl -X POST "https://obzly.example.com/api/v1/logs/query/execute/YOUR_PROJECT_ID" \
+curl -X POST "https://obzly.harborline.example/api/v1/logs/query/execute/YOUR_PROJECT_ID" \
   -H "Authorization: Bearer YOUR_SESSION_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -343,7 +343,7 @@ for `level`. Use a range for time, for example `timestamp>=2026-10-01T06:40:00Z`
 isn't allowed.
 
 ```text
-level:error service_name:api "timeout"
+level:error service_name:payments-api "timeout"
 level:error OR NOT (http_status_code>=500 AND -healthcheck)
 ```
 
