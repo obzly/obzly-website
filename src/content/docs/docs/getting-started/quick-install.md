@@ -15,7 +15,7 @@ sudo curl -sSL https://raw.githubusercontent.com/obzly/obzly/main/install-obzly.
 | sudo bash
 ```
 
-Check the [system requirements](/docs/#system-requirements) first: at least 2 CPU cores, 4 GB of
+Check the [system requirements](/docs/getting-started/requirements/) first: at least 2 CPU cores, 4 GB of
 RAM and 20 GB of disk.
 
 ## What the script does

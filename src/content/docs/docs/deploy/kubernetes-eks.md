@@ -21,6 +21,9 @@ Both `eks/` and `eks/ha/` share the namespace, service account, ConfigMap and Va
 
 ## Before applying
 
+Check [System requirements](/docs/getting-started/requirements/#kubernetes) for node sizes, sizing
+by ingest volume and which tiers can run on Spot.
+
 1. **IAM role for S3 (IRSA)**: create an IAM role trusted by your cluster's OIDC provider, with
    `s3:PutObject`, `s3:PutObjectTagging`, `s3:GetObject`, `s3:ListBucket` and `s3:DeleteObject` on
    the bucket. Uploads carry object tags for bucket lifecycle rules, and S3 refuses a tagged upload

@@ -47,6 +47,7 @@ Every docs page is adapted from files in the product repo (obzly-dev) and names 
 | Docs page | obzly-dev source |
 |---|---|
 | `docs/index.mdx` | `README.md` |
+| `getting-started/requirements` | `README.md`, `install-obzly.sh`, `deploy/docker/*.example`, `deploy/helm/obzly/values.yaml`, `deploy/helm/obzly-probe/values.yaml`, `ARCHITECTURE.md` (Capacity and cost model, Spot) |
 | `getting-started/quick-install` | `README.md`, `install-obzly.sh` |
 | `getting-started/docker-compose` | `README.md`, `deploy/docker/README.md` |
 | `getting-started/first-project` | `README.md` |

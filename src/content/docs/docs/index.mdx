@@ -34,21 +34,9 @@ curl -X POST "http://YOUR_OBZLY_HOST/api/v1/logs/receiving/YOUR_PROJECT_ID" \
 
 ## System requirements
 
-The default single-container install, which suits developers and small teams, needs:
-
-- **CPU**: at least 2 cores
-- **RAM**: at least 4 GB
-- **Storage**: 20 GB of free disk space (more for longer retention)
-- **Docker**: Docker Engine 20.10+ and Docker Compose v2.0+
-- **Network**: an internet connection for the initial setup and updates
-
-By default all data is stored locally in the mounted volume (`./obzly-data`). Retention policies
-and limits keep disk usage in check. Optionally, segments can be offloaded to S3-compatible object
-storage (AWS S3, MinIO, GCS, Azure Blob) and are downloaded back on demand when a query needs
-them; see [Docker](/docs/deploy/docker/).
-
-For larger volumes, run the roles separately and size each one for its load: see
-[Helm chart](/docs/deploy/helm/) and [Kubernetes on EKS](/docs/deploy/kubernetes-eks/).
+The default single-container install needs a Linux host with at least **2 CPU cores, 4 GB of RAM
+and 20 GB of disk**, plus Docker Engine 20.10+ and Docker Compose v2.0+. For Kubernetes, larger
+volumes, and which parts can run on Spot nodes, see [System requirements](/docs/getting-started/requirements/).
 
 ## Getting started
 

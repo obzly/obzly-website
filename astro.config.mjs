@@ -24,6 +24,7 @@ export default defineConfig({
 					label: 'Getting started',
 					items: [
 						{ label: 'Overview', slug: 'docs' },
+						'docs/getting-started/requirements',
 						'docs/getting-started/quick-install',
 						'docs/getting-started/docker-compose',
 						'docs/getting-started/first-project',

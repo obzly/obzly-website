@@ -17,7 +17,8 @@ deploys every role. It renders the same pods as the
 
 Postgres and object storage are always yours: RDS/Aurora or any Postgres, and S3 or any
 S3-compatible store. Valkey runs in the release unless you set `valkey.enabled: false` and point
-the chart at your own.
+the chart at your own. For cluster versions, node sizes, sizing by ingest volume and which tiers
+can run on Spot nodes, see [System requirements](/docs/getting-started/requirements/#kubernetes).
 
 ## Install
 
