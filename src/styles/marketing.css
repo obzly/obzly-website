@@ -1,4 +1,4 @@
-/* Marketing pages (/, /features/, /architecture/), ported from mockup/index.html.
+/* Marketing pages (/, /features/, /architecture/, /compare/), ported from mockup/index.html.
    Layout: a readable console. Navy hero with a live tail, then calm white sections
    whose eyebrows are real Obzly identifiers (ports, paths, roles). */
 :root {
@@ -21,6 +21,10 @@
   --amber-hero: #f2a73b;
   --emerald-hero: #10b981;
   --err: #d14343;
+  --blue: #2563c9;
+  --blue-soft: #e5eefc;
+  --violet: #7344c4;
+  --violet-soft: #efe8fb;
   --font-display: "Jost Variable", "Jost", "Futura", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --font-body: "Jost Variable", "Jost", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
@@ -32,7 +36,7 @@
     --bg: #0d111d; --surface: #141a2b; --surface-2: #1a2134; --fg: #e9ecf3; --muted: #9aa3b8;
     --line: #262e45; --accent: #10b981; --accent-strong: #34d399; --accent-soft: #10302a;
     --amber: #f2a73b; --amber-soft: #33281a; --hero-bg: #0a0e19; --hero-fg: #f3f4f6;
-    --hero-muted: #9aa3b8; --hero-line: #222a42; --hero-panel: #121829; --err: #f07171;
+    --hero-muted: #9aa3b8; --hero-line: #222a42; --hero-panel: #121829; --err: #f07171; --blue: #82aaff; --blue-soft: #18264a; --violet: #c3a6ff; --violet-soft: #2b2045;
     color-scheme: dark;
   }
 }
@@ -40,7 +44,7 @@
   --bg: #0d111d; --surface: #141a2b; --surface-2: #1a2134; --fg: #e9ecf3; --muted: #9aa3b8;
   --line: #262e45; --accent: #10b981; --accent-strong: #34d399; --accent-soft: #10302a;
   --amber: #f2a73b; --amber-soft: #33281a; --hero-bg: #0a0e19; --hero-fg: #f3f4f6;
-  --hero-muted: #9aa3b8; --hero-line: #222a42; --hero-panel: #121829; --err: #f07171;
+  --hero-muted: #9aa3b8; --hero-line: #222a42; --hero-panel: #121829; --err: #f07171; --blue: #82aaff; --blue-soft: #18264a; --violet: #c3a6ff; --violet-soft: #2b2045;
   color-scheme: dark;
 }
 
@@ -249,6 +253,51 @@ pre .c { color: var(--muted); } pre .k { color: var(--accent); } pre .s { color:
 .arch-block .two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 40px; }
 .arch-block .two p { color: var(--muted); }
 @media (max-width: 760px) { .arch-block .two { grid-template-columns: minmax(0, 1fr); } }
+
+/* Compare */
+.legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.st { display: inline-block; font: 500 0.7rem var(--font-mono); padding: 2px 8px; border-radius: 999px; border: 1px solid transparent; white-space: nowrap; }
+.st.yes { background: var(--accent-soft); color: var(--accent-strong); border-color: var(--accent); }
+.st.part { background: var(--blue-soft); color: var(--blue); border-color: var(--blue); }
+.st.saas { background: var(--violet-soft); color: var(--violet); border-color: var(--violet); }
+.st.paid { background: var(--amber-soft); color: var(--amber); border-color: var(--amber); }
+.st.no { background: var(--surface-2); color: var(--muted); border-color: var(--line); }
+.st.unk { background: transparent; color: var(--muted); border: 1px dashed var(--line); }
+.matrix-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); margin-top: 24px; }
+.matrix { border-collapse: collapse; min-width: 1060px; width: 100%; font-size: 0.86rem; }
+.matrix th, .matrix td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.matrix thead th { font: 600 0.9rem var(--font-body); position: sticky; top: 0; background: var(--surface); }
+.matrix thead th a { color: var(--fg); }
+.matrix tbody th { font-weight: 600; white-space: nowrap; position: sticky; left: 0; background: var(--surface); z-index: 1; }
+.matrix td { display: table-cell; }
+.matrix td .ct { display: block; margin-top: 4px; color: var(--muted); line-height: 1.35; }
+.matrix .us, .cmp .us { background: var(--accent-soft); }
+.matrix td:nth-child(2) { background: color-mix(in srgb, var(--accent-soft) 45%, transparent); }
+.fine { color: var(--muted); font-size: 0.88rem; margin-top: 14px; max-width: 80ch; }
+.vgrid-sec, .move { padding-block: 56px 8px; }
+.vgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.vcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; display: grid; gap: 10px; align-content: start; }
+.vcard p { color: var(--muted); }
+.vcard dl { margin: 0; display: grid; gap: 4px; font-size: 0.92rem; }
+.vcard dt { font: 500 0.72rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-top: 6px; }
+.vcard dd { margin: 0; }
+.vcard .more { font-weight: 600; text-decoration: none; }
+.move-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.move-grid > div { border-top: 2px solid var(--accent); padding-top: 12px; display: grid; gap: 6px; align-content: start; }
+.move-grid p { color: var(--muted); font-size: 0.95rem; }
+.checked { margin-top: 12px; font: 0.82rem var(--font-mono); color: var(--muted); }
+.choose { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.pick { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+.pick.us { border-color: var(--accent); }
+.pick ul { margin: 10px 0 0; padding-left: 1.1em; display: grid; gap: 6px; color: var(--muted); }
+.cmp td, .cmp th { font-size: 0.9rem; }
+.cmp td.srcs { white-space: normal; }
+.src { font: 0.75rem var(--font-mono); white-space: nowrap; }
+.steps-list { margin: 0; padding-left: 1.3em; display: grid; gap: 10px; max-width: 80ch; }
+.srclist { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; }
+.g { display: block; width: 100%; height: auto; }
+@media (max-width: 960px) { .vgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .move-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .vgrid, .move-grid, .choose { grid-template-columns: minmax(0, 1fr); } .matrix tbody th { white-space: normal; width: 104px; min-width: 104px; } .matrix th, .matrix td { padding: 8px 10px; } }
 
 /* Footer */
 footer { border-top: 1px solid var(--line); padding-block: 40px; color: var(--muted); font-size: 0.92rem; }

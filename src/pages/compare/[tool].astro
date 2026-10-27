@@ -1,0 +1,141 @@
+---
+import Marketing from '../../layouts/Marketing.astro';
+import RunDiagram from '../../components/compare/RunDiagram.astro';
+import { CHECKED } from '../../data/compare/hub';
+import { PAGES } from '../../data/compare/index';
+import type { ToolPage } from '../../data/compare/types';
+
+export function getStaticPaths() {
+	return PAGES.map((page) => ({ params: { tool: page.slug }, props: { page } }));
+}
+
+interface Props {
+	page: ToolPage;
+}
+
+const { page } = Astro.props;
+const ISSUES = 'https://github.com/obzly/obzly-website/issues';
+---
+
+<Marketing
+	title={`Obzly vs ${page.name} · Compare`}
+	description={`Obzly compared with ${page.name}: what you run, features by edition, pricing and how to move over. Checked ${CHECKED}.`}
+	current="compare"
+>
+	<div class="wrap">
+		<div class="page-hero">
+			<div class="crumbs"><a href="/compare/">Compare</a> / {page.name}</div>
+			<h1>Obzly vs {page.name}</h1>
+			<p class="lede">{page.summary}</p>
+			<p class="checked">Checked {CHECKED} against {page.name}'s own docs and pricing. <a href="#sources">Sources</a></p>
+			<nav class="jump" aria-label="On this page">
+				<a href="#choose">Which to choose</a><a href="#run">What you run</a><a href="#table">Feature by feature</a>
+				{page.both && <a href="#both">Use both</a>}
+				<a href="#move">Moving over</a>
+			</nav>
+		</div>
+
+		<div class="arch-block" id="choose">
+			<h2>Which to choose</h2>
+			<div class="choose">
+				<div class="pick us">
+					<h3>Choose Obzly if</h3>
+					<ul>{page.chooseObzly.map((c) => <li>{c}</li>)}</ul>
+				</div>
+				<div class="pick">
+					<h3>Choose {page.name} if</h3>
+					<ul>{page.chooseThem.map((c) => <li>{c}</li>)}</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="arch-block" id="run">
+			<h2>What you run</h2>
+			<RunDiagram run={page.run} name={page.name} />
+		</div>
+
+		<div class="arch-block" id="table">
+			<h2>Feature by feature</h2>
+			<div class="table-wrap">
+				<table class="roles cmp">
+					<thead>
+						<tr>
+							<th>Capability</th>
+							<th class="us">Obzly</th>
+							<th>{page.columns[0]}</th>
+							<th>{page.columns[1]}</th>
+							<th>Source</th>
+						</tr>
+					</thead>
+					<tbody>
+						{
+							page.rows.map((r) => (
+								<tr>
+									<th scope="row">{r.cap}</th>
+									<td>{r.obzly}</td>
+									<td>{r.a}</td>
+									<td>{r.b}</td>
+									<td class="srcs">
+										{r.sources.map((s) => (
+											<a class="src" href={s.url}>
+												{s.label}
+											</a>
+										))}
+									</td>
+								</tr>
+							))
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		{
+			page.both && (
+				<div class="arch-block" id="both">
+					<h2>Use both</h2>
+					<p class="lede" style="font-size:1rem">{page.both.intro}</p>
+					<div class="move-grid">
+						{page.both.items.map((i) => (
+							<div>
+								<h3>{i.title}</h3>
+								<p>{i.text}</p>
+							</div>
+						))}
+					</div>
+				</div>
+			)
+		}
+
+		<div class="arch-block" id="move">
+			<h2>Moving from {page.name}</h2>
+			<ol class="steps-list">
+				{
+					page.move.map((m) => (
+						<li>
+							<b>{m.lead}</b> {m.text} {m.link && <a href={m.link.href}>{m.link.label}</a>}
+						</li>
+					))
+				}
+			</ol>
+		</div>
+
+		<div class="arch-block" id="sources" style="padding-bottom:64px">
+			<h2>Sources</h2>
+			<p class="fine">
+				Every {page.name} fact on this page comes from its vendor's own pages, read on {CHECKED}. Plan names and prices change;
+				check the linked page before you decide.
+			</p>
+			<ul class="srclist">
+				{
+					page.sources.map((s) => (
+						<li>
+							<a href={s.url}>{s.label}</a>: {s.what}
+						</li>
+					))
+				}
+			</ul>
+			<p class="fine">Spotted something out of date? <a href={ISSUES}>Open an issue</a>.</p>
+		</div>
+	</div>
+</Marketing>
