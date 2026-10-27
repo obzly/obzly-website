@@ -8,7 +8,7 @@ import '../styles/marketing.css';
 interface Props {
 	title: string;
 	description: string;
-	current?: 'features' | 'architecture';
+	current?: 'features' | 'architecture' | 'compare';
 }
 
 const { title, description, current } = Astro.props;
@@ -61,6 +61,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 				<nav class="nav" id="nav" aria-label="Main">
 					<a href="/features/" aria-current={current === 'features' ? 'page' : undefined}>Features</a>
 					<a href="/architecture/" aria-current={current === 'architecture' ? 'page' : undefined}>Architecture</a>
+					<a href="/compare/" aria-current={current === 'compare' ? 'page' : undefined}>Compare</a>
 					<a href="/docs/">Docs</a>
 					<span class="spacer"></span>
 					<a class="ext" href={`${GITHUB}/releases`}>Releases</a>
@@ -83,7 +84,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 			<div class="wrap">
 				<a class="brand" href="/" style="color:var(--fg);font-size:1.1rem"><svg style="width:26px;height:26px"><use href="#logo"></use></svg>Obzly</a>
 				<nav aria-label="Footer">
-					<a href="/features/">Features</a><a href="/architecture/">Architecture</a><a href="/docs/">Docs</a>
+					<a href="/features/">Features</a><a href="/architecture/">Architecture</a><a href="/compare/">Compare</a><a href="/docs/">Docs</a>
 					<a href={GITHUB}>GitHub</a>
 					<a href={`${GITHUB}/releases`}>Releases</a>
 					<a href={`${GITHUB}/blob/main/LICENSE`}>Apache 2.0</a>

@@ -29,6 +29,10 @@
   --amber-hero: #f2a73b;
   --emerald-hero: #10b981;
   --err: #d14343;
+  --blue: #2563c9;
+  --blue-soft: #e5eefc;
+  --violet: #7344c4;
+  --violet-soft: #efe8fb;
   --font-display: "Jost", "Futura", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --font-body: "Jost", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
@@ -40,7 +44,7 @@
     --bg: #0d111d; --surface: #141a2b; --surface-2: #1a2134; --fg: #e9ecf3; --muted: #9aa3b8;
     --line: #262e45; --accent: #10b981; --accent-strong: #34d399; --accent-soft: #10302a;
     --amber: #f2a73b; --amber-soft: #33281a; --hero-bg: #0a0e19; --hero-fg: #f3f4f6;
-    --hero-muted: #9aa3b8; --hero-line: #222a42; --hero-panel: #121829; --err: #f07171;
+    --hero-muted: #9aa3b8; --hero-line: #222a42; --hero-panel: #121829; --err: #f07171; --blue: #82aaff; --blue-soft: #18264a; --violet: #c3a6ff; --violet-soft: #2b2045;
     color-scheme: dark;
   }
 }
@@ -48,7 +52,7 @@
   --bg: #0d111d; --surface: #141a2b; --surface-2: #1a2134; --fg: #e9ecf3; --muted: #9aa3b8;
   --line: #262e45; --accent: #10b981; --accent-strong: #34d399; --accent-soft: #10302a;
   --amber: #f2a73b; --amber-soft: #33281a; --hero-bg: #0a0e19; --hero-fg: #f3f4f6;
-  --hero-muted: #9aa3b8; --hero-line: #222a42; --hero-panel: #121829; --err: #f07171;
+  --hero-muted: #9aa3b8; --hero-line: #222a42; --hero-panel: #121829; --err: #f07171; --blue: #82aaff; --blue-soft: #18264a; --violet: #c3a6ff; --violet-soft: #2b2045;
   color-scheme: dark;
 }
 
@@ -303,6 +307,51 @@ pre .c { color: var(--muted); } pre .k { color: var(--accent); } pre .s { color:
   .sidebar.open { display: grid; }
 }
 
+/* Compare */
+.legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.st { display: inline-block; font: 500 0.7rem var(--font-mono); padding: 2px 8px; border-radius: 999px; border: 1px solid transparent; white-space: nowrap; }
+.st.yes { background: var(--accent-soft); color: var(--accent-strong); border-color: var(--accent); }
+.st.part { background: var(--blue-soft); color: var(--blue); border-color: var(--blue); }
+.st.saas { background: var(--violet-soft); color: var(--violet); border-color: var(--violet); }
+.st.paid { background: var(--amber-soft); color: var(--amber); border-color: var(--amber); }
+.st.no { background: var(--surface-2); color: var(--muted); border-color: var(--line); }
+.st.unk { background: transparent; color: var(--muted); border: 1px dashed var(--line); }
+.matrix-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); margin-top: 24px; }
+.matrix { border-collapse: collapse; min-width: 1060px; width: 100%; font-size: 0.86rem; }
+.matrix th, .matrix td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.matrix thead th { font: 600 0.9rem var(--font-body); position: sticky; top: 0; background: var(--surface); }
+.matrix thead th a { color: var(--fg); }
+.matrix tbody th { font-weight: 600; white-space: nowrap; position: sticky; left: 0; background: var(--surface); z-index: 1; }
+.matrix td { display: table-cell; }
+.matrix td .ct { display: block; margin-top: 4px; color: var(--muted); line-height: 1.35; }
+.matrix .us, .cmp .us { background: var(--accent-soft); }
+.matrix td:nth-child(2) { background: color-mix(in srgb, var(--accent-soft) 45%, transparent); }
+.fine { color: var(--muted); font-size: 0.88rem; margin-top: 14px; max-width: 80ch; }
+.vgrid-sec, .move { padding-block: 56px 8px; }
+.vgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.vcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; display: grid; gap: 10px; align-content: start; }
+.vcard p { color: var(--muted); }
+.vcard dl { margin: 0; display: grid; gap: 4px; font-size: 0.92rem; }
+.vcard dt { font: 500 0.72rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-top: 6px; }
+.vcard dd { margin: 0; }
+.vcard .more { font-weight: 600; text-decoration: none; }
+.move-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.move-grid > div { border-top: 2px solid var(--accent); padding-top: 12px; display: grid; gap: 6px; align-content: start; }
+.move-grid p { color: var(--muted); font-size: 0.95rem; }
+.checked { margin-top: 12px; font: 0.82rem var(--font-mono); color: var(--muted); }
+.choose { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.pick { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+.pick.us { border-color: var(--accent); }
+.pick ul { margin: 10px 0 0; padding-left: 1.1em; display: grid; gap: 6px; color: var(--muted); }
+.cmp td, .cmp th { font-size: 0.9rem; }
+.cmp td.srcs { white-space: normal; }
+.src { font: 0.75rem var(--font-mono); white-space: nowrap; }
+.steps-list { margin: 0; padding-left: 1.3em; display: grid; gap: 10px; max-width: 80ch; }
+.srclist { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; }
+.g { display: block; width: 100%; height: auto; }
+@media (max-width: 960px) { .vgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .move-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .vgrid, .move-grid, .choose { grid-template-columns: minmax(0, 1fr); } .matrix tbody th { white-space: normal; width: 104px; min-width: 104px; } .matrix th, .matrix td { padding: 8px 10px; } }
+
 /* Footer */
 footer { border-top: 1px solid var(--line); padding-block: 40px; color: var(--muted); font-size: 0.92rem; }
 footer .wrap { display: flex; flex-wrap: wrap; gap: 16px 32px; justify-content: space-between; align-items: center; }
@@ -334,6 +383,7 @@ footer a:hover { color: var(--accent); }
     <nav class="nav" id="nav" aria-label="Main">
       <a href="#features" data-view="features">Features</a>
       <a href="#architecture" data-view="architecture">Architecture</a>
+      <a href="#compare" data-view="compare">Compare</a>
       <a href="#docs" data-view="docs">Docs</a>
       <span class="spacer"></span>
       <a class="ext" href="https://github.com/obzly/obzly/releases" target="_blank" rel="noopener">Releases</a>
@@ -565,7 +615,7 @@ footer a:hover { color: var(--accent); }
         <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18"/><path d="M6 16v-3M10 16V8M14 16v-5M18 16V5"/><path d="M17 3l2 2 2-2" /></svg><span class="tag">logs</span><h3>Patterns and anomalies</h3><p>New, spiking and dropping patterns compared with an earlier period, with alerts on new error patterns.</p></div>
         <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16M4 9h10"/><rect x="3" y="11.5" width="18" height="3.5" rx="1"/><path d="M4 18h12M4 21h8"/></svg><span class="tag">logs</span><h3>Log context</h3><p>See the logs around any result from the same source, to find what led up to an error.</p></div>
         <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h8M3 9h6"/><path d="M11 7h3l2 3"/><rect x="9" y="12" width="12" height="3" rx="1"/><rect x="12" y="17" width="7" height="3" rx="1"/></svg><span class="tag">logs → traces</span><h3>Log to trace</h3><p>Jump from a log line to its trace. Kubernetes rollout markers show on the histogram.</p></div>
-        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><path d="M17 13v8M13 17h8"/></svg><span class="tag">dashboards</span><h3>Grafana import</h3><p>Build dashboards, or import Grafana and OpenObserve dashboard JSON.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><path d="M17 13v8M13 17h8"/></svg><span class="tag">dashboards</span><h3>Grafana import</h3><p>Build dashboards, or bring over a Grafana or OpenObserve dashboard's panels and layout.</p></div>
         <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9.5 16.5h-19z"/><path d="M12 10v4M12 17.2v.3"/></svg><span class="tag">incidents</span><h3>Incidents</h3><p>Error logs, failed spans and their shared traces grouped into incident sessions.</p></div>
         <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 21h4"/></svg><span class="tag">alerting</span><h3>Alerts in ~15 s</h3><p>Rules over PromQL, log searches or trace latency, sent to webhooks, Slack, PagerDuty or email.</p></div>
         <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2 2.2.8-2.2.8L19 21l-.8-2.2-2.2-.8 2.2-.8z"/></svg><span class="tag">ai</span><h3>AI observability</h3><p>Claude Code usage per project: cost, tokens, cache use and sessions.</p></div>
@@ -856,7 +906,7 @@ footer a:hover { color: var(--accent); }
         <div class="eyebrow">Dashboards &amp; Alerts</div>
         <h2>Bring your dashboards, get paged quickly</h2>
         <ul>
-          <li><b>Dashboards</b>: build your own, or import Grafana or OpenObserve dashboard JSON.</li>
+          <li><b>Dashboards</b>: build your own, or import a Grafana or OpenObserve dashboard's panels and layout, then add each panel's query.</li>
           <li><b>Alert rules</b> over metrics (PromQL), logs (counts of a search, optionally per field) or traces (count, errors, latency percentiles).</li>
           <li><b>for durations, repeat intervals, labels</b> and a live preview.</li>
           <li><b>Notifications</b> to webhooks, Slack, PagerDuty or email, through an outbox with retries and silences. About 15 seconds from rule to notification.</li>
@@ -1188,6 +1238,148 @@ footer a:hover { color: var(--accent); }
   </div>
 </div>
 
+<!-- ============================== COMPARE ============================== -->
+<div class="view" id="view-compare">
+  <div class="wrap">
+    <div class="page-hero">
+      <div class="eyebrow">Compare</div>
+      <h1>How Obzly compares</h1>
+      <p class="lede">Facts from each vendor's own docs and pricing pages, checked on 27 October 2026. Where another tool is ahead, the table says so.</p>
+      <div class="legend" aria-label="Legend">
+        <span class="st yes">Included</span><span class="st part">Partial</span><span class="st paid">Paid feature</span><span class="st saas">SaaS only</span><span class="st no">Not available</span><span class="st unk">Not supported</span>
+      </div>
+    </div>
+    <div class="matrix-wrap" role="region" aria-label="Comparison table" tabindex="0">
+      <table class="matrix"><thead><tr><th scope="col">Capability</th><th scope="col" class="us">Obzly</th><th scope="col"><a href="#compare-grafana">Grafana LGTM</a></th><th scope="col">Elastic</th><th scope="col">OpenObserve</th><th scope="col">SigNoz</th><th scope="col">Datadog</th><th scope="col">Splunk</th></tr></thead><tbody><tr><th scope="row">Self-hosted</th><td><span class="st yes">Included</span><span class="ct">Every feature, one image</span></td><td><span class="st yes">Included</span><span class="ct">OSS or Enterprise</span></td><td><span class="st yes">Included</span><span class="ct">Self-managed cluster</span></td><td><span class="st yes">Included</span><span class="ct">Open source or Enterprise</span></td><td><span class="st yes">Included</span><span class="ct">Community or Enterprise</span></td><td><span class="st no">Not available</span><span class="ct">SaaS; BYOC Logs only</span></td><td><span class="st part">Partial</span><span class="ct">Splunk Enterprise for logs</span></td></tr><tr><th scope="row">License</th><td><span class="st yes">Included</span><span class="ct">Apache 2.0, no paid edition</span></td><td><span class="st part">Partial</span><span class="ct">AGPLv3; Enterprise proprietary</span></td><td><span class="st part">Partial</span><span class="ct">SSPL, AGPLv3 or ELv2</span></td><td><span class="st part">Partial</span><span class="ct">AGPL-3.0; Enterprise EULA</span></td><td><span class="st part">Partial</span><span class="ct">MIT; ee/ proprietary</span></td><td><span class="st no">Not available</span><span class="ct">Proprietary</span></td><td><span class="st no">Not available</span><span class="ct">Proprietary</span></td></tr><tr><th scope="row">What you run</th><td><span class="st yes">Included</span><span class="ct">One image, Postgres, Valkey</span></td><td><span class="st part">Partial</span><span class="ct">Grafana, Loki, Mimir, Tempo</span></td><td><span class="st part">Partial</span><span class="ct">Elasticsearch, Kibana, agents</span></td><td><span class="st yes">Included</span><span class="ct">One binary; HA adds Postgres, NATS</span></td><td><span class="st part">Partial</span><span class="ct">ClickHouse, Keeper, Postgres, collector</span></td><td><span class="st no">Not available</span><span class="ct">Nothing (SaaS)</span></td><td><span class="st part">Partial</span><span class="ct">Forwarders, indexers, search heads</span></td></tr><tr><th scope="row">Data in your object storage</th><td><span class="st yes">Included</span><span class="ct">Parquet on S3, GCS, Azure</span></td><td><span class="st yes">Included</span><span class="ct">Primary store for all signals</span></td><td><span class="st paid">Paid feature</span><span class="ct">Searchable snapshots: Enterprise</span></td><td><span class="st yes">Included</span><span class="ct">Parquet on S3, GCS, Azure</span></td><td><span class="st part">Partial</span><span class="ct">Optional S3/GCS cold tier</span></td><td><span class="st part">Partial</span><span class="ct">Log archives to your bucket</span></td><td><span class="st part">Partial</span><span class="ct">SmartStore (Enterprise)</span></td></tr><tr><th scope="row">OTLP in</th><td><span class="st yes">Included</span><span class="ct">Logs, metrics, traces</span></td><td><span class="st yes">Included</span><span class="ct">Logs, metrics, traces</span></td><td><span class="st yes">Included</span><span class="ct">All three; self-managed via collector</span></td><td><span class="st yes">Included</span><span class="ct">All three, plus profiles</span></td><td><span class="st yes">Included</span><span class="ct">Logs, metrics, traces</span></td><td><span class="st yes">Included</span><span class="ct">All three, agentless intake</span></td><td><span class="st part">Partial</span><span class="ct">Traces and metrics; logs via HEC</span></td></tr><tr><th scope="row">PromQL and remote write</th><td><span class="st yes">Included</span><span class="ct">Both</span></td><td><span class="st yes">Included</span><span class="ct">Both (Mimir)</span></td><td><span class="st yes">Included</span><span class="ct">Both, since 9.5</span></td><td><span class="st yes">Included</span><span class="ct">Both</span></td><td><span class="st part">Partial</span><span class="ct">PromQL in dashboards; no remote write</span></td><td><span class="st part">Partial</span><span class="ct">Remote write via Pipelines (preview); no PromQL</span></td><td><span class="st unk">Not supported</span><span class="ct">Collector only; PromQL unsupported</span></td></tr><tr><th scope="row">Grafana dashboards</th><td><span class="st part">Partial</span><span class="ct">Imports layout; you add queries</span></td><td><span class="st yes">Included</span><span class="ct">Native format</span></td><td><span class="st part">Partial</span><span class="ct">Migration CLI, still evolving</span></td><td><span class="st part">Partial</span><span class="ct">Through a migrator tool</span></td><td><span class="st no">Not available</span><span class="ct">Rebuild by hand</span></td><td><span class="st part">Partial</span><span class="ct">Migration tool in preview</span></td><td><span class="st unk">Not supported</span><span class="ct">Dashboard import unsupported</span></td></tr><tr><th scope="row">Synthetic checks</th><td><span class="st part">Partial</span><span class="ct">HTTP, TLS, TCP, DNS, ICMP; no browser</span></td><td><span class="st saas">SaaS only</span><span class="ct">Grafana Cloud, incl. browser</span></td><td><span class="st yes">Included</span><span class="ct">HTTP, TCP, ICMP, browser</span></td><td><span class="st part">Partial</span><span class="ct">Beta; private locations paid</span></td><td><span class="st no">Not available</span><span class="ct">Collector httpcheck only</span></td><td><span class="st yes">Included</span><span class="ct">API, browser, private locations</span></td><td><span class="st yes">Included</span><span class="ct">API, uptime, browser</span></td></tr><tr><th scope="row">RUM and profiling</th><td><span class="st no">Not available</span><span class="ct">Neither</span></td><td><span class="st part">Partial</span><span class="ct">RUM in Cloud; Pyroscope</span></td><td><span class="st part">Partial</span><span class="ct">RUM; profiling Enterprise</span></td><td><span class="st yes">Included</span><span class="ct">RUM, replay, profiling</span></td><td><span class="st part">Partial</span><span class="ct">Frontend monitoring; no profiling</span></td><td><span class="st paid">Paid feature</span><span class="ct">Both, billed separately</span></td><td><span class="st yes">Included</span><span class="ct">Both</span></td></tr><tr><th scope="row">SSO</th><td><span class="st yes">Included</span><span class="ct">OIDC; no SAML</span></td><td><span class="st paid">Paid feature</span><span class="ct">OAuth free; SAML Enterprise</span></td><td><span class="st paid">Paid feature</span><span class="ct">Platinum or Enterprise</span></td><td><span class="st paid">Paid feature</span><span class="ct">Enterprise or Cloud</span></td><td><span class="st paid">Paid feature</span><span class="ct">SAML/OIDC paid; Google free</span></td><td><span class="st paid">Paid feature</span><span class="ct">SAML on Pro and up</span></td><td><span class="st yes">Included</span><span class="ct">SAML</span></td></tr><tr><th scope="row">SCIM and audit log</th><td><span class="st yes">Included</span><span class="ct">Both included</span></td><td><span class="st paid">Paid feature</span><span class="ct">Enterprise or Cloud</span></td><td><span class="st paid">Paid feature</span><span class="ct">Audit Gold+; SCIM unsupported</span></td><td><span class="st paid">Paid feature</span><span class="ct">Audit paid; SCIM not documented</span></td><td><span class="st no">Not available</span><span class="ct">No audit log yet</span></td><td><span class="st paid">Paid feature</span><span class="ct">SCIM Pro+; audit +2% of spend</span></td><td><span class="st part">Partial</span><span class="ct">SCIM platform only; audit on both</span></td></tr><tr><th scope="row">Many regions, one place</th><td><span class="st yes">Included</span><span class="ct">Control plane + Sites</span></td><td><span class="st part">Partial</span><span class="ct">Federation experimental (GEM)</span></td><td><span class="st part">Partial</span><span class="ct">Cross-cluster search</span></td><td><span class="st paid">Paid feature</span><span class="ct">Super Cluster: Enterprise</span></td><td><span class="st unk">Not supported</span><span class="ct">Federation unsupported</span></td><td><span class="st part">Partial</span><span class="ct">Child orgs, same site</span></td><td><span class="st part">Partial</span><span class="ct">Federated Search (platform)</span></td></tr></tbody></table>
+    </div>
+    <p class="fine">"Paid feature" means the self-hosted free edition doesn't include it. "Not supported" means the vendor's own docs don't document it. Every cell links to its source on the tool's own comparison page.</p>
+
+    <section class="vgrid-sec">
+      <div class="section-head"><div class="eyebrow">Side by side</div><h2>Pick a comparison</h2></div>
+      <div class="vgrid"><article class="vcard"><h3>Obzly vs Grafana LGTM</h3><p>Four systems you assemble, or Grafana Cloud.</p><dl><dt>Choose Obzly if</dt><dd>one system instead of four, with SSO, SCIM and audit included</dd><dt>Choose Grafana LGTM if</dt><dd>you need billion-series metrics, browser checks or RUM</dd></dl><a class="more" href="#compare-grafana">Read the comparison →</a></article><article class="vcard"><h3>Obzly vs Elastic</h3><p>Search engine first, observability on top.</p><dl><dt>Choose Obzly if</dt><dd>object storage by default and no license tiers</dd><dt>Choose Elastic if</dt><dd>you depend on full-text search or Elastic&#x27;s built-in machine learning</dd></dl><a class="more" href="#compare">Comparison coming next</a></article><article class="vcard"><h3>Obzly vs OpenObserve</h3><p>Closest in shape: Parquet on object storage.</p><dl><dt>Choose Obzly if</dt><dd>SSO, RBAC, audit and multi-region without a paid edition</dd><dt>Choose OpenObserve if</dt><dd>you need RUM, session replay or browser checks today</dd></dl><a class="more" href="#compare">Comparison coming next</a></article><article class="vcard"><h3>Obzly vs SigNoz</h3><p>OTel-native, built on ClickHouse.</p><dl><dt>Choose Obzly if</dt><dd>no ClickHouse to run, remote write, synthetics</dd><dt>Choose SigNoz if</dt><dd>you already run ClickHouse or want its exceptions view</dd></dl><a class="more" href="#compare">Comparison coming next</a></article><article class="vcard"><h3>Obzly vs Datadog</h3><p>The SaaS reference, priced per host and GB.</p><dl><dt>Choose Obzly if</dt><dd>your data must stay on your infrastructure</dd><dt>Choose Datadog if</dt><dd>you want a fully managed service with RUM and profiling</dd></dl><a class="more" href="#compare">Comparison coming next</a></article><article class="vcard"><h3>Obzly vs Splunk</h3><p>Logs platform plus a separate observability cloud.</p><dl><dt>Choose Obzly if</dt><dd>one product for all three signals, open source</dd><dt>Choose Splunk if</dt><dd>you are standardised on SPL and Splunk apps</dd></dl><a class="more" href="#compare">Comparison coming next</a></article></div>
+    </section>
+
+    <section class="move">
+      <div class="section-head"><div class="eyebrow">Moving to Obzly</div><h2>Keep what already works</h2></div>
+      <div class="move-grid">
+        <div><h3>Change one endpoint</h3><p>Point your OpenTelemetry Collector's OTLP exporter at Obzly. Nothing in your apps changes.</p></div>
+        <div><h3>Keep your Grafana</h3><p>Add Obzly as a Prometheus data source and a Jaeger data source, and keep using your Grafana dashboards.</p></div>
+        <div><h3>Keep Prometheus</h3><p>Send Prometheus remote-write to Obzly, or keep scraping with the Collector.</p></div>
+        <div><h3>Run both for a while</h3><p>Export to both backends until you trust the new one, then switch off the old one.</p></div>
+      </div>
+    </section>
+
+    <p class="fine">Spotted something out of date? <a href="https://github.com/obzly/obzly-website/issues" target="_blank" rel="noopener">Open an issue</a> with a link to the vendor's page and we'll fix it.</p>
+  </div>
+</div>
+
+<!-- ============================== COMPARE: GRAFANA ============================== -->
+<div class="view" id="view-compare-grafana">
+  <div class="wrap">
+    <div class="page-hero">
+      <div class="crumbs"><a href="#compare">Compare</a> / Grafana LGTM</div>
+      <h1>Obzly vs Grafana LGTM</h1>
+      <p class="lede">Grafana's stack is the most common way to self-host observability: Grafana for dashboards, Loki for logs, Mimir for metrics and Tempo for traces. Obzly covers the same three signals in one system, and it can also sit behind the Grafana you already have.</p>
+      <p class="checked">Checked 27 October 2026 against Grafana Labs' docs and pricing. <a href="#cg-sources">Sources</a></p>
+      <nav class="jump" aria-label="On this page"><a href="#cg-choose">Which to choose</a><a href="#cg-run">What you run</a><a href="#cg-table">Feature by feature</a><a href="#cg-both">Use both</a><a href="#cg-move">Moving over</a></nav>
+    </div>
+
+    <div class="arch-block" id="cg-choose">
+      <h2>Which to choose</h2>
+      <div class="choose">
+        <div class="pick us"><h3>Choose Obzly if</h3><ul>
+          <li>you'd rather run one system than four, each with its own components and tuning;</li>
+          <li>you want SSO, SCIM, fine-grained roles and an audit log without an enterprise license;</li>
+          <li>you want synthetic checks and an infrastructure inventory that you host yourself;</li>
+          <li>you need one login across regions, with each region's data staying put;</li>
+          <li>Apache 2.0 suits your legal team better than AGPLv3.</li></ul></div>
+        <div class="pick"><h3>Choose Grafana LGTM if</h3><ul>
+          <li>you run metrics at very large scale: Mimir is built for over a billion active series;</li>
+          <li>you need browser synthetic checks, real-user monitoring or continuous profiling;</li>
+          <li>you visualise many data sources that Obzly doesn't store, such as CloudWatch or SQL databases;</li>
+          <li>you want a managed service with a free tier (Grafana Cloud);</li>
+          <li>you need SAML, which Obzly doesn't support.</li></ul></div>
+      </div>
+    </div>
+
+    <div class="arch-block" id="cg-run">
+      <h2>What you run</h2>
+      <figure class="diagram" style="margin:0"><svg class="g" viewBox="0 0 960 300" role="img" aria-labelledby="run-t">
+  <title id="run-t">To self-host Grafana LGTM you run Grafana, Loki, Mimir and Tempo, each made of several components, plus a SQL database and object storage. Obzly is one image in a few roles, plus Postgres, Valkey and object storage.</title>
+  <text class="d-l" x="20" y="22">Grafana LGTM, self-hosted</text>
+  <rect class="d-box" x="20" y="34" width="440" height="56" rx="8"/><text class="d-t" x="36" y="58" style="font-size:14px">Grafana</text><text class="d-s" x="36" y="78">UI · MySQL or PostgreSQL for HA</text>
+  <rect class="d-soft" x="20" y="100" width="140" height="120" rx="8"/><text class="d-t" x="34" y="122" style="font-size:14px">Loki</text>
+  <text class="d-s" x="34" y="142">distributor</text><text class="d-s" x="34" y="158">ingester</text><text class="d-s" x="34" y="174">querier</text><text class="d-s" x="34" y="190">compactor</text><text class="d-s" x="34" y="206">ruler · …</text>
+  <rect class="d-soft" x="170" y="100" width="140" height="120" rx="8"/><text class="d-t" x="184" y="122" style="font-size:14px">Mimir</text>
+  <text class="d-s" x="184" y="142">distributor</text><text class="d-s" x="184" y="158">ingester</text><text class="d-s" x="184" y="174">store-gateway</text><text class="d-s" x="184" y="190">compactor</text><text class="d-s" x="184" y="206">query-frontend</text>
+  <rect class="d-soft" x="320" y="100" width="140" height="120" rx="8"/><text class="d-t" x="334" y="122" style="font-size:14px">Tempo</text>
+  <text class="d-s" x="334" y="142">distributor</text><text class="d-s" x="334" y="158">ingester</text><text class="d-s" x="334" y="174">querier</text><text class="d-s" x="334" y="190">compactor</text>
+  <rect class="d-amb" x="20" y="230" width="440" height="40" rx="8"/><text class="d-s" x="36" y="255" style="fill:var(--fg)">Object storage · configured per backend</text>
+
+  <line x1="490" y1="20" x2="490" y2="280" stroke="var(--line)"/>
+
+  <text class="d-l" x="520" y="22">Obzly</text>
+  <rect class="d-acc" x="520" y="34" width="420" height="186" rx="10"/><text class="d-t" x="538" y="60">one image</text>
+  <text class="d-s" x="538" y="82">SERVICE_MODE = all, or one role per deployment:</text>
+  <rect class="d-box" x="538" y="98" width="88" height="34" rx="6"/><text class="d-s" x="552" y="120">api</text>
+  <rect class="d-box" x="636" y="98" width="88" height="34" rx="6"/><text class="d-s" x="650" y="120">worker</text>
+  <rect class="d-box" x="734" y="98" width="88" height="34" rx="6"/><text class="d-s" x="748" y="120">broker</text>
+  <rect class="d-box" x="832" y="98" width="92" height="34" rx="6"/><text class="d-s" x="846" y="120">querier</text>
+  <text class="d-s" x="538" y="160">logs, metrics and traces in one store</text>
+  <text class="d-a" x="538" y="182">plus control-plane for many Sites</text>
+  <rect class="d-soft" x="520" y="230" width="130" height="40" rx="8"/><text class="d-s" x="536" y="255" style="fill:var(--fg)">Postgres</text>
+  <rect class="d-soft" x="660" y="230" width="110" height="40" rx="8"/><text class="d-s" x="676" y="255" style="fill:var(--fg)">Valkey</text>
+  <rect class="d-amb" x="780" y="230" width="160" height="40" rx="8"/><text class="d-s" x="796" y="255" style="fill:var(--fg)">Object storage</text>
+</svg>
+        <figcaption>Loki and Mimir can also run as a single binary for small setups; at scale each splits into the components shown. Obzly scales the same way, one role at a time, from the same image.</figcaption>
+      </figure>
+    </div>
+
+    <div class="arch-block" id="cg-table">
+      <h2>Feature by feature</h2>
+      <div class="table-wrap">
+        <table class="roles cmp"><thead><tr><th>Capability</th><th class="us">Obzly</th><th>Grafana OSS stack</th><th>Grafana Enterprise / Cloud</th><th>Source</th></tr></thead><tbody><tr><th scope="row">License</th><td>Apache 2.0, every feature</td><td>AGPLv3 (Grafana, Loki, Tempo, Mimir)</td><td>Proprietary</td><td class="srcs"><a class="src" href="https://grafana.com/licensing/" target="_blank" rel="noopener">grafana.com/licensing</a></td></tr><tr><th scope="row">What you run</th><td>One image in up to five roles, Postgres, Valkey</td><td>Grafana plus Loki, Mimir and Tempo, each a set of components (or single-binary modes)</td><td>Same, or nothing with Grafana Cloud</td><td class="srcs"><a class="src" href="https://grafana.com/docs/loki/latest/get-started/components/" target="_blank" rel="noopener">Loki components</a> <a class="src" href="https://grafana.com/docs/mimir/latest/references/architecture/components/" target="_blank" rel="noopener">Mimir components</a></td></tr><tr><th scope="row">Storage</th><td>ZSTD Parquet on S3, GCS, Azure Blob or MinIO</td><td>Object storage for logs, metrics and traces</td><td>Same; Cloud stores it for you</td><td class="srcs"><a class="src" href="https://grafana.com/docs/loki/latest/configure/storage/" target="_blank" rel="noopener">Loki storage</a> <a class="src" href="https://grafana.com/docs/tempo/latest/configuration/" target="_blank" rel="noopener">Tempo storage</a></td></tr><tr><th scope="row">OTLP in</th><td>Logs, metrics and traces, gRPC and HTTP</td><td>All three; Loki and Mimir over HTTP</td><td>All three</td><td class="srcs"><a class="src" href="https://grafana.com/docs/loki/latest/send-data/otel/" target="_blank" rel="noopener">Loki OTLP</a> <a class="src" href="https://grafana.com/docs/mimir/latest/configure/configure-otel-collector/" target="_blank" rel="noopener">Mimir OTLP</a></td></tr><tr><th scope="row">Query languages</th><td>Search bar and SQL for logs, PromQL, Jaeger API for traces</td><td>LogQL, PromQL, TraceQL</td><td>Same</td><td class="srcs"><a class="src" href="https://grafana.com/docs/tempo/latest/traceql/" target="_blank" rel="noopener">TraceQL</a></td></tr><tr><th scope="row">Prometheus</th><td>Remote-write ingest and a PromQL API</td><td>Remote write and PromQL, natively</td><td>Same</td><td class="srcs"><a class="src" href="https://grafana.com/oss/mimir/" target="_blank" rel="noopener">Mimir</a></td></tr><tr><th scope="row">Dashboards</th><td>Own dashboards; imports Grafana layout without queries</td><td>Native, with many data sources</td><td>Same</td><td class="srcs"><a class="src" href="https://grafana.com/docs/grafana/latest/dashboards/build-dashboards/import-dashboards/" target="_blank" rel="noopener">Import dashboards</a></td></tr><tr><th scope="row">Alerting</th><td>Webhook, Slack, PagerDuty, email</td><td>20+ contact points</td><td>Same</td><td class="srcs"><a class="src" href="https://grafana.com/docs/grafana/latest/alerting/configure-notifications/manage-contact-points/" target="_blank" rel="noopener">Contact points</a></td></tr><tr><th scope="row">Synthetic checks</th><td>HTTP, TLS, TCP, DNS, ICMP from your probes; no browser</td><td>Not available</td><td>Grafana Cloud, incl. browser and private probes</td><td class="srcs"><a class="src" href="https://grafana.com/docs/grafana-cloud/testing/synthetic-monitoring/" target="_blank" rel="noopener">Synthetic Monitoring</a></td></tr><tr><th scope="row">Infrastructure inventory</th><td>Clusters to containers, plus AWS and Azure resources</td><td>No inventory view</td><td>Kubernetes and cloud provider apps (Cloud)</td><td class="srcs"><a class="src" href="https://grafana.com/docs/grafana-cloud/monitor-infrastructure/" target="_blank" rel="noopener">Monitor infrastructure</a></td></tr><tr><th scope="row">RUM and profiling</th><td>Neither</td><td>Pyroscope for profiling</td><td>Frontend Observability (Cloud), Pyroscope</td><td class="srcs"><a class="src" href="https://grafana.com/docs/grafana-cloud/monitor-applications/frontend-observability/" target="_blank" rel="noopener">Frontend Observability</a> <a class="src" href="https://grafana.com/docs/pyroscope/latest/" target="_blank" rel="noopener">Pyroscope</a></td></tr><tr><th scope="row">SSO</th><td>OIDC with any provider; no SAML</td><td>OAuth and LDAP; no SAML</td><td>SAML in Enterprise and Cloud Pro and up</td><td class="srcs"><a class="src" href="https://grafana.com/docs/grafana/latest/setup-grafana/configure-security/configure-authentication/saml/" target="_blank" rel="noopener">SAML</a> <a class="src" href="https://grafana.com/grafana/deployment-options/" target="_blank" rel="noopener">Deployment options</a></td></tr><tr><th scope="row">SCIM</th><td>Included</td><td>Not available</td><td>Enterprise and Cloud</td><td class="srcs"><a class="src" href="https://grafana.com/docs/grafana/latest/setup-grafana/configure-access/configure-scim-provisioning/" target="_blank" rel="noopener">SCIM</a></td></tr><tr><th scope="row">RBAC and audit log</th><td>Per-project roles, teams, audit log with CSV export</td><td>Basic roles only</td><td>Fine-grained RBAC and audit log</td><td class="srcs"><a class="src" href="https://grafana.com/docs/grafana/latest/administration/roles-and-permissions/access-control/" target="_blank" rel="noopener">RBAC</a> <a class="src" href="https://grafana.com/docs/grafana/latest/setup-grafana/configure-security/audit-grafana/" target="_blank" rel="noopener">Audit log</a></td></tr><tr><th scope="row">MCP server</th><td>Built in at /mcp, read-only</td><td>Open-source server you run</td><td>Plus a hosted server for Cloud</td><td class="srcs"><a class="src" href="https://grafana.com/docs/grafana/latest/developer-resources/mcp/" target="_blank" rel="noopener">Grafana MCP</a></td></tr><tr><th scope="row">Many regions</th><td>Control plane in front of many Sites</td><td>One Grafana over many data sources</td><td>Cross-cluster query federation in GEM, experimental</td><td class="srcs"><a class="src" href="https://grafana.com/docs/enterprise-metrics/latest/manage/cluster-query-federation/" target="_blank" rel="noopener">GEM federation</a></td></tr><tr><th scope="row">Price</th><td>Free; you run the infrastructure</td><td>Free; you run the infrastructure</td><td>Cloud Pro from $19/month plus usage; Enterprise from $25k/year</td><td class="srcs"><a class="src" href="https://grafana.com/pricing/" target="_blank" rel="noopener">grafana.com/pricing</a></td></tr></tbody></table>
+      </div>
+    </div>
+
+    <div class="arch-block" id="cg-both">
+      <h2>Use both</h2>
+      <p class="lede" style="font-size:1rem">You don't have to give up Grafana. Obzly speaks the APIs Grafana already uses, so it can replace Loki, Mimir and Tempo underneath while your team keeps its dashboards.</p>
+      <div class="move-grid">
+        <div><h3>Prometheus data source</h3><p>Point it at Obzly's PromQL API. PromQL panels and alert queries keep working where metric and label names match; OTLP attributes are stored without dots, for example <code>k8s_pod_name</code>.</p></div>
+        <div><h3>Jaeger data source</h3><p>Point it at Obzly's Jaeger-compatible API to browse traces in Grafana.</p></div>
+        <div><h3>Logs</h3><p>LogQL panels need rewriting. Use Obzly's log search or SQL for those instead.</p></div>
+      </div>
+    </div>
+
+    <div class="arch-block" id="cg-move">
+      <h2>Moving from Grafana LGTM</h2>
+      <ol class="steps-list">
+        <li><b>Send to both.</b> Add an OTLP exporter for Obzly to your Collector or Alloy pipeline next to the existing one. <a href="#docs-kubernetes-otel-collector">Collector guide</a></li>
+        <li><b>Keep Prometheus flowing.</b> Add Obzly as a remote-write target. <a href="#docs-grafana-promql">PromQL and Grafana</a></li>
+        <li><b>Repoint Grafana.</b> Add Obzly as a Prometheus and a Jaeger data source and switch panels over.</li>
+        <li><b>Bring dashboards into Obzly, if you want them there.</b> Importing a Grafana dashboard copies its panels and layout; you add each panel's query in Obzly.</li>
+        <li><b>Move alert rules.</b> PromQL rules carry over once metric and label names are checked; log rules need Obzly's search syntax.</li>
+        <li><b>Switch off the old backends</b> once Obzly has your full retention.</li>
+      </ol>
+    </div>
+
+    <div class="arch-block" id="cg-sources">
+      <h2>Sources</h2>
+      <p class="fine">Every Grafana fact on this page comes from Grafana Labs' own pages, read on 27 October 2026. Plan names and prices change; check the linked page before you decide.</p>
+      <ul class="srclist">
+        <li><a href="https://grafana.com/pricing/" target="_blank" rel="noopener">grafana.com/pricing</a>: Grafana Cloud plans and prices</li>
+        <li><a href="https://grafana.com/grafana/deployment-options/" target="_blank" rel="noopener">grafana.com/grafana/deployment-options</a>: features by edition</li>
+        <li><a href="https://grafana.com/licensing/" target="_blank" rel="noopener">grafana.com/licensing</a>: AGPLv3</li>
+        <li><a href="https://grafana.com/oss/mimir/" target="_blank" rel="noopener">grafana.com/oss/mimir</a>: Prometheus compatibility and scale</li>
+        <li><a href="https://grafana.com/docs/grafana-cloud/testing/synthetic-monitoring/" target="_blank" rel="noopener">Synthetic Monitoring docs</a>: part of Grafana Cloud</li>
+        <li><a href="https://grafana.com/docs/grafana/latest/setup-grafana/configure-security/configure-authentication/saml/" target="_blank" rel="noopener">SAML</a>, <a href="https://grafana.com/docs/grafana/latest/setup-grafana/configure-access/configure-scim-provisioning/" target="_blank" rel="noopener">SCIM</a>, <a href="https://grafana.com/docs/grafana/latest/setup-grafana/configure-security/audit-grafana/" target="_blank" rel="noopener">audit log</a> docs: Enterprise and Cloud</li>
+      </ul>
+      <p class="fine">Spotted something out of date? <a href="https://github.com/obzly/obzly-website/issues" target="_blank" rel="noopener">Open an issue</a>.</p>
+    </div>
+  </div>
+</div>
+
 <!-- ============================== DOCS ============================== -->
 <div class="view" id="view-docs">
   <div class="wrap">
@@ -1215,7 +1407,7 @@ footer a:hover { color: var(--accent); }
   <div class="wrap">
     <a class="brand" href="#home" style="color:var(--fg);font-size:1.1rem"><svg style="width:26px;height:26px"><use href="#logo"/></svg>Obzly</a>
     <nav aria-label="Footer">
-      <a href="#features">Features</a><a href="#architecture">Architecture</a><a href="#docs">Docs</a>
+      <a href="#features">Features</a><a href="#architecture">Architecture</a><a href="#compare">Compare</a><a href="#docs">Docs</a>
       <a href="https://github.com/obzly/obzly" target="_blank" rel="noopener">GitHub</a>
       <a href="https://github.com/obzly/obzly/releases" target="_blank" rel="noopener">Releases</a>
       <a href="https://github.com/obzly/obzly/blob/main/LICENSE" target="_blank" rel="noopener">Apache 2.0</a>
@@ -1374,17 +1566,19 @@ footer a:hover { color: var(--accent); }
   });
 
   /* ---------- Router: bare hash tokens ---------- */
-  var views = ['home', 'features', 'architecture', 'docs'];
+  var views = ['home', 'features', 'architecture', 'compare', 'compare-grafana', 'docs'];
   function route() {
     var h = location.hash.replace('#', '') || 'home';
     var view = 'home', target = null;
     if (h.indexOf('features') === 0) { view = 'features'; target = h !== 'features' ? h : null; }
     else if (h.indexOf('arch') === 0) { view = 'architecture'; target = h !== 'architecture' ? h : null; }
+    else if (h === 'compare-grafana' || h.indexOf('cg-') === 0) { view = 'compare-grafana'; target = h !== 'compare-grafana' ? h : null; }
+    else if (h.indexOf('compare') === 0) { view = 'compare'; target = h !== 'compare' ? h : null; }
     else if (h.indexOf('docs') === 0) { view = 'docs'; renderDoc(h.slice(5) || 'overview'); }
     else if (h.indexOf('doc-') === 0) { view = 'docs'; target = h; if (!docEl.innerHTML) renderDoc(SAMPLE); }
     views.forEach(function (v) { document.getElementById('view-' + v).classList.toggle('active', v === view); });
     Array.prototype.forEach.call(nav.querySelectorAll('a[data-view]'), function (a) {
-      if (a.dataset.view === view) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+      if (a.dataset.view === view || (a.dataset.view === 'compare' && view === 'compare-grafana')) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
     });
     nav.classList.remove('open'); menuBtn.setAttribute('aria-expanded', 'false');
     sidebar.classList.remove('open'); docsMenu.setAttribute('aria-expanded', 'false');

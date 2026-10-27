@@ -1,0 +1,73 @@
+---
+// "What you run": the other tool's services on the left, Obzly on the right. Lays out
+// `run.groups` as equal columns, so part names must stay short (see types.ts).
+import type { ToolPage } from '../../data/compare/types';
+
+interface Props {
+	run: ToolPage['run'];
+	name: string;
+}
+
+const { run, name } = Astro.props;
+const LEFT = 440;
+const GAP = 10;
+const n = Math.max(run.groups.length, 1);
+const colW = (LEFT - GAP * (n - 1)) / n;
+const groupsY = run.top ? 100 : 34;
+const maxParts = Math.max(0, ...run.groups.map((g) => g.parts.length));
+const groupH = 38 + maxParts * 16;
+const storageY = groupsY + groupH + 10;
+const height = Math.max(storageY + 40, 270) + 30;
+const obzlyStorageY = height - 70;
+const titleId = `run-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+const description = `To self-host ${name} you run ${run.top ? `${run.top.name}, ` : ''}${run.groups.map((g) => g.name).join(', ')}, with ${run.storage.split('·')[0].trim().toLowerCase()}. Obzly is one image in a few roles, plus Postgres, Valkey and object storage.`;
+---
+
+<figure class="diagram" style="margin:0">
+	<svg class="g" viewBox={`0 0 960 ${height}`} role="img" aria-labelledby={titleId}>
+		<title id={titleId}>{description}</title>
+		<text class="d-l" x="20" y="22">{run.title}</text>
+		{
+			run.top && (
+				<>
+					<rect class="d-box" x="20" y="34" width={LEFT} height="56" rx="8" />
+					<text class="d-t" x="36" y="58" style="font-size:14px">{run.top.name}</text>
+					<text class="d-s" x="36" y="78">{run.top.detail}</text>
+				</>
+			)
+		}
+		{
+			run.groups.map((g, i) => {
+				const x = 20 + i * (colW + GAP);
+				return (
+					<>
+						<rect class="d-soft" x={x} y={groupsY} width={colW} height={groupH} rx="8" />
+						<text class="d-t" x={x + 14} y={groupsY + 22} style="font-size:14px">{g.name}</text>
+						{g.parts.map((p, j) => (
+							<text class="d-s" x={x + 14} y={groupsY + 42 + j * 16}>{p}</text>
+						))}
+					</>
+				);
+			})
+		}
+		<rect class="d-amb" x="20" y={storageY} width={LEFT} height="40" rx="8" />
+		<text class="d-s" x="36" y={storageY + 25} style="fill:var(--fg)">{run.storage}</text>
+
+		<line x1="490" y1="20" x2="490" y2={height - 20} stroke="var(--line)" />
+
+		<text class="d-l" x="520" y="22">Obzly</text>
+		<rect class="d-acc" x="520" y="34" width="420" height={obzlyStorageY - 44} rx="10" />
+		<text class="d-t" x="538" y="60">one image</text>
+		<text class="d-s" x="538" y="82">SERVICE_MODE = all, or one role per deployment:</text>
+		<rect class="d-box" x="538" y="98" width="88" height="34" rx="6" /><text class="d-s" x="552" y="120">api</text>
+		<rect class="d-box" x="636" y="98" width="88" height="34" rx="6" /><text class="d-s" x="650" y="120">worker</text>
+		<rect class="d-box" x="734" y="98" width="88" height="34" rx="6" /><text class="d-s" x="748" y="120">broker</text>
+		<rect class="d-box" x="832" y="98" width="92" height="34" rx="6" /><text class="d-s" x="846" y="120">querier</text>
+		<text class="d-s" x="538" y="160">logs, metrics and traces in one store</text>
+		<text class="d-a" x="538" y="182">plus control-plane for many Sites</text>
+		<rect class="d-soft" x="520" y={obzlyStorageY} width="130" height="40" rx="8" /><text class="d-s" x="536" y={obzlyStorageY + 25} style="fill:var(--fg)">Postgres</text>
+		<rect class="d-soft" x="660" y={obzlyStorageY} width="110" height="40" rx="8" /><text class="d-s" x="676" y={obzlyStorageY + 25} style="fill:var(--fg)">Valkey</text>
+		<rect class="d-amb" x="780" y={obzlyStorageY} width="160" height="40" rx="8" /><text class="d-s" x="796" y={obzlyStorageY + 25} style="fill:var(--fg)">Object storage</text>
+	</svg>
+	<figcaption>{run.caption}</figcaption>
+</figure>

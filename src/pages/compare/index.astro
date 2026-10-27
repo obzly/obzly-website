@@ -1,0 +1,103 @@
+---
+import Marketing from '../../layouts/Marketing.astro';
+import { CHECKED, MOVE, ROWS, TOOLS } from '../../data/compare/hub';
+import { PAGES } from '../../data/compare/index';
+import { STATE_LABEL, type State } from '../../data/compare/types';
+
+const LEGEND: State[] = ['yes', 'part', 'paid', 'saas', 'no', 'unsup'];
+const ISSUES = 'https://github.com/obzly/obzly-website/issues';
+---
+
+<Marketing
+	title="Compare · Obzly"
+	description={`How Obzly compares with Grafana LGTM, Elastic, OpenObserve, SigNoz, Datadog and Splunk. Facts from each vendor's own docs, checked ${CHECKED}.`}
+	current="compare"
+>
+	<div class="wrap">
+		<div class="page-hero">
+			<div class="eyebrow">Compare</div>
+			<h1>How Obzly compares</h1>
+			<p class="lede">
+				Facts from each vendor's own docs and pricing pages, checked on {CHECKED}. Where another tool is ahead, the table says
+				so.
+			</p>
+			<div class="legend" aria-label="Legend">
+				{LEGEND.map((s) => <span class={`st ${s}`}>{STATE_LABEL[s]}</span>)}
+			</div>
+		</div>
+		<div class="matrix-wrap" role="region" aria-label="Comparison table" tabindex="0">
+			<table class="matrix">
+				<thead>
+					<tr>
+						<th scope="col">Capability</th>
+						{
+							TOOLS.map((t) => (
+								<th scope="col" class={t.name === 'Obzly' ? 'us' : undefined}>
+									{t.slug ? <a href={`/compare/${t.slug}/`}>{t.name}</a> : t.name}
+								</th>
+							))
+						}
+					</tr>
+				</thead>
+				<tbody>
+					{
+						ROWS.map((r) => (
+							<tr>
+								<th scope="row">{r.cap}</th>
+								{r.cells.map(([s, text]) => (
+									<td>
+										<span class={`st ${s}`}>{STATE_LABEL[s]}</span>
+										<span class="ct">{text}</span>
+									</td>
+								))}
+							</tr>
+						))
+					}
+				</tbody>
+			</table>
+		</div>
+		<p class="fine">
+			"Paid feature" means the self-hosted free edition doesn't include it. "Not supported" means the vendor's own docs don't
+			document it. Each tool's comparison page links every row to its source.
+		</p>
+
+		<section class="vgrid-sec">
+			<div class="section-head"><div class="eyebrow">Side by side</div><h2>Pick a comparison</h2></div>
+			<div class="vgrid">
+				{
+					PAGES.map((p) => (
+						<article class="vcard">
+							<h3>Obzly vs {p.name}</h3>
+							<p>{p.tagline}</p>
+							<dl>
+								<dt>Choose Obzly if</dt>
+								<dd>{p.cardObzly}</dd>
+								<dt>Choose {p.name} if</dt>
+								<dd>{p.cardThem}</dd>
+							</dl>
+							<a class="more" href={`/compare/${p.slug}/`}>Read the comparison →</a>
+						</article>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="move">
+			<div class="section-head"><div class="eyebrow">Moving to Obzly</div><h2>Keep what already works</h2></div>
+			<div class="move-grid">
+				{
+					MOVE.map((m) => (
+						<div>
+							<h3>{m.title}</h3>
+							<p>{m.text}</p>
+						</div>
+					))
+				}
+			</div>
+		</section>
+
+		<p class="fine" style="padding-bottom:64px">
+			Spotted something out of date? <a href={ISSUES}>Open an issue</a> with a link to the vendor's page and we'll fix it.
+		</p>
+	</div>
+</Marketing>

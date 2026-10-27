@@ -80,6 +80,17 @@ Never copy internal material into this repo: `SECURITY_REVIEW.md`, `ROADMAP.md`,
 `docs/ENTERPRISE_SCALE_PLAN.md` or other plans, internal hostnames, or the outdated
 `docs/ARCHITECTURE*.png` diagrams (the architecture page draws its own).
 
+## Comparison pages
+
+`/compare/` and `/compare/<tool>/` are generated from `src/data/compare/`: `hub.ts` holds the summary
+table, and each `<tool>.ts` holds one comparison page (the shape is in `types.ts`). Rules:
+
+- Every fact about another tool comes from that vendor's own pages and is linked in the row's
+  `sources`. No benchmarks or savings claims we can't back.
+- "Not supported" means the vendor's own docs don't document it after a real search. Re-check
+  those cells, and the `CHECKED` date in `hub.ts`, whenever the pages are updated.
+- Say where the other tool is ahead. Obzly's own cells must match its docs.
+
 ## Publishing
 
 1. Create the GitHub repository and push `main`.
