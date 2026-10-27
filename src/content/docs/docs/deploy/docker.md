@@ -19,7 +19,8 @@ examples build the image from source, with the repository root as build context)
 
 To run a published release instead of building, replace each service's `build:` block with
 `image: ghcr.io/obzly/obzly:${OBZLY_IMAGE_TAG:-latest}` and set `OBZLY_IMAGE_TAG` in `.env`.
-Images are published for `linux/amd64` and `linux/arm64`.
+Images are published for `linux/amd64` and `linux/arm64`. For the CPU, memory and disk each
+layout needs, see [System requirements](/docs/getting-started/requirements/#docker).
 
 ## Single container
 

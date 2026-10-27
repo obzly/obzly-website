@@ -9,7 +9,8 @@ Obzly runs as one app container next to its own Postgres and Valkey containers. 
 shape the [install script](/docs/getting-started/quick-install/) sets up; use Compose directly if
 you want to customize it or aren't on a Debian/Ubuntu host.
 
-You need Docker Engine 20.10+ and Docker Compose v2.0+.
+You need Docker Engine 20.10+ and Docker Compose v2.0+, and a host with at least 2 CPU cores,
+4 GB of RAM and 20 GB of disk; see [System requirements](/docs/getting-started/requirements/).
 
 ## Set up
 
