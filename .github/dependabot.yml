@@ -1,0 +1,54 @@
+# Weekly version updates. Security updates are on in the repository settings and arrive as soon as
+# an advisory is published. Every merge to main deploys the site, so related packages are grouped
+# into one PR, and new releases wait a week before Dependabot proposes them.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    cooldown:
+      default-days: 7
+    versioning-strategy: increase
+    groups:
+      astro:
+        patterns: ['astro', '@astrojs/*', 'starlight-*']
+      fonts:
+        patterns: ['@fontsource-variable/*']
+    commit-message:
+      prefix: deps
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    cooldown:
+      default-days: 7
+    groups:
+      actions:
+        patterns: ['*']
+    commit-message:
+      prefix: ci
+
+  # node and nginx images in the Dockerfile and compose.yaml (local hosting only).
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: docker
+
+  - package-ecosystem: docker-compose
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: docker
