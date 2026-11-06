@@ -1,0 +1,71 @@
+---
+import Marketing from '../layouts/Marketing.astro';
+---
+
+<Marketing
+	title="Support Obzly"
+	description="Obzly is free and open source. If it helps you, give to a registered charity or NGO of your choice."
+	current="donate"
+>
+
+	<div class="wrap">
+		<div class="page-hero">
+			<div class="eyebrow">Support Obzly</div>
+			<h1>Give to a cause you care about</h1>
+			<p class="lede">Obzly is Apache 2.0, with no paid edition and nothing to buy. If it saves you time or money, we'd like you to pass some of that on: give to a registered charity or NGO of your choice, any amount, anywhere in the world.</p>
+		</div>
+
+		<figure class="diagram" style="margin:0">
+			<svg viewBox="0 0 760 170" role="img" aria-labelledby="dn-t dn-d">
+				<title id="dn-t">How to support Obzly</title>
+				<desc id="dn-d">Use Obzly for free, give to a charity or NGO you choose, and optionally tell us in Discussions.</desc>
+				<rect class="d-box" x="20" y="30" width="210" height="110" rx="10"/>
+				<g transform="translate(40 50)" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="11"/><path d="M7 12.5l3.5 3.5L17 9"/></g>
+				<text class="d-t" x="40" y="104">Use Obzly</text><text class="d-s" x="40" y="124">free, every feature</text>
+				<path class="d-arrow acc" d="M230 85 H271" marker-end="url(#aha)"/>
+				<rect class="d-acc" x="275" y="30" width="210" height="110" rx="10"/>
+				<g transform="translate(295 50)" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6-8 11-8 11z"/></g>
+				<text class="d-t" x="295" y="104">Give to a cause</text><text class="d-s" x="295" y="124">any charity or NGO</text>
+				<path class="d-dash" d="M485 85 H526" marker-end="url(#ah)"/>
+				<rect class="d-soft" x="530" y="30" width="210" height="110" rx="10" stroke-dasharray="5 4"/>
+				<g transform="translate(550 50)" fill="none" stroke="var(--muted)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18v11H9l-6 5z"/></g>
+				<text class="d-t" x="550" y="104">Tell us, if you like</text><text class="d-s" x="550" y="124">optional · Discussions</text>
+			</svg>
+		</figure>
+
+		<section class="cm-sec">
+			<div class="section-head"><div class="eyebrow">Not sure where?</div><h2>Some ideas</h2><p class="lede">Any registered charity or NGO is fine, large or small, near you or far away. A few places people often start:</p></div>
+			<div class="move-grid">
+				<div><h3>Food and shelter</h3><p>A local food bank, soup kitchen or homeless shelter.</p></div>
+				<div><h3>Children and education</h3><p>A school programme, a library, or a charity for children's health or learning.</p></div>
+				<div><h3>Health and relief</h3><p>Medical care, or relief after a disaster or conflict.</p></div>
+				<div><h3>Environment</h3><p>Conservation, climate or clean water.</p></div>
+				<div><h3>Animal shelters</h3><p>A pet or dog shelter, a rehoming charity, or a wildlife rescue.</p></div>
+				<div><h3>Open source</h3><p>A foundation or project behind software you rely on every day.</p></div>
+				<div><h3>Your own community</h3><p>A hospice, a youth club, a mutual-aid group: whoever does good where you live.</p></div>
+			</div>
+		</section>
+
+		<section class="cm-sec">
+			<div class="pick us cm-sec-box">
+				<h3>Tell us, if you like</h3>
+				<p>It's entirely optional, but it's lovely to hear. Post in the Thank you category of Discussions with the cause you chose and, if you want, why. No amounts and no receipts: we don't need to know, and we don't check.</p>
+				<div class="cta" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
+					<a class="btn btn-outline" href="https://github.com/obzly/obzly/discussions/categories/thank-you">Post a thank-you</a>
+				</div>
+			</div>
+		</section>
+
+		<section class="cm-sec">
+			<div class="section-head"><div class="eyebrow">No money needed</div><h2>Other ways to help</h2></div>
+			<div class="move-grid">
+				<div><h3>Star the repo</h3><p>It helps other people find Obzly on GitHub.</p></div>
+				<div><h3>Report bugs well</h3><p>A clear report with steps and logs is a gift. <a href="/community/#community-bugs">Here's how</a>.</p></div>
+				<div><h3>Answer a question</h3><p>Help someone in Q&amp;A with what you've already worked out.</p></div>
+				<div><h3>Write a how-to</h3><p>Share a query, config or recipe, or tell a colleague who'd find Obzly useful.</p></div>
+			</div>
+		</section>
+
+		<p class="fine" style="padding-bottom:64px">Obzly doesn't collect, route, match or receive donations, and <a href="/disclaimer/#third-parties">isn't affiliated with any charity</a>. Give directly to the organisation you choose, and check it's registered where you are if you want a tax receipt.</p>
+	</div>
+</Marketing>

@@ -1,0 +1,126 @@
+---
+import Marketing from '../layouts/Marketing.astro';
+
+const GITHUB = 'https://github.com/obzly/obzly';
+---
+
+<Marketing
+	title="Disclaimer · Obzly"
+	description="Obzly is free, open-source software provided as is, without warranty. What that means for you, your data and the third-party names on this site."
+>
+	<div class="wrap">
+		<div class="page-hero">
+			<div class="eyebrow">Disclaimer</div>
+			<h1>Disclaimer</h1>
+			<p class="checked">Last updated 6 November 2026</p>
+		</div>
+
+		<div class="legal">
+			<div class="pick us legal-summary">
+				<h2>In short</h2>
+				<p>
+					Obzly is free, open-source software provided <b>as is</b>. You run it at your own risk, and nobody who works
+					on it is liable for any loss that comes from using it. The <a href={`${GITHUB}/blob/main/LICENSE`}>Apache License 2.0</a> is what legally applies; this page explains it
+					in plain words and doesn't change it.
+				</p>
+			</div>
+
+			<h2 id="no-warranty">No warranty</h2>
+			<p>
+				Obzly comes with no promise of any kind. Nobody guarantees that it works, that it suits your purpose, that it's
+				secure, free of errors or always available, or that it won't lose or damage data. Deciding whether it's right for
+				you, and how you use it, is your responsibility. Section 7 of the licence says:
+			</p>
+			<blockquote>
+				<p>
+					7. Disclaimer of Warranty. Unless required by applicable law or agreed to in writing, Licensor provides the Work
+					(and each Contributor provides its Contributions) on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+					KIND, either express or implied, including, without limitation, any warranties or conditions of TITLE,
+					NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE. You are solely responsible for
+					determining the appropriateness of using or redistributing the Work and assume any risks associated with Your
+					exercise of permissions under this License.
+				</p>
+			</blockquote>
+
+			<h2 id="no-liability">No liability for losses</h2>
+			<p>
+				The Obzly contributors aren't liable for any damage or loss from using Obzly, or from being unable to use it.
+				That includes lost or corrupted data, lost revenue or profit, downtime, missed or late alerts, and the cost of
+				recovering, even if someone was told it could happen. Section 8 of the licence says:
+			</p>
+			<blockquote>
+				<p>
+					8. Limitation of Liability. In no event and under no legal theory, whether in tort (including negligence),
+					contract, or otherwise, unless required by applicable law (such as deliberate and grossly negligent acts) or
+					agreed to in writing, shall any Contributor be liable to You for damages, including any direct, indirect,
+					special, incidental, or consequential damages of any character arising as a result of this License or out of
+					the use or inability to use the Work (including but not limited to damages for loss of goodwill, work stoppage,
+					computer failure or malfunction, or any and all other commercial damages or losses), even if such Contributor
+					has been advised of the possibility of such damages.
+				</p>
+			</blockquote>
+
+			<h2 id="your-data">Your data and operations</h2>
+			<p>Obzly runs on infrastructure you choose and control, so running it well is up to you:</p>
+			<ul>
+				<li>
+					<b>Backups.</b> Back up Postgres and your object storage, and test restoring them. See <a href="/docs/operations/backup-restore/">Backup and restore</a> and <a href="/docs/operations/disaster-recovery/">Disaster recovery</a>.
+				</li>
+				<li>
+					<b>Deletion is permanent.</b> Retention, quota and delete settings remove data for good. Check them before you
+					change them.
+				</li>
+				<li>
+					<b>Security.</b> Keep Obzly and what it runs on patched and locked down. See <a href="/docs/operations/upgrade/">Upgrade</a> and the <a href={`${GITHUB}/blob/main/SECURITY.md#hardening-notes-for-operators`}>hardening notes</a>.
+				</li>
+				<li>
+					<b>Capacity.</b> Size it for your load and watch it. See <a href="/docs/getting-started/requirements/">System requirements</a>.
+				</li>
+				<li>
+					<b>Upgrades.</b> Read the release notes and try an upgrade outside production first.
+				</li>
+				<li>
+					<b>Personal data.</b> Logs, traces and metrics can contain personal or sensitive data. Meeting privacy, data
+					protection and retention laws for what you collect is your responsibility.
+				</li>
+				<li>
+					<b>Alerts aren't a guarantee.</b> Alerts, synthetic monitors and dashboards can be late, wrong or not delivered.
+					Don't make them the only safeguard for anything where a missed alert could cause harm.
+				</li>
+			</ul>
+
+			<h2 id="third-parties">Third-party names and links</h2>
+			<ul>
+				<li>
+					Grafana, Loki, Mimir, Tempo, Elastic, OpenObserve, SigNoz, Datadog, Splunk, Prometheus, OpenTelemetry,
+					Kubernetes, AWS, Azure and other product and company names on this site are trademarks of their owners. They're
+					used only to describe compatibility and comparisons.
+				</li>
+				<li>Obzly isn't affiliated with, sponsored by or endorsed by any of them.</li>
+				<li>
+					The <a href="/compare/">comparison pages</a> describe each vendor from its own public docs and pricing on the
+					date shown. Products change, so check the vendor's current pages before you decide.
+				</li>
+				<li>
+					Links to other sites are for convenience. Obzly doesn't control or endorse their content.
+				</li>
+				<li>
+					On <a href="/donate/">Support Obzly</a>, you choose and give to a charity directly. Obzly doesn't recommend,
+					vet or receive money for any charity or NGO.
+				</li>
+			</ul>
+
+			<h2 id="support">Support</h2>
+			<p>
+				Help in GitHub <a href={`${GITHUB}/issues`}>Issues</a> and <a href={`${GITHUB}/discussions`}>Discussions</a> is
+				given on a best-effort basis by the community and maintainers. There's no service-level agreement, and no
+				obligation to answer, fix or ship anything.
+			</p>
+
+			<p class="fine" style="padding-bottom:64px">
+				This page is a plain-language summary for convenience, not legal advice. If it differs from the Apache License
+				2.0, the licence applies. Questions? Ask in <a href="/community/">the community</a>.
+			</p>
+		</div>
+	</div>
+</Marketing>

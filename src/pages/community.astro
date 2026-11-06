@@ -1,0 +1,117 @@
+---
+import Marketing from '../layouts/Marketing.astro';
+import WhereItGoes from '../components/diagrams/WhereItGoes.astro';
+---
+
+<Marketing
+	title="Community · Obzly"
+	description="Get help with Obzly, report bugs, request features and share how-tos and cheat sheets on GitHub Issues and Discussions."
+	current="community"
+>
+
+	<div class="wrap">
+		<div class="page-hero">
+			<div class="eyebrow">Community</div>
+			<h1>Get help, report bugs, share what you know</h1>
+			<p class="lede">Obzly is built in the open on GitHub. Questions, how-tos and ideas go to Discussions; bugs and feature requests go to Issues, using a short form so nothing important gets left out.</p>
+			<nav class="jump" aria-label="On this page">
+				<a href="#community-where">Where does it go?</a><a href="#community-ways">Ways to take part</a><a href="#community-bugs">Report a good bug</a><a href="#community-howtos">Share a how-to</a><a href="#community-security">Security</a>
+			</nav>
+		</div>
+
+		<section class="cm-sec" id="community-where">
+			<div class="section-head"><div class="eyebrow">Start here</div><h2>Where does it go?</h2></div>
+			<WhereItGoes />
+		</section>
+
+		<section class="cm-sec" id="community-ways">
+			<div class="section-head"><div class="eyebrow">On GitHub</div><h2>Ways to take part</h2></div>
+			<div class="vgrid">
+				<article class="vcard cm-card">
+					<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="13" rx="5" ry="6.5"/><path d="M12 6.5V19.5M7 11H3M21 11h-4M7.5 16.5 4 19M16.5 16.5 20 19M8.5 7.5 6 5M15.5 7.5 18 5"/></svg>
+					<h3>Report a bug</h3>
+					<p>Something doesn't work as the docs say. The form asks for your version, how you run Obzly and the log lines that matter.</p>
+					<a class="more" href="https://github.com/obzly/obzly/issues/new?template=bug_report.yml">Open a bug report →</a>
+				</article>
+				<article class="vcard cm-card">
+					<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3z"/></svg>
+					<h3>Request a feature</h3>
+					<p>Say what you're trying to do and what gets in the way. Not sure yet? Start a thread in Ideas and shape it with others first.</p>
+					<a class="more" href="https://github.com/obzly/obzly/issues/new?template=feature_request.yml">Request a feature →</a>
+				</article>
+				<article class="vcard cm-card">
+					<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5"/><path d="M12 15v.2"/></svg>
+					<h3>Ask a question</h3>
+					<p>Installing, configuring, sending data, writing a query. Search Q&amp;A first: someone may have asked already, and answers get marked.</p>
+					<a class="more" href="https://github.com/obzly/obzly/discussions/categories/q-a">Go to Q&amp;A →</a>
+				</article>
+				<article class="vcard cm-card">
+					<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h10l4 4v14H5z"/><path d="M15 3v4h4"/><path d="M8 12h8M8 15.5h8M8 19h5"/></svg>
+					<h3>Share how-tos and cheat sheets</h3>
+					<p>A query set, a Collector config, a dashboard, an alert recipe. Short and specific beats complete.</p>
+					<a class="more" href="https://github.com/obzly/obzly/discussions/categories/how-tos-and-cheat-sheets">Browse how-tos →</a>
+				</article>
+				<article class="vcard cm-card">
+					<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M7 13l3-3 2.5 2.5L17 8"/><path d="M9 21h6M12 17v4"/></svg>
+					<h3>Show what you built</h3>
+					<p>How you run Obzly, what you moved from, what you learned. Experiences help the next person decide.</p>
+					<a class="more" href="https://github.com/obzly/obzly/discussions/categories/show-and-tell">Show and tell →</a>
+				</article>
+				<article class="vcard cm-card">
+					<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="9" r="2"/><path d="M6 7v10M18 11c0 4-6 3-11.5 6.5"/></svg>
+					<h3>Contribute</h3>
+					<p>Fix a bug or improve the docs. The contributing guide covers setup, tests and checks. Website fixes go to the obzly-website repo.</p>
+					<a class="more" href="https://github.com/obzly/obzly/blob/main/CONTRIBUTING.md">Contributing guide →</a>
+				</article>
+			</div>
+		</section>
+
+		<section class="cm-sec" id="community-bugs">
+			<div class="section-head"><div class="eyebrow">Issues</div><h2>Report a bug that gets fixed</h2><p class="lede">A report someone can reproduce gets fixed first. Before you open one:</p></div>
+			<div class="cm-two">
+				<ol class="steps-list">
+					<li><b>Search the open and closed issues.</b> Add what you see to an existing one instead of opening a duplicate.</li>
+					<li><b>Note your version</b> from <b>Settings → Upgrade status</b>, or the image tag, such as <code>v0.58.1</code>.</li>
+					<li><b>Say how you run Obzly</b>: one container, Docker Compose HA, Helm, or a control plane with Sites.</li>
+					<li><b>Write the steps</b> that show the problem, what you expected and what happened.</li>
+					<li><b>Add the log lines</b> from around the time it happened.</li>
+					<li><b>Remove secrets</b>: API keys, tokens, passwords, and real hostnames or IPs if you'd rather not share them.</li>
+				</ol>
+				<div class="cm-code">
+					<div class="d-l" style="margin-bottom:6px">Getting the logs</div>
+<pre><span class="c"># One container (quick install or Compose)</span>
+docker logs --since 30m obzly
+
+<span class="c"># Helm, the api tier</span>
+kubectl -n obzly logs deploy/obzly-api --since=30m
+
+<span class="c"># Helm, the worker</span>
+kubectl -n obzly logs deploy/obzly-worker --since=30m</pre>
+					<a class="btn btn-primary" style="margin-top:14px" href="https://github.com/obzly/obzly/issues/new?template=bug_report.yml">Open a bug report</a>
+				</div>
+			</div>
+		</section>
+
+		<section class="cm-sec" id="community-howtos">
+			<div class="section-head"><div class="eyebrow">Discussions</div><h2>Share a how-to or a cheat sheet</h2><p class="lede">Found a query you keep reusing, or a config that took an afternoon to get right? Post it, so the next person doesn't start from zero.</p></div>
+			<div class="move-grid">
+				<div><h3>A query set</h3><p>PromQL for your stack, log searches for a common error, SQL for a report.</p></div>
+				<div><h3>A Collector config</h3><p>The receivers, processors and exporters that worked for a database, queue or web server.</p></div>
+				<div><h3>A dashboard or alert</h3><p>An exported dashboard, or an alert rule with the threshold that stopped the noise.</p></div>
+				<div><h3>An install note</h3><p>A cloud, a distribution or a network setup the docs don't cover yet.</p></div>
+			</div>
+			<p class="fine">Use example names such as <code>obzly.harborline.example</code> and <code>10.0.0.10</code>, and take out API keys and tokens before you post.</p>
+		</section>
+
+		<section class="cm-sec" id="community-security" style="padding-bottom:64px">
+			<div class="pick cm-sec-box">
+				<h3>Found a vulnerability? Don't open an issue.</h3>
+				<p>Report it privately from the Obzly repository's Security tab, so it can be fixed before it's public. <a href="https://github.com/obzly/obzly/blob/main/SECURITY.md">SECURITY.md</a> says what to include and what happens next.</p>
+				<div class="cta" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
+					<a class="btn btn-outline" href="https://github.com/obzly/obzly/security/advisories/new">Report a vulnerability</a>
+				</div>
+			</div>
+			<p class="fine">Everyone in Obzly's issues, pull requests and Discussions follows the <a href="https://github.com/obzly/obzly/blob/main/CODE_OF_CONDUCT.md">code of conduct</a>: be respectful, assume good intent, keep it about the work. Like Obzly? <a href="/donate/">Here's how to give back</a>.</p>
+		</section>
+	</div>
+</Marketing>

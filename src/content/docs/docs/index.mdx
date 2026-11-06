@@ -1,0 +1,209 @@
+---
+title: Docs overview
+description: What Obzly is, what it needs to run, and where to find each part of the documentation.
+---
+
+{/* Source: obzly-dev/README.md */}
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+**Self-hosted observability, from one container to an enterprise cluster.**
+
+Obzly is an Apache 2.0 licensed, self-hosted observability platform for logs, traces, metrics and
+dashboards. It speaks OTLP over gRPC and HTTP, so anything that can export OpenTelemetry (the
+standard SDK for your language, or an OTel Collector in front of a database, web server or queue
+you don't control) can send it data with no proprietary client library. Data is stored as
+ZSTD-compressed Parquet, on local disk or on object storage such as S3. It also includes
+[synthetic monitoring](/docs/how-to/synthetics/), which checks your endpoints from your own
+locations, and an [infrastructure inventory](/docs/how-to/infrastructure/) built from what your
+agents already send.
+
+Obzly starts as a single app container (plus Postgres and Valkey) with no cluster to operate. The
+same image runs each role on its own (`api`, `worker`, `broker`, `querier`, `control-plane`) when
+your volume grows, so each part scales and fails independently. See [Architecture](/architecture/)
+and [Features](/features/) for the bigger picture.
+
+For a quick one-off from your own app, plain HTTP works too:
+
+```bash
+curl -X POST "http://YOUR_OBZLY_HOST/api/v1/logs/receiving/YOUR_PROJECT_ID" \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -d '{"logs": [{"level": "INFO", "message": "User logged in", "fields": {"user_id": "12345"}}]}'
+```
+
+## System requirements
+
+The default single-container install needs a Linux host with at least **2 CPU cores, 4 GB of RAM
+and 20 GB of disk**, plus Docker Engine 20.10+ and Docker Compose v2.0+. For Kubernetes, larger
+volumes, and which parts can run on Spot nodes, see [System requirements](/docs/getting-started/requirements/).
+
+## Getting started
+
+<CardGrid>
+	<LinkCard
+		title="Quick install"
+		description="One-line install script for a single Linux host."
+		href="/docs/getting-started/quick-install/"
+	/>
+	<LinkCard
+		title="Docker Compose"
+		description="Run the single-container setup with Docker Compose."
+		href="/docs/getting-started/docker-compose/"
+	/>
+	<LinkCard
+		title="First project & API key"
+		description="Create a project, get an API key and invite your team."
+		href="/docs/getting-started/first-project/"
+	/>
+	<LinkCard
+		title="Send your first logs"
+		description="Plain HTTP, OTLP over gRPC or HTTP, and Prometheus remote-write."
+		href="/docs/getting-started/send-first-logs/"
+	/>
+</CardGrid>
+
+## Deploy
+
+<CardGrid>
+	<LinkCard
+		title="Docker"
+		description="Single-host, HA and multi-site Compose files, plus object storage."
+		href="/docs/deploy/docker/"
+	/>
+	<LinkCard
+		title="Helm chart"
+		description="One chart for the ha, single and control-plane modes."
+		href="/docs/deploy/helm/"
+	/>
+	<LinkCard
+		title="Kubernetes on EKS"
+		description="Plain manifests for kubectl apply -k, single replica or HA."
+		href="/docs/deploy/kubernetes-eks/"
+	/>
+	<LinkCard
+		title="Control plane & Sites"
+		description="One sign-in and UI in front of many independent Sites."
+		href="/docs/deploy/multi-site/"
+	/>
+	<LinkCard
+		title="Synthetics probe"
+		description="Run obzly-probe as a binary, container or Helm chart, in probe groups."
+		href="/docs/deploy/probe/"
+	/>
+</CardGrid>
+
+## How-tos
+
+<CardGrid>
+	<LinkCard
+		title="Kubernetes with an OTel Collector"
+		description="Collect logs, traces and metrics from a Kubernetes cluster."
+		href="/docs/how-to/kubernetes-otel-collector/"
+	/>
+	<LinkCard
+		title="Grafana and PromQL"
+		description="Point a Grafana Prometheus data source at Obzly."
+		href="/docs/how-to/grafana-promql/"
+	/>
+	<LinkCard
+		title="AI assistants (MCP)"
+		description="Connect Claude Code, Cursor and others to your data."
+		href="/docs/how-to/mcp/"
+	/>
+	<LinkCard
+		title="Alerts"
+		description="Rules over metrics, logs and traces, and shared notification channels."
+		href="/docs/how-to/alerts/"
+	/>
+	<LinkCard
+		title="Synthetic monitoring"
+		description="Check APIs and endpoints from your own locations."
+		href="/docs/how-to/synthetics/"
+	/>
+	<LinkCard
+		title="Infrastructure"
+		description="Every cluster, node, host and workload, with health and changes."
+		href="/docs/how-to/infrastructure/"
+	/>
+	<LinkCard
+		title="Cloud connections"
+		description="Read-only discovery of AWS accounts and Azure subscriptions."
+		href="/docs/how-to/cloud-connections/"
+	/>
+	<LinkCard
+		title="SSO and SCIM"
+		description="OIDC sign-in, group mapping and user provisioning."
+		href="/docs/how-to/sso-scim/"
+	/>
+	<LinkCard
+		title="Promoted fields"
+		description="Typed columns for fast filters and number ranges."
+		href="/docs/how-to/promoted-fields/"
+	/>
+</CardGrid>
+
+## Operations
+
+<CardGrid>
+	<LinkCard
+		title="Upgrade"
+		description="When it is safe to upgrade, the order, and rolling back."
+		href="/docs/operations/upgrade/"
+	/>
+	<LinkCard
+		title="Backup & restore"
+		description="What to back up, how, and the order to restore in."
+		href="/docs/operations/backup-restore/"
+	/>
+	<LinkCard
+		title="Disaster recovery"
+		description="Failure scenarios, what is lost, and what to do."
+		href="/docs/operations/disaster-recovery/"
+	/>
+	<LinkCard
+		title="Monitoring Obzly"
+		description="Prometheus metrics, self-tracing, alert rules and a Grafana dashboard."
+		href="/docs/operations/monitoring/"
+	/>
+</CardGrid>
+
+## Reference
+
+<CardGrid>
+	<LinkCard
+		title="Configuration"
+		description="Every environment variable and its default."
+		href="/docs/reference/configuration/"
+	/>
+	<LinkCard
+		title="Log query API"
+		description="Search logs over HTTP."
+		href="/docs/reference/log-query-api/"
+	/>
+	<LinkCard
+		title="Data sources"
+		description="Generated OTel Collector configs for 35+ common sources."
+		href="/docs/reference/data-sources/"
+	/>
+</CardGrid>
+
+## Help
+
+<CardGrid>
+	<LinkCard
+		title="Community and support"
+		description="Ask in Discussions, report a bug, or share a how-to or cheat sheet."
+		href="/community/"
+	/>
+	<LinkCard
+		title="Support Obzly"
+		description="Obzly is free. If it helps you, give to a charity you choose."
+		href="/donate/"
+	/>
+	<LinkCard
+		title="Disclaimer"
+		description="Obzly is provided as is, without warranty: what that means for you and your data."
+		href="/disclaimer/"
+	/>
+</CardGrid>

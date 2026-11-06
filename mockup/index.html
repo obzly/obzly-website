@@ -1,0 +1,1844 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Obzly Website Mockup</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Clickable mockup of obzly.com: home, features, architecture and docs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a readable console. Navy hero with a live tail, then calm white sections
+   whose eyebrows are real Obzly identifiers (ports, paths, roles). */
+:root {
+  --bg: #f6f7fa;
+  --surface: #ffffff;
+  --surface-2: #eef1f6;
+  --fg: #14192b;
+  --muted: #566078;
+  --line: #dde1ea;
+  --accent: #059669;
+  --accent-strong: #047857;
+  --accent-soft: #e3f5ee;
+  --amber: #c27a0e;
+  --amber-soft: #fdf1dc;
+  --hero-bg: #14192b;
+  --hero-fg: #f3f4f6;
+  --hero-muted: #a3abc0;
+  --hero-line: #2b3350;
+  --hero-panel: #0f1322;
+  --amber-hero: #f2a73b;
+  --emerald-hero: #10b981;
+  --err: #d14343;
+  --blue: #2563c9;
+  --blue-soft: #e5eefc;
+  --violet: #7344c4;
+  --violet-soft: #efe8fb;
+  --font-display: "Jost", "Futura", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Jost", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --radius: 10px;
+  --wrap: 1160px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d111d; --surface: #141a2b; --surface-2: #1a2134; --fg: #e9ecf3; --muted: #9aa3b8;
+    --line: #262e45; --accent: #10b981; --accent-strong: #34d399; --accent-soft: #10302a;
+    --amber: #f2a73b; --amber-soft: #33281a; --hero-bg: #0a0e19; --hero-fg: #f3f4f6;
+    --hero-muted: #9aa3b8; --hero-line: #222a42; --hero-panel: #121829; --err: #f07171; --blue: #82aaff; --blue-soft: #18264a; --violet: #c3a6ff; --violet-soft: #2b2045;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d111d; --surface: #141a2b; --surface-2: #1a2134; --fg: #e9ecf3; --muted: #9aa3b8;
+  --line: #262e45; --accent: #10b981; --accent-strong: #34d399; --accent-soft: #10302a;
+  --amber: #f2a73b; --amber-soft: #33281a; --hero-bg: #0a0e19; --hero-fg: #f3f4f6;
+  --hero-muted: #9aa3b8; --hero-line: #222a42; --hero-panel: #121829; --err: #f07171; --blue: #82aaff; --blue-soft: #18264a; --violet: #c3a6ff; --violet-soft: #2b2045;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 17px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--hero-bg); }
+h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; text-wrap: balance; margin: 0; }
+h2 { font-size: clamp(1.7rem, 3.2vw, 2.4rem); font-weight: 600; letter-spacing: -0.01em; }
+h3 { font-size: 1.2rem; font-weight: 600; }
+p { margin: 0; }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+code, pre, .mono { font-family: var(--font-mono); font-size: 0.86em; }
+:not(pre) > code { background: var(--surface-2); border: 1px solid var(--line); border-radius: 5px; padding: 0.05em 0.35em; overflow-wrap: anywhere; }
+.wrap { max-width: var(--wrap); margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+.lede { color: var(--muted); font-size: 1.1rem; max-width: 62ch; }
+.btn { display: inline-flex; align-items: center; gap: 8px; font: 600 1rem var(--font-body); padding: 11px 20px; border-radius: 8px; text-decoration: none; border: 1px solid transparent; cursor: pointer; }
+.btn-primary { background: var(--emerald-hero); color: #06281d; }
+.btn-primary:hover { background: #34d399; }
+.btn-ghost { border-color: var(--hero-line); color: var(--hero-fg); background: transparent; }
+.btn-ghost:hover { border-color: var(--hero-muted); }
+.btn-outline { border-color: var(--line); color: var(--fg); background: var(--surface); }
+.btn-outline:hover { border-color: var(--accent); }
+
+/* Header */
+.site-header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--hero-bg); color: var(--hero-fg); border-bottom: 1px solid var(--hero-line); }
+.site-header .wrap { display: flex; align-items: center; gap: 24px; height: 64px; }
+.brand { display: flex; align-items: center; gap: 10px; color: var(--hero-fg); text-decoration: none; font: 600 1.3rem var(--font-display); letter-spacing: 0.01em; }
+.brand svg { width: 32px; height: 32px; flex: none; }
+.nav { display: flex; align-items: center; gap: 4px; flex: 1; }
+.nav a { color: var(--hero-muted); text-decoration: none; font-weight: 500; padding: 8px 12px; border-radius: 6px; }
+.nav a:hover, .nav a[aria-current="page"] { color: var(--hero-fg); background: rgba(255,255,255,0.06); }
+.nav .spacer { flex: 1; }
+.nav .ext::after { content: " ↗"; font-size: 0.8em; opacity: 0.7; }
+.icon-btn { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 8px; border: 1px solid var(--hero-line); background: transparent; color: var(--hero-fg); cursor: pointer; flex: none; }
+.icon-btn svg { width: 18px; height: 18px; }
+.menu-btn { display: none; }
+@media (max-width: 820px) {
+  .menu-btn { display: inline-grid; }
+  .site-header .wrap { gap: 10px; }
+  .brand { flex: 1; }
+  .nav { display: none; position: absolute; top: 64px; left: 0; right: 0; flex-direction: column; align-items: stretch; background: var(--hero-bg); border-bottom: 1px solid var(--hero-line); padding: 8px max(16px, env(safe-area-inset-right, 0px)) 16px max(16px, env(safe-area-inset-left, 0px)); }
+  .nav.open { display: flex; }
+  .nav .spacer { display: none; }
+}
+
+/* Views */
+.view { display: none; }
+.view.active { display: block; }
+section { padding-block: 72px; }
+.section-head { display: grid; gap: 12px; margin-bottom: 36px; max-width: 760px; }
+
+/* Hero */
+.hero { background: var(--hero-bg); color: var(--hero-fg); padding-block: 64px 72px; }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 48px; align-items: center; }
+.hero h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 600; letter-spacing: -0.02em; }
+.hero h1 em { font-style: normal; color: var(--amber-hero); }
+.hero .lede { color: var(--hero-muted); margin-top: 18px; }
+.hero .proto { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font: 500 0.78rem var(--font-mono); padding: 4px 10px; border-radius: 999px; border: 1px solid var(--hero-line); color: var(--hero-fg); }
+.chip b { color: var(--emerald-hero); font-weight: 500; }
+.hero .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.tail { background: var(--hero-panel); border: 1px solid var(--hero-line); border-radius: 12px; overflow: hidden; min-width: 0; }
+.tail-bar { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--hero-line); font: 500 0.78rem var(--font-mono); color: var(--hero-muted); }
+.tail-bar .live { display: inline-flex; align-items: center; gap: 6px; color: var(--emerald-hero); }
+.tail-bar .live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--emerald-hero); animation: pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: 0.3; } }
+.tail-query { padding: 10px 14px; font: 0.8rem var(--font-mono); color: var(--hero-fg); border-bottom: 1px solid var(--hero-line); overflow-x: auto; white-space: nowrap; }
+.tail-query span { color: var(--amber-hero); }
+.tail-lines { list-style: none; margin: 0; padding: 6px 0; font: 0.76rem/1.5 var(--font-mono); height: 264px; overflow: hidden; }
+.tail-lines li { display: grid; grid-template-columns: 7.2em 3.4em minmax(0, 1fr); gap: 10px; padding: 3px 14px; color: #d5d9e4; white-space: nowrap; }
+.tail-lines li .msg { overflow: hidden; text-overflow: ellipsis; }
+.tail-lines li .ts { color: var(--hero-muted); }
+.tail-lines li.new { animation: slidein 0.5s ease-out; background: rgba(16,185,129,0.07); }
+@keyframes slidein { from { transform: translateY(-6px); opacity: 0.2; } }
+.lvl { font-weight: 500; }
+.lvl.info { color: #7fb6ff; } .lvl.warn { color: var(--amber-hero); } .lvl.error { color: #ff7a7a; }
+.tail-foot { display: flex; gap: 6px; padding: 10px 14px; border-top: 1px solid var(--hero-line); align-items: flex-end; height: 56px; }
+.tail-foot i { flex: 1; background: #2b3350; border-radius: 2px 2px 0 0; display: block; }
+.tail-foot i.e { background: var(--amber-hero); }
+@media (max-width: 900px) { .hero .wrap { grid-template-columns: minmax(0, 1fr); } }
+
+/* Pillars */
+.pillars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.pillar { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; display: grid; gap: 12px; align-content: start; }
+.pillar .sig { display: flex; align-items: center; justify-content: space-between; }
+.pillar .sig svg { width: 120px; height: 36px; }
+.pillar ul { margin: 0; padding-left: 1.1em; color: var(--muted); display: grid; gap: 4px; }
+.pillar .more { font-weight: 600; text-decoration: none; }
+@media (max-width: 860px) { .pillars { grid-template-columns: minmax(0, 1fr); } }
+
+/* Diagrams */
+.diagram { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; overflow-x: auto; }
+.diagram svg { display: block; width: 100%; min-width: 720px; height: auto; }
+.diagram figcaption { color: var(--muted); font-size: 0.92rem; margin-top: 12px; max-width: 80ch; }
+.d-box { fill: var(--surface); stroke: var(--line); stroke-width: 1.5; }
+.d-soft { fill: var(--surface-2); stroke: var(--line); stroke-width: 1.5; }
+.d-acc { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.d-amb { fill: var(--amber-soft); stroke: var(--amber); stroke-width: 1.5; }
+.d-dim { fill: var(--surface-2); stroke: var(--line); stroke-width: 1; opacity: 0.55; }
+.d-t { fill: var(--fg); font: 600 15px var(--font-display); }
+.d-s { fill: var(--muted); font: 11.5px var(--font-mono); }
+.d-l { fill: var(--muted); font: 500 11px var(--font-mono); letter-spacing: 0.05em; text-transform: uppercase; }
+.d-a { fill: var(--accent); font: 500 11.5px var(--font-mono); }
+.d-arrow { stroke: var(--muted); stroke-width: 1.6; fill: none; }
+.d-arrow.acc { stroke: var(--accent); }
+.d-dash { stroke: var(--muted); stroke-width: 1.3; stroke-dasharray: 4 4; fill: none; }
+.d-head { fill: var(--muted); }
+.d-head.acc { fill: var(--accent); }
+
+/* Feature grid */
+.grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.cell { background: var(--surface); padding: 22px; display: grid; gap: 6px; align-content: start; }
+.cell h3 { font-size: 1.05rem; }
+.cell p { color: var(--muted); font-size: 0.95rem; }
+.cell .tag { font: 500 0.72rem var(--font-mono); color: var(--accent); }
+@media (max-width: 1000px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Beyond the three signals */
+.beyond { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.beyond .pillar .note { font: 500 0.72rem var(--font-mono); color: var(--muted); }
+.mini { display: grid; gap: 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; font-size: 0.86rem; background: var(--bg); }
+.mini .row { display: grid; grid-template-columns: 14px minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 7px 10px; border-top: 1px solid var(--line); }
+.mini .row:first-child { border-top: 0; }
+.mini .row .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mini .row .v { font: 0.74rem var(--font-mono); color: var(--muted); white-space: nowrap; }
+.mini .folder { padding: 6px 10px; font: 500 0.72rem var(--font-mono); color: var(--muted); background: var(--surface-2); border-top: 1px solid var(--line); }
+.mini .folder:first-child { border-top: 0; }
+.mini .ind1 .nm { padding-left: 14px; } .mini .ind2 .nm { padding-left: 28px; } .mini .ind3 .nm { padding-left: 42px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.dot.up { background: var(--accent); } .dot.warn { background: var(--amber); } .dot.down { background: var(--err); }
+.dot.off { background: #5b8def; } .dot.unk { background: var(--muted); }
+.dot.imp { background: linear-gradient(90deg, var(--amber) 50%, transparent 50%); box-shadow: inset 0 0 0 1.5px var(--amber); }
+@media (max-width: 960px) { .beyond { grid-template-columns: minmax(0, 1fr); } }
+
+/* Feature graphics */
+.specimen .g { display: block; width: 100%; height: auto; }
+.chat { display: grid; gap: 8px; font-size: 0.9rem; }
+.bubble { padding: 9px 12px; border-radius: 12px; max-width: 92%; line-height: 1.45; }
+.bubble.me { justify-self: end; background: var(--accent-soft); border: 1px solid var(--accent); }
+.bubble.ai { justify-self: start; background: var(--surface-2); border: 1px solid var(--line); }
+.tools { display: flex; flex-wrap: wrap; gap: 6px; }
+.tools span { font: 0.72rem var(--font-mono); color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 2px 9px; background: var(--bg); }
+.tools span::before { content: "⚙ "; color: var(--accent); }
+.cell .ico { width: 30px; height: 30px; color: var(--accent); margin-bottom: 4px; }
+
+/* Shapes strip */
+.shapes { background: var(--surface); border-block: 1px solid var(--line); }
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; position: relative; }
+.step { padding: 0 20px 0 0; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.step .n { display: flex; align-items: center; gap: 10px; font: 500 0.78rem var(--font-mono); color: var(--muted); }
+.step .n b { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent); font-weight: 500; }
+.step .n::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.step:last-child .n::after { display: none; }
+.step p { color: var(--muted); font-size: 0.95rem; }
+.step pre { margin: 0; }
+@media (max-width: 900px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 32px; } }
+@media (max-width: 560px) { .steps { grid-template-columns: minmax(0, 1fr); } }
+
+pre { background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; overflow-x: auto; line-height: 1.55; font-size: 0.8rem; color: var(--fg); }
+pre .c { color: var(--muted); } pre .k { color: var(--accent); } pre .s { color: var(--amber); }
+
+/* Enterprise band */
+.enterprise { background: var(--hero-bg); color: var(--hero-fg); }
+.enterprise .lede { color: var(--hero-muted); }
+.enterprise .eyebrow { color: var(--amber-hero); }
+.ent-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px 36px; margin-top: 36px; }
+.ent-grid div { border-top: 1px solid var(--hero-line); padding-top: 16px; display: grid; gap: 6px; }
+.ent-grid p { color: var(--hero-muted); font-size: 0.95rem; }
+.ent-grid h3 { color: var(--hero-fg); }
+.enterprise a.more { color: var(--emerald-hero); font-weight: 600; }
+@media (max-width: 860px) { .ent-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* License CTA */
+.license { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 32px; }
+.license .cta { display: flex; gap: 12px; flex-wrap: wrap; }
+@media (max-width: 760px) { .license { grid-template-columns: minmax(0, 1fr); } }
+
+/* Feature detail pages */
+.page-hero { padding-block: 56px 24px; }
+.page-hero h1 { font-size: clamp(2rem, 4.5vw, 3rem); font-weight: 600; letter-spacing: -0.02em; margin-top: 10px; }
+.page-hero .lede { margin-top: 14px; }
+.jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+.jump a { font-weight: 500; font-size: 0.92rem; text-decoration: none; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; }
+.jump a:hover { border-color: var(--accent); color: var(--accent); }
+.feat { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; padding-block: 48px; border-top: 1px solid var(--line); scroll-margin-top: 80px; }
+.feat .txt { display: grid; gap: 14px; align-content: start; min-width: 0; }
+.feat ul { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; color: var(--muted); }
+.feat ul b { color: var(--fg); font-weight: 600; }
+.specimen { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.specimen .lbl { font: 500 0.72rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.specimen pre { margin: 0; }
+.specimen svg { width: 100%; height: auto; display: block; }
+@media (max-width: 860px) { .feat { grid-template-columns: minmax(0, 1fr); gap: 24px; } }
+.roles { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.roles th, .roles td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.roles th { font: 500 0.75rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+.roles td:first-child { font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); white-space: nowrap; }
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.arch-block { display: grid; gap: 20px; padding-block: 40px; border-top: 1px solid var(--line); scroll-margin-top: 80px; }
+.arch-block .two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 40px; }
+.arch-block .two p { color: var(--muted); }
+@media (max-width: 760px) { .arch-block .two { grid-template-columns: minmax(0, 1fr); } }
+
+/* Docs */
+.docs { display: grid; grid-template-columns: 260px minmax(0, 1fr) 210px; gap: 40px; padding-block: 32px 64px; align-items: start; }
+.sidebar { position: sticky; top: 84px; max-height: calc(100vh - 100px); overflow-y: auto; display: grid; gap: 18px; padding-right: 6px; }
+.search { position: relative; }
+.search input { width: 100%; font: 0.95rem var(--font-body); padding: 9px 12px 9px 34px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); }
+.search svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; color: var(--muted); }
+.search kbd { position: absolute; right: 9px; top: 50%; transform: translateY(-50%); font: 0.7rem var(--font-mono); color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; }
+.side-group h4 { font: 600 0.82rem var(--font-body); text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg); margin-bottom: 6px; }
+.side-group ul { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--line); }
+.side-group a { display: block; padding: 4px 12px; margin-left: -1px; border-left: 2px solid transparent; color: var(--muted); text-decoration: none; font-size: 0.94rem; }
+.side-group a:hover { color: var(--fg); }
+.side-group a[aria-current="page"] { color: var(--accent); border-left-color: var(--accent); font-weight: 500; }
+.no-hits { color: var(--muted); font-size: 0.9rem; }
+.doc { min-width: 0; max-width: 760px; }
+.crumbs { font: 0.8rem var(--font-mono); color: var(--muted); }
+.doc h1 { font-size: clamp(1.8rem, 3.6vw, 2.4rem); font-weight: 600; margin-top: 8px; letter-spacing: -0.01em; }
+.doc .lede { margin-top: 10px; }
+.doc h2 { font-size: 1.45rem; margin-top: 40px; margin-bottom: 12px; scroll-margin-top: 84px; }
+.doc p, .doc ul, .doc ol { margin-block: 12px; }
+.doc ol, .doc ul { padding-left: 1.3em; display: grid; gap: 6px; }
+.aside { border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 12px 16px; border-radius: 0 8px 8px 0; margin-block: 16px; font-size: 0.95rem; }
+.aside.caution { border-left-color: var(--amber); background: var(--amber-soft); }
+.aside b { display: block; margin-bottom: 2px; }
+.src-note { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.85rem; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.pager { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 28px; }
+.pager a { border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; text-decoration: none; color: var(--fg); background: var(--surface); display: grid; gap: 2px; font-weight: 600; min-width: 0; }
+.pager a span { font: 0.75rem var(--font-mono); color: var(--muted); font-weight: 400; }
+.pager a.next { text-align: right; }
+.pager a:hover { border-color: var(--accent); }
+.toc { position: sticky; top: 84px; font-size: 0.88rem; display: grid; gap: 6px; }
+.toc h4 { font: 600 0.78rem var(--font-body); text-transform: uppercase; letter-spacing: 0.06em; }
+.toc a { color: var(--muted); text-decoration: none; }
+.toc a:hover { color: var(--accent); }
+.docs-menu { display: none; }
+@media (max-width: 1080px) { .docs { grid-template-columns: 240px minmax(0, 1fr); } .toc { display: none; } }
+@media (max-width: 780px) {
+  .docs { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .docs-menu { display: flex; width: 100%; justify-content: space-between; align-items: center; font: 600 0.95rem var(--font-body); padding: 10px 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--fg); cursor: pointer; }
+  .sidebar { display: none; position: static; max-height: none; }
+  .sidebar.open { display: grid; }
+}
+
+/* Compare */
+.legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.st { display: inline-block; font: 500 0.7rem var(--font-mono); padding: 2px 8px; border-radius: 999px; border: 1px solid transparent; white-space: nowrap; }
+.st.yes { background: var(--accent-soft); color: var(--accent-strong); border-color: var(--accent); }
+.st.part { background: var(--blue-soft); color: var(--blue); border-color: var(--blue); }
+.st.saas { background: var(--violet-soft); color: var(--violet); border-color: var(--violet); }
+.st.paid { background: var(--amber-soft); color: var(--amber); border-color: var(--amber); }
+.st.no { background: var(--surface-2); color: var(--muted); border-color: var(--line); }
+.st.unk { background: transparent; color: var(--muted); border: 1px dashed var(--line); }
+.matrix-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); margin-top: 24px; }
+.matrix { border-collapse: collapse; min-width: 1060px; width: 100%; font-size: 0.86rem; }
+.matrix th, .matrix td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.matrix thead th { font: 600 0.9rem var(--font-body); position: sticky; top: 0; background: var(--surface); }
+.matrix thead th a { color: var(--fg); }
+.matrix tbody th { font-weight: 600; white-space: nowrap; position: sticky; left: 0; background: var(--surface); z-index: 1; }
+.matrix td { display: table-cell; }
+.matrix td .ct { display: block; margin-top: 4px; color: var(--muted); line-height: 1.35; }
+.matrix .us, .cmp .us { background: var(--accent-soft); }
+.matrix td:nth-child(2) { background: color-mix(in srgb, var(--accent-soft) 45%, transparent); }
+.fine { color: var(--muted); font-size: 0.88rem; margin-top: 14px; max-width: 80ch; }
+.vgrid-sec, .move { padding-block: 56px 8px; }
+.vgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.vcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; display: grid; gap: 10px; align-content: start; }
+.vcard p { color: var(--muted); }
+.vcard dl { margin: 0; display: grid; gap: 4px; font-size: 0.92rem; }
+.vcard dt { font: 500 0.72rem var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-top: 6px; }
+.vcard dd { margin: 0; }
+.vcard .more { font-weight: 600; text-decoration: none; }
+.move-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.move-grid > div { border-top: 2px solid var(--accent); padding-top: 12px; display: grid; gap: 6px; align-content: start; }
+.move-grid p { color: var(--muted); font-size: 0.95rem; }
+.checked { margin-top: 12px; font: 0.82rem var(--font-mono); color: var(--muted); }
+.choose { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.pick { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+.pick.us { border-color: var(--accent); }
+.pick ul { margin: 10px 0 0; padding-left: 1.1em; display: grid; gap: 6px; color: var(--muted); }
+.cmp td, .cmp th { font-size: 0.9rem; }
+.cmp td.srcs { white-space: normal; }
+.src { font: 0.75rem var(--font-mono); white-space: nowrap; }
+.steps-list { margin: 0; padding-left: 1.3em; display: grid; gap: 10px; max-width: 80ch; }
+.srclist { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; }
+.g { display: block; width: 100%; height: auto; }
+@media (max-width: 960px) { .vgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .move-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .vgrid, .move-grid, .choose { grid-template-columns: minmax(0, 1fr); } .matrix tbody th { white-space: normal; width: 104px; min-width: 104px; } .matrix th, .matrix td { padding: 8px 10px; } }
+
+/* Footer */
+footer { border-top: 1px solid var(--line); padding-block: 40px; color: var(--muted); font-size: 0.92rem; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 16px 32px; justify-content: space-between; align-items: center; }
+footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+footer a { color: var(--muted); text-decoration: none; }
+footer a:hover { color: var(--accent); }
+.mock-note { font: 0.75rem var(--font-mono); color: var(--muted); }
+/* Community and Support */
+.cm-sec { padding-block: 40px 8px; }
+.cm-card .ico { width: 30px; height: 30px; color: var(--accent); }
+.cm-two { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+.cm-code { min-width: 0; }
+.cm-code pre { margin: 0; }
+.cm-sec-box { max-width: 820px; display: grid; gap: 8px; }
+.cm-sec-box p { color: var(--muted); }
+.pick.cm-sec-box:not(.us) { border-color: var(--amber); background: color-mix(in srgb, var(--amber-soft) 55%, var(--surface)); }
+.move-grid.cm-three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 860px) { .cm-two { grid-template-columns: minmax(0, 1fr); } .move-grid.cm-three { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .move-grid.cm-three { grid-template-columns: minmax(0, 1fr); } }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="logo" viewBox="0 0 200 200">
+      <rect x="1.5" y="1.5" width="197" height="197" rx="44" fill="#14192B" stroke="#3A4560" stroke-width="3"/>
+      <g transform="translate(100,100) scale(1.707) translate(-48,-48)">
+        <path d="M10,48 C22,18 74,18 86,48 C74,78 22,78 10,48 Z" fill="none" stroke="#F3F4F6" stroke-width="6" stroke-linejoin="round"/>
+        <g stroke="#F2A73B" stroke-width="4.6" stroke-linecap="round">
+          <line x1="39" y1="44" x2="39" y2="52"/><line x1="48" y1="36" x2="48" y2="60"/><line x1="57" y1="44" x2="57" y2="52"/>
+        </g>
+      </g>
+    </symbol>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-head" d="M0,0 L10,5 L0,10 z"/></marker>
+    <marker id="aha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-head acc" d="M0,0 L10,5 L0,10 z"/></marker>
+  </defs>
+</svg>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="#home" aria-label="Obzly home"><svg><use href="#logo"/></svg>Obzly</a>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="#features" data-view="features">Features</a>
+      <a href="#architecture" data-view="architecture">Architecture</a>
+      <a href="#compare" data-view="compare">Compare</a>
+      <a href="#community" data-view="community">Community</a>
+      <a href="#docs" data-view="docs">Docs</a>
+      <span class="spacer"></span>
+      <a class="ext" href="https://github.com/obzly/obzly/releases" target="_blank" rel="noopener">Releases</a>
+      <a class="ext" href="https://github.com/obzly/obzly" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+    <button class="icon-btn" id="theme-btn" type="button" aria-label="Switch colour theme" title="Switch colour theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+    <button class="icon-btn menu-btn" id="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+<!-- ============================== HOME ============================== -->
+<div class="view" id="view-home">
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow" style="color:var(--amber-hero)">Open source · Apache 2.0</div>
+        <h1 style="margin-top:14px">Self-hosted observability, from one container to an <em>enterprise cluster</em></h1>
+        <p class="lede">Logs, traces and metrics in one place you run yourself. Point any OpenTelemetry exporter at it. Data lands as compressed Parquet in your own bucket.</p>
+        <div class="proto" aria-label="Protocols">
+          <span class="chip"><b>OTLP</b> in</span>
+          <span class="chip"><b>Parquet</b> on S3</span>
+          <span class="chip">gRPC <b>:4317</b></span>
+          <span class="chip">HTTP <b>:4005</b></span>
+          <span class="chip">PromQL · Jaeger · MCP</span>
+        </div>
+        <div class="cta">
+          <a class="btn btn-primary" href="#docs-quick-install">Get started</a>
+          <a class="btn btn-ghost" href="https://github.com/obzly/obzly" target="_blank" rel="noopener">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.56-.29-5.25-1.28-5.25-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.7 5.38-5.27 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>
+            Star on GitHub
+          </a>
+        </div>
+      </div>
+      <div class="tail" aria-label="Example of the live tail view">
+        <div class="tail-bar"><span class="live">Live tail</span><span>harborline-shop · last 15 min</span></div>
+        <div class="tail-query">level:<span>error</span> OR level:<span>warn</span> service_name:<span>checkout</span></div>
+        <ul class="tail-lines" id="tail"></ul>
+        <div class="tail-foot" id="hist" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">/v1/logs · /v1/traces · /v1/metrics</div>
+        <h2>Three signals, one project, one API key</h2>
+        <p class="lede">Every signal arrives over OTLP and is stored the same way, so a log links to its trace and a dashboard can mix all three.</p>
+      </div>
+      <div class="pillars">
+        <article class="pillar">
+          <div class="sig"><h3>Logs</h3>
+            <svg viewBox="0 0 120 36" aria-hidden="true"><g fill="var(--line)"><rect x="0" y="4" width="70" height="4" rx="2"/><rect x="0" y="16" width="100" height="4" rx="2"/><rect x="0" y="28" width="56" height="4" rx="2"/></g><rect x="74" y="4" width="22" height="4" rx="2" fill="var(--amber)"/></svg></div>
+          <ul>
+            <li>Full-text and field search, query builder or SQL</li>
+            <li>Live tail, log patterns and anomalies</li>
+            <li>Logs around any result, and a link to its trace</li>
+          </ul>
+          <a class="more" href="#features-logs">Logs in detail →</a>
+        </article>
+        <article class="pillar">
+          <div class="sig"><h3>Traces</h3>
+            <svg viewBox="0 0 120 36" aria-hidden="true"><rect x="0" y="3" width="118" height="6" rx="2" fill="var(--accent)"/><rect x="14" y="15" width="60" height="6" rx="2" fill="var(--line)"/><rect x="40" y="27" width="70" height="6" rx="2" fill="var(--amber)"/></svg></div>
+          <ul>
+            <li>OTLP trace ingestion and a trace explorer</li>
+            <li>Service map from real calls</li>
+            <li>Jaeger-compatible query API for existing clients</li>
+          </ul>
+          <a class="more" href="#features-traces">Traces in detail →</a>
+        </article>
+        <article class="pillar">
+          <div class="sig"><h3>Metrics</h3>
+            <svg viewBox="0 0 120 36" aria-hidden="true"><polyline points="0,30 15,24 30,26 45,14 60,18 75,8 90,12 105,4 120,9" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/></svg></div>
+          <ul>
+            <li>OTLP and Prometheus remote-write ingestion</li>
+            <li>PromQL-compatible API for Grafana</li>
+            <li>5-minute and 1-hour rollups that outlive raw samples</li>
+          </ul>
+          <a class="more" href="#features-metrics">Metrics in detail →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">New in v0.55 and v0.56</div>
+        <h2>Beyond the three signals</h2>
+        <p class="lede">Check your endpoints from where your users are, and see every host, pod and cloud resource with its health, from the data you already send.</p>
+      </div>
+      <div class="beyond">
+        <article class="pillar">
+          <h3>Synthetic monitoring</h3>
+          <div class="mini" aria-label="Example monitors list">
+            <div class="folder">Payments/EU</div>
+            <div class="row"><span class="dot up"></span><span class="nm">api-gateway</span><span class="v">99.98% · 182 ms</span></div>
+            <div class="row"><span class="dot imp"></span><span class="nm">quotes-api</span><span class="v">impacted</span></div>
+            <div class="folder">Storefront</div>
+            <div class="row"><span class="dot warn"></span><span class="nm">shop.harborline.example</span><span class="v">cert 12 d</span></div>
+          </div>
+          <ul>
+            <li>HTTP with assertions, TLS, TCP, DNS and ICMP</li>
+            <li>Dependencies: one outage, one page</li>
+            <li>Probe groups that fail over within a minute</li>
+          </ul>
+          <a class="more" href="#features-synthetics">Synthetics in detail →</a>
+        </article>
+        <article class="pillar">
+          <h3>Infrastructure inventory</h3>
+          <div class="mini" aria-label="Example asset tree">
+            <div class="row"><span class="dot warn"></span><span class="nm">harbor-prod-1</span><span class="v">cluster</span></div>
+            <div class="row ind1"><span class="dot up"></span><span class="nm">shop</span><span class="v">namespace</span></div>
+            <div class="row ind2"><span class="dot warn"></span><span class="nm">cart</span><span class="v">2/3 ready</span></div>
+            <div class="row ind3"><span class="dot down"></span><span class="nm">cart-5d8f-q2x7r</span><span class="v">CrashLoop</span></div>
+          </div>
+          <ul>
+            <li>Clusters to containers, hosts and services</li>
+            <li>Health with the reason, and a change feed</li>
+            <li>Nothing to install: built from your data</li>
+          </ul>
+          <a class="more" href="#features-infrastructure">Infrastructure in detail →</a>
+        </article>
+        <article class="pillar">
+          <h3>Cloud connections</h3>
+          <div class="mini" aria-label="Example cloud connections">
+            <div class="row"><span class="dot up"></span><span class="nm">AWS · 111122223333</span><span class="v">4 regions</span></div>
+            <div class="row"><span class="dot up"></span><span class="nm">Azure · harborline-prod</span><span class="v">1 subscription</span></div>
+            <div class="row"><span class="dot unk"></span><span class="nm">Load balancers · databases · buckets</span><span class="v">212</span></div>
+          </div>
+          <ul>
+            <li>Read-only access to AWS and Azure</li>
+            <li>A wizard writes the CloudFormation or Bicep</li>
+            <li>Obzly stores identifiers, never cloud keys</li>
+          </ul>
+          <a class="more" href="#features-infrastructure">Cloud connections in detail →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">How it works</div>
+        <h2>OTLP in, Parquet on S3</h2>
+        <p class="lede">A batch is acknowledged only once the JetStream buffer has stored it. Workers write ZSTD Parquet to object storage, and queriers read it back with a warm cache.</p>
+      </div>
+      <figure class="diagram" style="margin:0">
+        <svg viewBox="0 0 960 330" role="img" aria-labelledby="hiw-t">
+          <title id="hiw-t">Data flows from your services and synthetic probes into the api role, through the JetStream buffer to workers that write Parquet to object storage; queriers read it back for searches, dashboards, PromQL, Jaeger and MCP.</title>
+          <text class="d-l" x="20" y="20">Your services</text>
+          <rect class="d-box" x="20" y="30" width="184" height="34" rx="7"/><text class="d-s" x="34" y="51">App SDKs · OTLP</text>
+          <rect class="d-box" x="20" y="72" width="184" height="34" rx="7"/><text class="d-s" x="34" y="93">OTel Collector</text>
+          <rect class="d-box" x="20" y="114" width="184" height="34" rx="7"/><text class="d-s" x="34" y="135">Prometheus remote-write</text>
+          <rect class="d-box" x="20" y="156" width="184" height="34" rx="7"/><text class="d-s" x="34" y="177">HTTP JSON · curl</text>
+          <rect class="d-amb" x="20" y="198" width="184" height="30" rx="7"/><text class="d-s" x="34" y="217">obzly-probe · synthetics</text>
+          <path class="d-arrow" d="M204 47 C218 47 216 100 228 100" marker-end="url(#ah)"/>
+          <path class="d-arrow" d="M204 89 C218 89 216 104 228 104" marker-end="url(#ah)"/>
+          <path class="d-arrow" d="M204 131 C218 131 216 110 228 110" marker-end="url(#ah)"/>
+          <path class="d-arrow" d="M204 173 C218 173 216 114 228 114" marker-end="url(#ah)"/>
+          <path class="d-arrow" d="M204 213 C220 213 216 118 228 118" marker-end="url(#ah)"/>
+
+          <rect class="d-acc" x="230" y="36" width="140" height="270" rx="10"/>
+          <text class="d-t" x="248" y="64">api</text>
+          <text class="d-s" x="248" y="86">ingest</text>
+          <text class="d-a" x="248" y="104">gRPC :4317</text>
+          <text class="d-a" x="248" y="120">HTTP :4005</text>
+          <line x1="246" y1="170" x2="354" y2="170" stroke="var(--accent)" stroke-dasharray="3 3"/>
+          <text class="d-s" x="248" y="200">query</text>
+          <text class="d-a" x="248" y="218">coordinator</text>
+          <text class="d-s" x="248" y="252">UI · PromQL</text>
+          <text class="d-s" x="248" y="268">Jaeger · /mcp</text>
+
+          <text class="d-l" x="20" y="244">You</text>
+          <rect class="d-box" x="20" y="252" width="184" height="48" rx="7"/>
+          <text class="d-s" x="34" y="272">Browser · Grafana</text><text class="d-s" x="34" y="288">Claude · Cursor</text>
+          <path class="d-arrow" d="M204 276 L228 276" marker-end="url(#ah)" marker-start="url(#ah)"/>
+
+          <path class="d-arrow acc" d="M370 112 L418 112" marker-end="url(#aha)"/>
+          <rect class="d-box" x="420" y="66" width="150" height="92" rx="10"/>
+          <text class="d-t" x="438" y="94">broker</text>
+          <text class="d-s" x="438" y="116">NATS JetStream</text>
+          <text class="d-s" x="438" y="134">3 replicas</text>
+          <g fill="var(--accent)"><circle cx="530" cy="88" r="4"/><circle cx="542" cy="88" r="4"/><circle cx="554" cy="88" r="4"/></g>
+
+          <path class="d-arrow acc" d="M570 112 L608 112" marker-end="url(#aha)"/>
+          <rect class="d-box" x="610" y="66" width="150" height="92" rx="10"/>
+          <text class="d-t" x="628" y="94">worker</text>
+          <text class="d-s" x="628" y="116">Parquet · ZSTD</text>
+          <text class="d-s" x="628" y="134">compaction</text>
+
+          <path class="d-arrow acc" d="M760 112 L798 112" marker-end="url(#aha)"/>
+          <rect class="d-amb" x="800" y="50" width="140" height="124" rx="10"/>
+          <text class="d-t" x="818" y="80">Object storage</text>
+          <text class="d-s" x="818" y="104">S3 · GCS</text>
+          <text class="d-s" x="818" y="122">Azure Blob</text>
+          <text class="d-s" x="818" y="140">MinIO</text>
+
+          <path class="d-arrow" d="M870 174 L870 236 L762 236" marker-end="url(#ah)"/>
+          <rect class="d-box" x="610" y="200" width="150" height="72" rx="10"/>
+          <text class="d-t" x="628" y="228">querier</text>
+          <text class="d-s" x="628" y="250">segment cache</text>
+          <path class="d-arrow" d="M370 226 L608 226" marker-end="url(#ah)"/>
+          <text class="d-a" x="420" y="218">query fragments</text>
+
+          <rect class="d-soft" x="420" y="254" width="172" height="52" rx="8"/>
+          <text class="d-t" x="438" y="278" style="font-size:14px">Postgres</text>
+          <text class="d-s" x="438" y="296">catalog · file stats</text>
+          <path class="d-dash" d="M370 280 L418 280"/>
+        </svg>
+        <figcaption>Small installs run every role in one container. Larger ones run each role on its own and scale it separately, using the same image.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">What's included</div>
+        <h2>Everything a platform team asks for in the first month</h2>
+      </div>
+      <div class="grid">
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18"/><path d="M6 16v-3M10 16V8M14 16v-5M18 16V5"/><path d="M17 3l2 2 2-2" /></svg><span class="tag">logs</span><h3>Patterns and anomalies</h3><p>New, spiking and dropping patterns compared with an earlier period, with alerts on new error patterns.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16M4 9h10"/><rect x="3" y="11.5" width="18" height="3.5" rx="1"/><path d="M4 18h12M4 21h8"/></svg><span class="tag">logs</span><h3>Log context</h3><p>See the logs around any result from the same source, to find what led up to an error.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h8M3 9h6"/><path d="M11 7h3l2 3"/><rect x="9" y="12" width="12" height="3" rx="1"/><rect x="12" y="17" width="7" height="3" rx="1"/></svg><span class="tag">logs → traces</span><h3>Log to trace</h3><p>Jump from a log line to its trace. Kubernetes rollout markers show on the histogram.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><path d="M17 13v8M13 17h8"/></svg><span class="tag">dashboards</span><h3>Grafana import</h3><p>Build dashboards, or bring over a Grafana or OpenObserve dashboard's panels and layout.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9.5 16.5h-19z"/><path d="M12 10v4M12 17.2v.3"/></svg><span class="tag">incidents</span><h3>Incidents</h3><p>Error logs, failed spans and their shared traces grouped into incident sessions.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 21h4"/></svg><span class="tag">alerting</span><h3>Alerts in ~15 s</h3><p>Rules over PromQL, log searches or trace latency, sent to webhooks, Slack, PagerDuty or email.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2 2.2.8-2.2.8L19 21l-.8-2.2-2.2-.8 2.2-.8z"/></svg><span class="tag">ai</span><h3>AI observability</h3><p>Claude Code usage per project: cost, tokens, cache use and sessions.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3v5M15 3v5"/><path d="M6 8h12v3a6 6 0 0 1-12 0z"/><path d="M12 17v4"/></svg><span class="tag">/mcp</span><h3>MCP server</h3><p>Claude and Cursor search logs, inspect traces and run PromQL with your own access.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5.5" rx="8" ry="2.5"/><path d="M4 5.5v6c0 1.4 3.6 2.5 8 2.5s8-1.1 8-2.5v-6"/><path d="M4 11.5v6c0 1.4 3.6 2.5 8 2.5s8-1.1 8-2.5v-6"/></svg><span class="tag">35+ sources</span><h3>Generated configs</h3><p>Pick Nginx, Postgres, Kafka, Kubernetes and more; get a ready-to-run Collector config.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2"/><path d="M9 2h6"/></svg><span class="tag">lifecycle</span><h3>Retention and sampling</h3><p>Retention per project and signal, tail sampling that keeps whole traces, log head sampling.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3M21 12v2"/></svg><span class="tag">governance</span><h3>Audit log and API keys</h3><p>Who changed what and when. Keys show last use, and unused keys are easy to clean up.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5H9l2 2h8.5A1.5 1.5 0 0 1 21 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5z"/><path d="M12 11v4M10 13h4" /></svg><span class="tag">synthetics</span><h3>Folders and dependencies</h3><p>Group monitors in folders. A child of a down parent shows Impacted and stays quiet.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="2.5"/><circle cx="12" cy="12" r="2.5"/><circle cx="19" cy="12" r="2.5"/><path d="M5 5.5a9 9 0 0 1 14 0M5 18.5a9 9 0 0 0 14 0"/></svg><span class="tag">probe groups</span><h3>Probes that fail over</h3><p>Run several probes per location. If one stops, the others take its monitors within a minute.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .5-8 6 6 0 0 0-11.4-1.5A4.5 4.5 0 0 0 7 18z"/></svg><span class="tag">inventory</span><h3>Cloud resources</h3><p>Load balancers, databases, buckets and functions from AWS and Azure join your hosts and clusters.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="2.5"/><circle cx="19" cy="5" r="2.5"/><circle cx="19" cy="12" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="M7.5 12h9M7 10.8l9.6-4.6M7 13.2l9.6 4.6"/></svg><span class="tag">settings</span><h3>Shared channels</h3><p>Slack, PagerDuty, webhook and email channels defined once and shared by every project.</p></div>
+        <div class="cell"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12h4l2-5 4 10 2-5h8"/></svg><span class="tag">self-monitoring</span><h3>Watch Obzly itself</h3><p>Prometheus metrics on every role, a ready Grafana dashboard and SLO alert rules.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="shapes">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">SERVICE_MODE=all → api · worker · broker · querier</div>
+        <h2>From one container to a cluster</h2>
+        <p class="lede">Start small. The same image grows into a highly available deployment when your volume does.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="n"><b>1</b>Install script</div>
+          <h3>One Linux host</h3>
+          <p>Installs Docker if needed, starts Obzly with Postgres and Valkey, and restarts on reboot. About two minutes.</p>
+          <a href="#docs-quick-install">Quick install →</a>
+        </div>
+        <div class="step">
+          <div class="n"><b>2</b>Docker Compose</div>
+          <h3>Your own compose file</h3>
+          <p>Copy the example compose and <code>.env</code>, set a Postgres password, run <code>docker compose up -d</code>.</p>
+          <a href="#docs-docker-compose">Docker Compose →</a>
+        </div>
+        <div class="step">
+          <div class="n"><b>3</b>Helm, mode: ha</div>
+          <h3>A highly available Site</h3>
+          <p>Three brokers, plus api, worker and querier replicas on Kubernetes, with Parquet in your bucket.</p>
+          <a href="#docs-helm">Helm chart →</a>
+        </div>
+        <div class="step">
+          <div class="n"><b>4</b>Control plane</div>
+          <h3>Many Sites, one login</h3>
+          <p>One control plane in front of regions, environments or business units. Data stays in each Site.</p>
+          <a href="#docs-multi-site">Control plane &amp; Sites →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="enterprise">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">Enterprise, included</div>
+        <h2>Built for the security review and the 3 a.m. page</h2>
+        <p class="lede">No paid tier holds these back. They ship in the same Apache 2.0 image.</p>
+      </div>
+      <div class="ent-grid">
+        <div><h3>SSO with any OIDC provider</h3><p>Entra ID, Google Workspace, Cognito and others. IdP groups map to project and Site roles.</p></div>
+        <div><h3>SCIM 2.0 provisioning</h3><p>Users and groups from Okta or Entra ID into organizations and teams. Deprovisioning deactivates.</p></div>
+        <div><h3>TOTP MFA</h3><p>Required for admins. One switch in Settings requires it for everyone, and every reset lands in the audit log.</p></div>
+        <div><h3>Multi-site control plane</h3><p>Central identities and per-Site access grants. A Site's query API never faces the internet.</p></div>
+        <div><h3>Disaster recovery</h3><p>Backup, restore, DR and upgrade runbooks, a measured restore drill and <code style="background:transparent;border-color:var(--hero-line);color:var(--hero-fg)">obzly reconcile</code>.</p></div>
+        <div><h3>Quotas and plans</h3><p>Ingest rate, storage, retention and project limits per organization, enforced on every Site.</p></div>
+      </div>
+      <p style="margin-top:32px"><a class="more" href="#features-enterprise">All enterprise features →</a></p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="license">
+        <div style="display:grid;gap:8px">
+          <div class="eyebrow">License</div>
+          <h2>Apache 2.0. Read every line.</h2>
+          <p class="lede">Your data stays on your infrastructure, and you or your security team can audit all of the code.</p>
+          <p class="fine" style="margin-top:0">Free, with every feature. If it helps you, <a href="#donate">give to a charity you choose</a>.</p>
+        </div>
+        <div class="cta">
+          <a class="btn btn-primary" href="#docs-quick-install">Install Obzly</a>
+          <a class="btn btn-outline" href="https://github.com/obzly/obzly" target="_blank" rel="noopener">View source</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================== FEATURES ============================== -->
+<div class="view" id="view-features">
+  <div class="wrap">
+    <div class="page-hero">
+      <div class="eyebrow">Features</div>
+      <h1>What Obzly does</h1>
+      <p class="lede">Every feature on this page is in the open source image. Nothing here needs a licence key.</p>
+      <nav class="jump" aria-label="Feature sections">
+        <a href="#features-logs">Logs</a><a href="#features-traces">Traces</a><a href="#features-metrics">Metrics</a>
+        <a href="#features-synthetics">Synthetics</a><a href="#features-infrastructure">Infrastructure</a>
+        <a href="#features-dashboards">Dashboards &amp; Alerts</a><a href="#features-ai">AI observability &amp; MCP</a><a href="#features-enterprise">Enterprise</a>
+      </nav>
+    </div>
+
+    <article class="feat" id="features-logs">
+      <div class="txt">
+        <div class="eyebrow">Logs</div>
+        <h2>Search a week of logs in seconds</h2>
+        <ul>
+          <li><b>Search</b> by text and field, with a query builder or SQL and a field sidebar.</li>
+          <li><b>Live tail</b> with cursor paging, so new arrivals don't shift the page you're reading.</li>
+          <li><b>Patterns and anomalies</b>: new, spiking and dropping patterns against an earlier period.</li>
+          <li><b>Log context</b>: the logs before and after any result, from the same pod or service.</li>
+          <li><b>Promoted fields</b>: up to 12 per project become typed columns for fast filters and number ranges.</li>
+          <li><b>Wide searches</b> read newest-first and stop once the page is full. Searching for an ID skips every segment whose bloom filter lacks it.</li>
+        </ul>
+      </div>
+      <div class="specimen">
+        <div class="lbl">Search bar</div>
+        <pre><span class="k">level</span>:error <span class="k">service_name</span>:checkout <span class="s">"timeout"</span></pre>
+        <div class="lbl">Volume · errors in red · last hour</div>
+        <svg class="g" viewBox="0 0 420 122" role="img" aria-label="Log volume histogram: errors jump right after a rollout of cart v42">
+          <rect x="4.0" y="72.5" width="10" height="26.2" rx="1.5" fill="var(--line)"/><rect x="4.0" y="98.8" width="10" height="1.2" rx="1.5" fill="var(--err)"/><rect x="18.6" y="67.5" width="10" height="30.0" rx="1.5" fill="var(--line)"/><rect x="18.6" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="33.2" y="70.0" width="10" height="28.8" rx="1.5" fill="var(--line)"/><rect x="33.2" y="98.8" width="10" height="1.2" rx="1.5" fill="var(--err)"/><rect x="47.8" y="62.5" width="10" height="35.0" rx="1.5" fill="var(--line)"/><rect x="47.8" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="62.4" y="65.0" width="10" height="33.8" rx="1.5" fill="var(--line)"/><rect x="62.4" y="98.8" width="10" height="1.2" rx="1.5" fill="var(--err)"/><rect x="77.0" y="58.8" width="10" height="38.8" rx="1.5" fill="var(--line)"/><rect x="77.0" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="91.6" y="63.8" width="10" height="33.8" rx="1.5" fill="var(--line)"/><rect x="91.6" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="106.2" y="66.2" width="10" height="32.5" rx="1.5" fill="var(--line)"/><rect x="106.2" y="98.8" width="10" height="1.2" rx="1.5" fill="var(--err)"/><rect x="120.8" y="61.2" width="10" height="36.2" rx="1.5" fill="var(--line)"/><rect x="120.8" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="135.4" y="56.2" width="10" height="41.2" rx="1.5" fill="var(--line)"/><rect x="135.4" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="150.0" y="62.5" width="10" height="36.2" rx="1.5" fill="var(--line)"/><rect x="150.0" y="98.8" width="10" height="1.2" rx="1.5" fill="var(--err)"/><rect x="164.6" y="65.0" width="10" height="32.5" rx="1.5" fill="var(--line)"/><rect x="164.6" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="179.2" y="60.0" width="10" height="37.5" rx="1.5" fill="var(--line)"/><rect x="179.2" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="193.8" y="55.0" width="10" height="42.5" rx="1.5" fill="var(--line)"/><rect x="193.8" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="208.4" y="57.5" width="10" height="41.2" rx="1.5" fill="var(--line)"/><rect x="208.4" y="98.8" width="10" height="1.2" rx="1.5" fill="var(--err)"/><rect x="223.0" y="52.5" width="10" height="45.0" rx="1.5" fill="var(--line)"/><rect x="223.0" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="237.6" y="56.2" width="10" height="41.2" rx="1.5" fill="var(--line)"/><rect x="237.6" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="252.2" y="27.5" width="10" height="46.2" rx="1.5" fill="var(--line)"/><rect x="252.2" y="73.8" width="10" height="26.2" rx="1.5" fill="var(--err)"/><rect x="266.8" y="20.0" width="10" height="47.5" rx="1.5" fill="var(--line)"/><rect x="266.8" y="67.5" width="10" height="32.5" rx="1.5" fill="var(--err)"/><rect x="281.4" y="23.8" width="10" height="48.8" rx="1.5" fill="var(--line)"/><rect x="281.4" y="72.5" width="10" height="27.5" rx="1.5" fill="var(--err)"/><rect x="296.0" y="35.0" width="10" height="47.5" rx="1.5" fill="var(--line)"/><rect x="296.0" y="82.5" width="10" height="17.5" rx="1.5" fill="var(--err)"/><rect x="310.6" y="45.0" width="10" height="46.2" rx="1.5" fill="var(--line)"/><rect x="310.6" y="91.2" width="10" height="8.8" rx="1.5" fill="var(--err)"/><rect x="325.2" y="50.0" width="10" height="45.0" rx="1.5" fill="var(--line)"/><rect x="325.2" y="95.0" width="10" height="5.0" rx="1.5" fill="var(--err)"/><rect x="339.8" y="53.8" width="10" height="42.5" rx="1.5" fill="var(--line)"/><rect x="339.8" y="96.2" width="10" height="3.8" rx="1.5" fill="var(--err)"/><rect x="354.4" y="56.2" width="10" height="41.2" rx="1.5" fill="var(--line)"/><rect x="354.4" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="369.0" y="58.8" width="10" height="38.8" rx="1.5" fill="var(--line)"/><rect x="369.0" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="383.6" y="61.2" width="10" height="36.2" rx="1.5" fill="var(--line)"/><rect x="383.6" y="97.5" width="10" height="2.5" rx="1.5" fill="var(--err)"/><rect x="398.2" y="62.5" width="10" height="36.2" rx="1.5" fill="var(--line)"/><rect x="398.2" y="98.8" width="10" height="1.2" rx="1.5" fill="var(--err)"/>
+          <line x1="249.2" y1="6" x2="249.2" y2="100" stroke="var(--amber)" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <text class="d-a" x="243.2" y="14" text-anchor="end" style="fill:var(--amber)">rollout · cart v42</text>
+          <line x1="0" y1="100.5" x2="420" y2="100.5" stroke="var(--line)"/>
+          <text class="d-s" x="4" y="116">13:30</text><text class="d-s" x="210" y="116" text-anchor="middle">14:00</text><text class="d-s" x="416" y="116" text-anchor="end">14:30</text>
+        </svg>
+        <div class="lbl">Patterns · against yesterday</div>
+        <div class="mini">
+          <div class="row"><span class="dot down"></span><span class="nm"><code>payment provider timeout after &lt;*&gt; ms</code></span><span class="v">new · 1.2k</span></div>
+          <div class="row"><span class="dot warn"></span><span class="nm"><code>upstream payments returned &lt;*&gt;</code></span><span class="v">spiking · ×9</span></div>
+          <div class="row"><span class="dot up"></span><span class="nm"><code>POST /api/orders &lt;*&gt; in &lt;*&gt;ms</code></span><span class="v">steady · 48k</span></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="feat" id="features-traces">
+      <div class="txt">
+        <div class="eyebrow">Traces</div>
+        <h2>Follow a request across services</h2>
+        <ul>
+          <li><b>OTLP traces</b> over gRPC or HTTP, from any OpenTelemetry SDK.</li>
+          <li><b>Trace explorer</b> and a <b>service map</b> built from real calls.</li>
+          <li><b>Jaeger-compatible query API</b>: existing Jaeger clients work unmodified.</li>
+          <li><b>Tail sampling</b> keeps whole traces, not random spans.</li>
+          <li><b>Zero-code traces</b> on Kubernetes with OpenTelemetry eBPF Instrumentation (OBI).</li>
+        </ul>
+      </div>
+      <div class="specimen">
+        <div class="lbl">Service map · harborline-shop</div>
+        <svg class="g" viewBox="0 0 420 150" role="img" aria-label="Service map: frontend calls checkout, which calls payments-api, cart and orders-db; the payments edge shows errors">
+          <path class="d-arrow" d="M100 75 L148 75" marker-end="url(#ah)"/>
+          <path class="d-arrow" d="M240 70 C270 70 270 25 298 25" marker-end="url(#ah)" style="stroke:var(--amber)"/>
+          <path class="d-arrow" d="M240 75 L298 75" marker-end="url(#ah)"/>
+          <path class="d-arrow" d="M240 80 C270 80 270 125 298 125" marker-end="url(#ah)"/>
+          <rect class="d-box" x="4" y="58" width="96" height="34" rx="17"/><text class="d-s" x="52" y="79" text-anchor="middle">frontend</text>
+          <rect class="d-acc" x="150" y="58" width="90" height="34" rx="17"/><text class="d-s" x="195" y="79" text-anchor="middle">checkout</text>
+          <rect class="d-amb" x="300" y="8" width="116" height="34" rx="17"/><text class="d-s" x="358" y="29" text-anchor="middle">payments-api</text>
+          <rect class="d-box" x="300" y="58" width="116" height="34" rx="17"/><text class="d-s" x="358" y="79" text-anchor="middle">cart</text>
+          <rect class="d-box" x="300" y="108" width="116" height="34" rx="17"/><text class="d-s" x="358" y="129" text-anchor="middle">orders-db</text>
+          <text class="d-a" x="104" y="66">120 rps</text>
+          <text class="d-a" x="244" y="20" style="fill:var(--amber)">2.1% err</text>
+        </svg>
+        <div class="lbl">Trace · POST /checkout · 412 ms</div>
+        <svg class="g" viewBox="0 0 420 150" role="img" aria-label="Example trace waterfall with five spans; the payments span is slow">
+          <g class="d-s"><text x="0" y="16">frontend</text><text x="0" y="44">checkout</text><text x="0" y="72">payments-api</text><text x="0" y="100">orders-db</text><text x="0" y="128">cart</text></g>
+          <rect x="96" y="6" width="314" height="14" rx="3" fill="var(--accent)"/>
+          <rect x="114" y="34" width="266" height="14" rx="3" fill="var(--accent)" opacity="0.75"/>
+          <rect x="140" y="62" width="190" height="14" rx="3" fill="var(--amber)"/>
+          <rect x="150" y="90" width="60" height="14" rx="3" fill="var(--accent)" opacity="0.5"/>
+          <rect x="340" y="118" width="34" height="14" rx="3" fill="var(--accent)" opacity="0.5"/>
+          <text class="d-a" x="336" y="73" style="fill:var(--amber)">slow</text>
+        </svg>
+      </div>
+    </article>
+
+    <article class="feat" id="features-metrics">
+      <div class="txt">
+        <div class="eyebrow">Metrics</div>
+        <h2>Keep Grafana, drop the metrics stack</h2>
+        <ul>
+          <li><b>OTLP and Prometheus remote-write</b> ingestion.</li>
+          <li><b>PromQL-compatible API</b>: point an existing Grafana Prometheus datasource at Obzly.</li>
+          <li><b>Rollups</b> at 5 minutes and 1 hour keep long ranges fast and can outlive raw samples.</li>
+          <li><b>Host and Kubernetes metrics</b> from the generated Collector config.</li>
+        </ul>
+      </div>
+      <div class="specimen">
+        <div class="lbl">PromQL, no quoting needed</div>
+        <pre><span class="k">sum by</span> (k8s_pod_name) (system_cpu_time)</pre>
+        <svg class="g" viewBox="0 0 420 110" role="img" aria-label="Example metric line chart with two series">
+          <g stroke="var(--line)" stroke-width="1"><line x1="0" y1="20" x2="420" y2="20"/><line x1="0" y1="55" x2="420" y2="55"/><line x1="0" y1="90" x2="420" y2="90"/></g>
+          <polyline points="0,80 40,70 80,74 120,52 160,58 200,40 240,46 280,28 320,34 360,22 400,30 420,26" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+          <polyline points="0,92 40,88 80,90 120,82 160,84 200,76 240,80 280,70 320,74 360,66 400,70 420,68" fill="none" stroke="var(--amber)" stroke-width="2"/>
+        </svg>
+        <div class="lbl">Rollups · long ranges read fewer points</div>
+        <svg class="g" viewBox="0 0 420 84" role="img" aria-label="Raw samples, a 5-minute rollup and a 1-hour rollup, each with fewer points">
+          <text class="d-s" x="0" y="18">raw</text><circle cx="64" cy="14" r="1.6" fill="var(--accent)"/><circle cx="69" cy="14" r="1.6" fill="var(--accent)"/><circle cx="74" cy="14" r="1.6" fill="var(--accent)"/><circle cx="79" cy="14" r="1.6" fill="var(--accent)"/><circle cx="84" cy="14" r="1.6" fill="var(--accent)"/><circle cx="89" cy="14" r="1.6" fill="var(--accent)"/><circle cx="94" cy="14" r="1.6" fill="var(--accent)"/><circle cx="99" cy="14" r="1.6" fill="var(--accent)"/><circle cx="104" cy="14" r="1.6" fill="var(--accent)"/><circle cx="109" cy="14" r="1.6" fill="var(--accent)"/><circle cx="114" cy="14" r="1.6" fill="var(--accent)"/><circle cx="119" cy="14" r="1.6" fill="var(--accent)"/><circle cx="124" cy="14" r="1.6" fill="var(--accent)"/><circle cx="129" cy="14" r="1.6" fill="var(--accent)"/><circle cx="134" cy="14" r="1.6" fill="var(--accent)"/><circle cx="139" cy="14" r="1.6" fill="var(--accent)"/><circle cx="144" cy="14" r="1.6" fill="var(--accent)"/><circle cx="149" cy="14" r="1.6" fill="var(--accent)"/><circle cx="154" cy="14" r="1.6" fill="var(--accent)"/><circle cx="159" cy="14" r="1.6" fill="var(--accent)"/><circle cx="164" cy="14" r="1.6" fill="var(--accent)"/><circle cx="169" cy="14" r="1.6" fill="var(--accent)"/><circle cx="174" cy="14" r="1.6" fill="var(--accent)"/><circle cx="179" cy="14" r="1.6" fill="var(--accent)"/><circle cx="184" cy="14" r="1.6" fill="var(--accent)"/><circle cx="189" cy="14" r="1.6" fill="var(--accent)"/><circle cx="194" cy="14" r="1.6" fill="var(--accent)"/><circle cx="199" cy="14" r="1.6" fill="var(--accent)"/><circle cx="204" cy="14" r="1.6" fill="var(--accent)"/><circle cx="209" cy="14" r="1.6" fill="var(--accent)"/><circle cx="214" cy="14" r="1.6" fill="var(--accent)"/><circle cx="219" cy="14" r="1.6" fill="var(--accent)"/><circle cx="224" cy="14" r="1.6" fill="var(--accent)"/><circle cx="229" cy="14" r="1.6" fill="var(--accent)"/><circle cx="234" cy="14" r="1.6" fill="var(--accent)"/><circle cx="239" cy="14" r="1.6" fill="var(--accent)"/><circle cx="244" cy="14" r="1.6" fill="var(--accent)"/><circle cx="249" cy="14" r="1.6" fill="var(--accent)"/><circle cx="254" cy="14" r="1.6" fill="var(--accent)"/><circle cx="259" cy="14" r="1.6" fill="var(--accent)"/><circle cx="264" cy="14" r="1.6" fill="var(--accent)"/><circle cx="269" cy="14" r="1.6" fill="var(--accent)"/><circle cx="274" cy="14" r="1.6" fill="var(--accent)"/><circle cx="279" cy="14" r="1.6" fill="var(--accent)"/><circle cx="284" cy="14" r="1.6" fill="var(--accent)"/><circle cx="289" cy="14" r="1.6" fill="var(--accent)"/><circle cx="294" cy="14" r="1.6" fill="var(--accent)"/><circle cx="299" cy="14" r="1.6" fill="var(--accent)"/><circle cx="304" cy="14" r="1.6" fill="var(--accent)"/><circle cx="309" cy="14" r="1.6" fill="var(--accent)"/><circle cx="314" cy="14" r="1.6" fill="var(--accent)"/><circle cx="319" cy="14" r="1.6" fill="var(--accent)"/><circle cx="324" cy="14" r="1.6" fill="var(--accent)"/><circle cx="329" cy="14" r="1.6" fill="var(--accent)"/><circle cx="334" cy="14" r="1.6" fill="var(--accent)"/><circle cx="339" cy="14" r="1.6" fill="var(--accent)"/><circle cx="344" cy="14" r="1.6" fill="var(--accent)"/><circle cx="349" cy="14" r="1.6" fill="var(--accent)"/><circle cx="354" cy="14" r="1.6" fill="var(--accent)"/><circle cx="359" cy="14" r="1.6" fill="var(--accent)"/><circle cx="364" cy="14" r="1.6" fill="var(--accent)"/><circle cx="369" cy="14" r="1.6" fill="var(--accent)"/><circle cx="374" cy="14" r="1.6" fill="var(--accent)"/><circle cx="379" cy="14" r="1.6" fill="var(--accent)"/><circle cx="384" cy="14" r="1.6" fill="var(--accent)"/><circle cx="389" cy="14" r="1.6" fill="var(--accent)"/><circle cx="394" cy="14" r="1.6" fill="var(--accent)"/><circle cx="399" cy="14" r="1.6" fill="var(--accent)"/><circle cx="404" cy="14" r="1.6" fill="var(--accent)"/><circle cx="409" cy="14" r="1.6" fill="var(--accent)"/><circle cx="414" cy="14" r="1.6" fill="var(--accent)"/><circle cx="419" cy="14" r="1.6" fill="var(--accent)"/>
+          <text class="d-s" x="0" y="46">5 min</text><circle cx="64" cy="42" r="2.6" fill="var(--accent)"/><circle cx="84" cy="42" r="2.6" fill="var(--accent)"/><circle cx="104" cy="42" r="2.6" fill="var(--accent)"/><circle cx="124" cy="42" r="2.6" fill="var(--accent)"/><circle cx="144" cy="42" r="2.6" fill="var(--accent)"/><circle cx="164" cy="42" r="2.6" fill="var(--accent)"/><circle cx="184" cy="42" r="2.6" fill="var(--accent)"/><circle cx="204" cy="42" r="2.6" fill="var(--accent)"/><circle cx="224" cy="42" r="2.6" fill="var(--accent)"/><circle cx="244" cy="42" r="2.6" fill="var(--accent)"/><circle cx="264" cy="42" r="2.6" fill="var(--accent)"/><circle cx="284" cy="42" r="2.6" fill="var(--accent)"/><circle cx="304" cy="42" r="2.6" fill="var(--accent)"/><circle cx="324" cy="42" r="2.6" fill="var(--accent)"/><circle cx="344" cy="42" r="2.6" fill="var(--accent)"/><circle cx="364" cy="42" r="2.6" fill="var(--accent)"/><circle cx="384" cy="42" r="2.6" fill="var(--accent)"/><circle cx="404" cy="42" r="2.6" fill="var(--accent)"/>
+          <text class="d-s" x="0" y="74">1 hour</text><circle cx="64" cy="70" r="3.6" fill="var(--accent)"/><circle cx="124" cy="70" r="3.6" fill="var(--accent)"/><circle cx="184" cy="70" r="3.6" fill="var(--accent)"/><circle cx="244" cy="70" r="3.6" fill="var(--accent)"/><circle cx="304" cy="70" r="3.6" fill="var(--accent)"/><circle cx="364" cy="70" r="3.6" fill="var(--accent)"/>
+        </svg>
+      </div>
+    </article>
+
+    <article class="feat" id="features-synthetics">
+      <div class="txt">
+        <div class="eyebrow">Synthetics</div>
+        <h2>Know an endpoint is down before your users do</h2>
+        <ul>
+          <li><b>Checks</b>: HTTP with assertions on status, latency, headers and JSON; TLS certificates (expiry, chain, protocol, self-signed allowed per monitor); TCP; DNS; ICMP.</li>
+          <li><b>Your own locations</b>: <code>obzly-probe</code> runs as a Linux service, a container or a Helm release, inside your network or out on the internet.</li>
+          <li><b>Probe groups</b>: several instances per location share the monitors. If one stops, the others take over within a minute.</li>
+          <li><b>Test</b> runs an unsaved monitor from every location in seconds, with a timing waterfall from DNS to transfer.</li>
+          <li><b>Folders and dependencies</b>: while a parent is down its children show Impacted and their alerts stay quiet, so an outage pages once.</li>
+          <li><b>Alerts per monitor</b> through the shared channels: down, degraded, or a certificate about to expire.</li>
+          <li><b>YAML import and export</b> with a preview, for reviewing monitors in git.</li>
+        </ul>
+        <p class="lede" style="font-size:0.95rem">Synthetics runs on a control plane. Results land in a Site project as ordinary metrics, so dashboards and PromQL work on them too.</p>
+      </div>
+      <div class="specimen">
+        <div class="lbl">Monitors · 3 locations</div>
+        <div class="mini">
+          <div class="folder">Payments/EU</div>
+          <div class="row"><span class="dot down"></span><span class="nm">api-gateway</span><span class="v">down · 2 of 3</span></div>
+          <div class="row ind1"><span class="dot imp"></span><span class="nm">quotes-api</span><span class="v">impacted · muted</span></div>
+          <div class="row ind1"><span class="dot imp"></span><span class="nm">payments-api</span><span class="v">impacted · muted</span></div>
+          <div class="folder">Storefront</div>
+          <div class="row"><span class="dot up"></span><span class="nm">shop.harborline.example</span><span class="v">99.99% · 240 ms</span></div>
+          <div class="row"><span class="dot warn"></span><span class="nm">TLS mail.harborline.example</span><span class="v">cert 12 d</span></div>
+        </div>
+        <div class="lbl">api-gateway · availability, last 2 hours</div>
+        <svg class="g" viewBox="0 0 420 84" role="img" aria-label="Availability strips for three locations: two locations fail for the last few runs">
+          <text class="d-s" x="0" y="17">edge-north</text><rect x="96.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="109.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="123.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="136.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="150.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="163.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="177.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="190.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="204.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="217.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="231.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="244.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="258.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="271.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="285.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="298.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="312.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="325.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="339.0" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="352.5" y="4" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="366.0" y="4" width="11" height="18" rx="2" fill="var(--err)"/><rect x="379.5" y="4" width="11" height="18" rx="2" fill="var(--err)"/><rect x="393.0" y="4" width="11" height="18" rx="2" fill="var(--err)"/><rect x="406.5" y="4" width="11" height="18" rx="2" fill="var(--err)"/>
+          <text class="d-s" x="0" y="45">edge-south</text><rect x="96.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="109.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="123.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="136.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="150.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="163.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="177.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="190.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="204.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="217.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="231.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="244.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="258.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="271.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="285.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="298.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="312.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="325.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="339.0" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="352.5" y="32" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="366.0" y="32" width="11" height="18" rx="2" fill="var(--amber)"/><rect x="379.5" y="32" width="11" height="18" rx="2" fill="var(--err)"/><rect x="393.0" y="32" width="11" height="18" rx="2" fill="var(--err)"/><rect x="406.5" y="32" width="11" height="18" rx="2" fill="var(--err)"/>
+          <text class="d-s" x="0" y="73">office-pier</text><rect x="96.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="109.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="123.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="136.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="150.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="163.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="177.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="190.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="204.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="217.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="231.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="244.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="258.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="271.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="285.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="298.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="312.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="325.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="339.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="352.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="366.0" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="379.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/><rect x="393.0" y="60" width="11" height="18" rx="2" fill="var(--amber)"/><rect x="406.5" y="60" width="11" height="18" rx="2" fill="var(--accent)"/>
+        </svg>
+        <div class="lbl">Run detail · POST /v1/quotes · 182 ms</div>
+        <svg class="g" viewBox="0 0 420 62" role="img" aria-label="Timing waterfall: DNS 12 ms, connect 18, TLS 34, time to first byte 96, transfer 22">
+          <rect x="0.0" y="6" width="26.7" height="18" fill="var(--muted)"/><rect x="27.7" y="6" width="40.5" height="18" fill="#5b8def"/><rect x="69.2" y="6" width="77.5" height="18" fill="var(--amber)"/><rect x="147.7" y="6" width="220.5" height="18" fill="var(--accent)"/><rect x="369.2" y="6" width="49.8" height="18" fill="var(--accent-strong)"/><text class="d-s" x="0.0" y="42" text-anchor="start">DNS 12</text><text class="d-s" x="27.7" y="56" text-anchor="start">connect 18</text><text class="d-s" x="69.2" y="42" text-anchor="start">TLS 34</text><text class="d-s" x="147.7" y="56" text-anchor="start">TTFB 96</text><text class="d-s" x="420.0" y="42" text-anchor="end">transfer 22</text>
+        </svg>
+      </div>
+    </article>
+
+    <article class="feat" id="features-infrastructure">
+      <div class="txt">
+        <div class="eyebrow">Infrastructure</div>
+        <h2>Every asset, its health and the reason</h2>
+        <ul>
+          <li><b>One inventory</b> of clusters, nodes, hosts, namespaces, workloads, pods, containers and services, built every 5 minutes from data your agents already send.</li>
+          <li><b>Health with the reason</b>: CPU, memory, disk, restarts, replicas, error logs and firing alerts.</li>
+          <li><b>Lifecycle and a change feed</b>: new, not reporting, terminated, restarted.</li>
+          <li><b>Tree or table</b>, with charts per asset and links straight into its logs, traces and dashboards.</li>
+          <li><b>Cloud connections</b> add what runs no agent: load balancers, databases, buckets, functions and scaling groups from AWS accounts and Azure subscriptions. VMs and clusters join the hosts and clusters your agents report.</li>
+          <li><b>Read-only, keyless</b>: a wizard writes the CloudFormation, Bicep or CLI. A probe group scans with its own identity, a role, or a federated token. Obzly stores identifiers only.</li>
+          <li><b>Cloud health</b>: a full discovery every 4 hours and a health scan of what it found every 15 minutes: instance status checks, load balancer targets and Azure Resource Health.</li>
+        </ul>
+      </div>
+      <div class="specimen">
+        <div class="lbl">Needs attention</div>
+        <div class="mini">
+          <div class="row"><span class="dot down"></span><span class="nm">cart-5d8f-q2x7r</span><span class="v">CrashLoopBackOff</span></div>
+          <div class="row"><span class="dot warn"></span><span class="nm">node-b7 · harbor-prod-1</span><span class="v">memory 93%</span></div>
+          <div class="row"><span class="dot warn"></span><span class="nm">shop-alb</span><span class="v">1 of 4 targets unhealthy</span></div>
+          <div class="row"><span class="dot up"></span><span class="nm">orders-db</span><span class="v">database · available</span></div>
+        </div>
+        <div class="lbl">Tree · cluster to container</div>
+        <svg class="g" viewBox="0 0 420 150" role="img" aria-label="Asset tree: cluster harbor-prod-1 with two nodes; node-b7 runs cart pods, one crash looping">
+          <g class="d-dash" style="stroke-dasharray:none;stroke:var(--line)"><path d="M14 30 V118"/><path d="M14 58 H34"/><path d="M14 118 H34"/><path d="M44 72 V100"/><path d="M44 86 H64"/><path d="M44 100 H64"/></g>
+          <circle cx="14" cy="16" r="6" fill="var(--amber)"/><text class="d-t" x="28" y="21" style="font-size:14px">harbor-prod-1</text><text class="d-s" x="160" y="21">cluster · 2 nodes · 61 pods</text>
+          <circle cx="44" cy="58" r="5" fill="var(--amber)"/><text class="d-s" x="56" y="62" style="fill:var(--fg)">node-b7</text><text class="d-s" x="160" y="62">memory 93%</text>
+          <circle cx="74" cy="86" r="4.5" fill="var(--err)"/><text class="d-s" x="86" y="90" style="fill:var(--fg)">cart-5d8f-q2x7r</text><text class="d-s" x="236" y="90" style="fill:var(--err)">12 restarts in 1 h</text>
+          <circle cx="74" cy="100" r="4.5" fill="var(--accent)" transform="translate(0,4)"/><text class="d-s" x="86" y="108" style="fill:var(--fg)">cart-5d8f-k8m2w</text><text class="d-s" x="236" y="108">running</text>
+          <circle cx="44" cy="118" r="5" fill="var(--accent)" transform="translate(0,14)"/><text class="d-s" x="56" y="136" style="fill:var(--fg)">node-c2</text><text class="d-s" x="160" y="136">healthy</text>
+        </svg>
+        <div class="lbl">Cloud connections join what your agents report</div>
+        <svg class="g" viewBox="0 0 420 150" role="img" aria-label="A cloud VM found by a cloud connection and a host reported by the Collector merge into one asset">
+          <rect class="d-amb" x="0" y="6" width="190" height="52" rx="8"/><text class="d-t" x="14" y="28" style="font-size:14px">VM · i-0a1b2c3d</text><text class="d-s" x="14" y="47">from AWS 111122223333</text>
+          <rect class="d-box" x="230" y="6" width="190" height="52" rx="8"/><text class="d-t" x="244" y="28" style="font-size:14px">host · node-b7</text><text class="d-s" x="244" y="47">from the Collector</text>
+          <path class="d-arrow" d="M95 58 C95 80 170 80 186 92" marker-end="url(#ah)"/>
+          <path class="d-arrow" d="M325 58 C325 80 250 80 234 92" marker-end="url(#ah)"/>
+          <text class="d-a" x="188" y="80" text-anchor="middle">host_id</text>
+          <rect class="d-acc" x="100" y="94" width="220" height="50" rx="8"/><text class="d-t" x="116" y="116" style="font-size:14px">one asset · node-b7</text><text class="d-s" x="116" y="134">cloud · metrics · logs</text>
+        </svg>
+      </div>
+    </article>
+
+    <article class="feat" id="features-dashboards">
+      <div class="txt">
+        <div class="eyebrow">Dashboards &amp; Alerts</div>
+        <h2>Bring your dashboards, get paged quickly</h2>
+        <ul>
+          <li><b>Dashboards</b>: build your own, or import a Grafana or OpenObserve dashboard's panels and layout, then add each panel's query.</li>
+          <li><b>Alert rules</b> over metrics (PromQL), logs (counts of a search, optionally per field) or traces (count, errors, latency percentiles).</li>
+          <li><b>for durations, repeat intervals, labels</b> and a live preview.</li>
+          <li><b>Notifications</b> to webhooks, Slack, PagerDuty or email, through an outbox with retries and silences. About 15 seconds from rule to notification.</li>
+          <li><b>Channels and email</b> are set up once in Obzly settings and shared by every project. On a control plane they are central, and each Site keeps a copy so alerts still go out if the control plane is down.</li>
+          <li><b>Incidents</b> group error logs, failed spans and their shared traces.</li>
+        </ul>
+      </div>
+      <div class="specimen">
+        <div class="lbl">Dashboard · imported from Grafana JSON</div>
+        <svg class="g" viewBox="0 0 420 160" role="img" aria-label="A dashboard with four panels: p95 latency, request rate, errors by service and error rate">
+          <rect class="d-box" x="0" y="0" width="205" height="75" rx="8"/><text class="d-s" x="12" y="20">p95 latency · checkout</text><text class="d-t" x="12" y="56" style="font-size:26px">182 ms</text>
+          <rect class="d-box" x="215" y="0" width="205" height="75" rx="8"/><text class="d-s" x="227" y="20">requests / s</text>
+          <polyline points="227,62 250,55 273,58 296,44 319,48 342,36 365,40 388,30 408,34" fill="none" stroke="var(--accent)" stroke-width="2"/>
+          <rect class="d-box" x="0" y="85" width="205" height="75" rx="8"/><text class="d-s" x="12" y="105">errors by service</text>
+          <rect x="12" y="116" width="120" height="9" rx="2" fill="var(--err)"/><rect x="12" y="130" width="64" height="9" rx="2" fill="var(--amber)"/><rect x="12" y="144" width="28" height="9" rx="2" fill="var(--line)"/>
+          <text class="d-s" x="140" y="124">payments</text><text class="d-s" x="84" y="138">cart</text><text class="d-s" x="48" y="152">shop</text>
+          <rect class="d-box" x="215" y="85" width="205" height="75" rx="8"/><text class="d-s" x="227" y="105">error rate</text><text class="d-t" x="227" y="141" style="font-size:26px">0.4%</text>
+          <polyline points="320,140 338,138 356,141 374,132 392,136 408,128" fill="none" stroke="var(--amber)" stroke-width="2"/>
+        </svg>
+        <div class="lbl">Rule to notification · about 15 s</div>
+        <svg class="g" viewBox="0 0 420 108" role="img" aria-label="An alert rule sends through an outbox with retries and silences to Slack, PagerDuty, email or a webhook">
+          <rect class="d-acc" x="0" y="28" width="138" height="52" rx="8"/><text class="d-t" x="12" y="50" style="font-size:14px">rule</text><text class="d-s" x="12" y="68">count &gt; 50 for 5m</text>
+          <path class="d-arrow" d="M138 54 L156 54" marker-end="url(#ah)"/>
+          <rect class="d-box" x="158" y="28" width="142" height="52" rx="8"/><text class="d-t" x="170" y="50" style="font-size:14px">outbox</text><text class="d-s" x="170" y="68">retries · silences</text>
+          <path class="d-arrow" d="M300 54 C310 54 308 15 314 15" marker-end="url(#ah)"/><path class="d-arrow" d="M300 54 C310 54 308 41 314 41" marker-end="url(#ah)"/>
+          <path class="d-arrow" d="M300 54 C310 54 308 67 314 67" marker-end="url(#ah)"/><path class="d-arrow" d="M300 54 C310 54 308 93 314 93" marker-end="url(#ah)"/>
+          <rect class="d-soft" x="316" y="4" width="104" height="22" rx="11"/><text class="d-s" x="368" y="19" text-anchor="middle">Slack</text>
+          <rect class="d-soft" x="316" y="30" width="104" height="22" rx="11"/><text class="d-s" x="368" y="45" text-anchor="middle">PagerDuty</text>
+          <rect class="d-soft" x="316" y="56" width="104" height="22" rx="11"/><text class="d-s" x="368" y="71" text-anchor="middle">Email</text>
+          <rect class="d-soft" x="316" y="82" width="104" height="22" rx="11"/><text class="d-s" x="368" y="97" text-anchor="middle">Webhook</text>
+        </svg>
+      </div>
+    </article>
+
+    <article class="feat" id="features-ai">
+      <div class="txt">
+        <div class="eyebrow">AI observability &amp; MCP</div>
+        <h2>Let your assistant read production</h2>
+        <ul>
+          <li><b>MCP server at /mcp</b>: Claude Code, Cursor, claude.ai and Claude Desktop can search logs, run SQL over them, inspect traces and service maps, and run PromQL.</li>
+          <li><b>Read-only</b>, with exactly the access your account has. Tokens work only on <code>/mcp</code>.</li>
+          <li><b>Browser sign-in</b> for claude.ai and Claude Desktop, with connected apps listed and revocable in your profile.</li>
+          <li><b>Multi-site aware</b>: one endpoint covers every Site you can access.</li>
+          <li><b>Claude Code usage</b> per project: cost, tokens, cache use and sessions.</li>
+        </ul>
+      </div>
+      <div class="specimen">
+        <div class="lbl">Claude, connected over MCP</div>
+        <div class="chat">
+          <div class="bubble me">Why did checkout start failing at 14:02?</div>
+          <div class="tools"><span>search_logs</span><span>log_patterns</span><span>log_context</span><span>get_trace</span></div>
+          <div class="bubble ai">payments-api timed out after 3 s on 41 requests from one pod, starting 30 s after the cart v42 rollout. Trace 9f2c… shows the wait in the card authorisation call.</div>
+        </div>
+        <div class="lbl">Connect Claude Code</div>
+        <pre>claude mcp add --transport http obzly \
+  https://obzly.harborline.example/mcp \
+  --header <span class="s">"Authorization: Bearer obz_pat_..."</span></pre>
+        <div class="lbl">Claude Code cost · this week</div>
+        <svg class="g" viewBox="0 0 420 108" role="img" aria-label="Claude Code cost per day this week, highest on Friday at 40 dollars">
+          <line x1="0" y1="86.5" x2="420" y2="86.5" stroke="var(--line)"/>
+          <rect x="10" y="58.1" width="40" height="27.9" rx="3" fill="var(--accent)" opacity="0.75"/><text class="d-s" x="30" y="52.1" text-anchor="middle">$18</text><text class="d-s" x="30" y="102" text-anchor="middle">Mon</text><rect x="68" y="48.8" width="40" height="37.2" rx="3" fill="var(--accent)" opacity="0.82"/><text class="d-s" x="88" y="42.8" text-anchor="middle">$24</text><text class="d-s" x="88" y="102" text-anchor="middle">Tue</text><rect x="126" y="38.0" width="40" height="48.0" rx="3" fill="var(--accent)" opacity="0.90"/><text class="d-s" x="146" y="32.0" text-anchor="middle">$31</text><text class="d-s" x="146" y="102" text-anchor="middle">Wed</text><rect x="184" y="51.9" width="40" height="34.1" rx="3" fill="var(--accent)" opacity="0.80"/><text class="d-s" x="204" y="45.9" text-anchor="middle">$22</text><text class="d-s" x="204" y="102" text-anchor="middle">Thu</text><rect x="242" y="24.0" width="40" height="62.0" rx="3" fill="var(--accent)" opacity="1.00"/><text class="d-s" x="262" y="18.0" text-anchor="middle">$40</text><text class="d-s" x="262" y="102" text-anchor="middle">Fri</text><rect x="300" y="67.4" width="40" height="18.6" rx="3" fill="var(--accent)" opacity="0.69"/><text class="d-s" x="320" y="61.4" text-anchor="middle">$12</text><text class="d-s" x="320" y="102" text-anchor="middle">Sat</text><rect x="358" y="72.0" width="40" height="14.0" rx="3" fill="var(--accent)" opacity="0.65"/><text class="d-s" x="378" y="66.0" text-anchor="middle">$9</text><text class="d-s" x="378" y="102" text-anchor="middle">Sun</text>
+        </svg>
+      </div>
+    </article>
+
+    <article class="feat" id="features-enterprise">
+      <div class="txt">
+        <div class="eyebrow">Enterprise</div>
+        <h2>Identity, scale and recovery</h2>
+        <ul>
+          <li><b>SSO</b> through any OIDC provider, with Microsoft Entra ID group mapping.</li>
+          <li><b>SCIM 2.0</b> from Okta or Entra ID; <b>TOTP MFA</b> required for admins, or for everyone with one switch.</li>
+          <li><b>Settings overview</b>: deployments, ingest and storage per Site, what needs attention, and readiness before each upgrade.</li>
+          <li><b>Organizations, teams and plans</b> with per-organization quotas.</li>
+          <li><b>High availability</b>: rolling updates with readiness draining, leases so each shard has one owner, no single query node.</li>
+          <li><b>Durable ingest</b>: losing an api pod, a worker or one broker loses no acknowledged data.</li>
+          <li><b>Disaster recovery</b> runbooks with a measured restore drill (RPO under a minute) and a weekly integrity audit.</li>
+          <li><b>Audit log</b> of every change and every denied request, with CSV export.</li>
+        </ul>
+      </div>
+      <div class="specimen">
+        <div class="lbl">Identity, from one place</div>
+        <svg class="g" viewBox="0 0 420 150" role="img" aria-label="An identity provider signs users in and provisions them over SCIM to the control plane, which grants access to each Site">
+          <rect class="d-box" x="0" y="48" width="112" height="56" rx="8"/><text class="d-t" x="12" y="69" style="font-size:14px">Identity</text><text class="d-t" x="12" y="91" style="font-size:14px">provider</text>
+          <path class="d-arrow" d="M112 76 L146 76" marker-end="url(#ah)"/><text class="d-a" x="116" y="68">OIDC</text><text class="d-a" x="116" y="94">SCIM</text>
+          <rect class="d-acc" x="148" y="34" width="124" height="84" rx="10"/><text class="d-t" x="162" y="58" style="font-size:14px">control plane</text>
+          <text class="d-s" x="162" y="78">orgs · teams</text><text class="d-s" x="162" y="96">MFA · audit log</text>
+          <path class="d-arrow" d="M272 62 C290 62 290 30 306 30" marker-end="url(#ah)"/><path class="d-arrow" d="M272 92 C290 92 290 122 306 122" marker-end="url(#ah)"/>
+          <text class="d-a" x="276" y="80">grants</text>
+          <rect class="d-box" x="308" y="10" width="112" height="40" rx="8"/><text class="d-s" x="320" y="35" style="fill:var(--fg)">Site · north</text>
+          <rect class="d-box" x="308" y="102" width="112" height="40" rx="8"/><text class="d-s" x="320" y="127" style="fill:var(--fg)">Site · south</text>
+        </svg>
+        <div class="lbl">Guardrails</div>
+        <div class="mini">
+          <div class="row"><span class="dot up"></span><span class="nm">Restore drill, recovery point</span><span class="v">under 1 min</span></div>
+          <div class="row"><span class="dot up"></span><span class="nm">Ingest buffer full</span><span class="v">429, client retries</span></div>
+          <div class="row"><span class="dot up"></span><span class="nm">Runaway query</span><span class="v">refused at 100 GiB</span></div>
+          <div class="row"><span class="dot up"></span><span class="nm">Audit log</span><span class="v">CSV export</span></div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<!-- ============================== ARCHITECTURE ============================== -->
+<div class="view" id="view-architecture">
+  <div class="wrap">
+    <div class="page-hero">
+      <div class="eyebrow">Architecture</div>
+      <h1>One image, five roles</h1>
+      <p class="lede">The single container is the smallest shape of one design. Set <code>SERVICE_MODE</code> and the same image runs each role on its own, so each part scales and fails independently.</p>
+      <nav class="jump" aria-label="Architecture sections">
+        <a href="#arch-site">A Site</a><a href="#arch-query">Query path</a><a href="#arch-multisite">Multi-site</a><a href="#arch-synthetics">Synthetics &amp; cloud</a><a href="#arch-ha">Scaling &amp; HA</a>
+      </nav>
+    </div>
+
+    <div class="arch-block" id="arch-site">
+      <h2>A Site</h2>
+      <figure class="diagram" style="margin:0">
+        <svg viewBox="0 0 960 400" role="img" aria-labelledby="site-t">
+          <title id="site-t">A load balancer sends traffic to stateless api replicas. Ingest goes to three JetStream brokers, then workers write Parquet to object storage. Queriers read object storage. Postgres and Valkey sit beside them.</title>
+          <rect class="d-box" x="20" y="150" width="120" height="70" rx="10"/>
+          <text class="d-t" x="36" y="180">Load</text><text class="d-t" x="36" y="200">balancer</text>
+          <path class="d-arrow" d="M140 185 L186 185" marker-end="url(#ah)"/>
+          <rect class="d-acc" x="198" y="122" width="150" height="110" rx="10" opacity="0.5"/>
+          <rect class="d-acc" x="194" y="126" width="150" height="110" rx="10" opacity="0.75"/>
+          <rect class="d-acc" x="190" y="130" width="150" height="110" rx="10"/>
+          <text class="d-t" x="208" y="160">api × N</text>
+          <text class="d-s" x="208" y="182">UI · REST · OTLP</text>
+          <text class="d-s" x="208" y="200">query coordinator</text>
+          <text class="d-a" x="208" y="222">stateless</text>
+
+          <path class="d-arrow acc" d="M348 150 C368 150 368 95 388 95" marker-end="url(#aha)"/>
+          <text class="d-a" x="352" y="112">ingest</text>
+          <rect class="d-box" x="390" y="40" width="170" height="110" rx="10"/>
+          <text class="d-t" x="408" y="70">broker × 3</text>
+          <text class="d-s" x="408" y="92">NATS JetStream</text>
+          <text class="d-s" x="408" y="110">one per zone</text>
+          <g fill="var(--accent)"><circle cx="414" cy="132" r="5"/><circle cx="430" cy="132" r="5"/><circle cx="446" cy="132" r="5"/></g>
+          <text class="d-a" x="460" y="136">3 replicas</text>
+
+          <path class="d-arrow acc" d="M560 95 L608 95" marker-end="url(#aha)"/>
+          <rect class="d-box" x="610" y="40" width="178" height="110" rx="10"/>
+          <text class="d-t" x="628" y="70">worker × N</text>
+          <text class="d-s" x="628" y="92">Parquet writes</text>
+          <text class="d-s" x="628" y="110">compaction · retention</text>
+          <text class="d-s" x="628" y="128">quotas · uploads</text>
+
+          <path class="d-arrow acc" d="M788 95 C806 95 806 160 818 160" marker-end="url(#aha)"/>
+          <rect class="d-amb" x="820" y="130" width="125" height="110" rx="10"/>
+          <text class="d-t" x="836" y="160">Object</text><text class="d-t" x="836" y="180">storage</text>
+          <text class="d-s" x="836" y="204">ZSTD Parquet</text>
+          <text class="d-s" x="836" y="222">hour-sorted</text>
+
+          <path class="d-arrow" d="M882 240 L882 285 L812 285" marker-end="url(#ah)"/>
+          <rect class="d-box" x="610" y="235" width="200" height="100" rx="10"/>
+          <text class="d-t" x="628" y="265">querier × N</text>
+          <text class="d-s" x="628" y="287">query fragments</text>
+          <text class="d-s" x="628" y="305">segment cache on a volume</text>
+          <path class="d-arrow" d="M340 220 C390 220 560 285 608 285" marker-end="url(#ah)"/>
+          <text class="d-a" x="430" y="262">fragments</text>
+
+          <rect class="d-soft" x="190" y="320" width="140" height="56" rx="8"/>
+          <text class="d-t" x="206" y="344" style="font-size:14px">Postgres</text>
+          <text class="d-s" x="206" y="362">users · catalog</text>
+          <rect class="d-soft" x="390" y="320" width="190" height="56" rx="8"/>
+          <text class="d-t" x="406" y="344" style="font-size:14px">Valkey</text>
+          <text class="d-s" x="406" y="362">leases · histogram cache</text>
+          <path class="d-dash" d="M260 240 L260 318"/>
+          <path class="d-dash" d="M340 236 L420 318"/>
+        </svg>
+        <figcaption>Postgres, Valkey and object storage are yours. The Helm chart can run Valkey inside the release.</figcaption>
+      </figure>
+      <div class="table-wrap">
+        <table class="roles">
+          <thead><tr><th>Role</th><th>Does</th><th>Scales</th></tr></thead>
+          <tbody>
+            <tr><td>api</td><td>UI, query API, OTLP/HTTP and gRPC ingest, query coordinator</td><td>Stateless, any number behind a load balancer</td></tr>
+            <tr><td>worker</td><td>Writes ingest to Parquet, compaction, retention, quotas, uploads</td><td>Ingest and compaction shards are shared across workers</td></tr>
+            <tr><td>broker</td><td>NATS JetStream ingest buffer</td><td>Three nodes, one per zone</td></tr>
+            <tr><td>querier</td><td>Runs query fragments, with its own segment cache</td><td>Stateless, add replicas for query throughput</td></tr>
+            <tr><td>control-plane</td><td>One login and UI in front of many Sites; organizations, SCIM, shared channels, Synthetics monitors, cloud connections</td><td>One per company, in front of every Site</td></tr>
+            <tr><td>obzly-probe</td><td>Separate image: runs Synthetics checks and cloud scans from your locations</td><td>Probe groups of any size; failover within a minute</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="arch-block" id="arch-query">
+      <h2>Query path</h2>
+      <figure class="diagram" style="margin:0">
+        <svg viewBox="0 0 960 290" role="img" aria-labelledby="q-t">
+          <title id="q-t">A search goes to an api replica, which uses Postgres file statistics to skip files, then splits the rest into fragments sent to queriers by rendezvous hashing. Bloom filters skip segments that lack a searched ID.</title>
+          <rect class="d-box" x="20" y="110" width="170" height="70" rx="10"/>
+          <text class="d-t" x="36" y="140">Search</text>
+          <text class="d-s" x="36" y="162">order 8f3a… · 7 days</text>
+          <path class="d-arrow" d="M190 145 L218 145" marker-end="url(#ah)"/>
+          <rect class="d-acc" x="220" y="80" width="210" height="130" rx="10"/>
+          <text class="d-t" x="238" y="110">api coordinator</text>
+          <text class="d-s" x="238" y="134">plan from catalog stats</text>
+          <text class="d-s" x="238" y="152">skip files that can't match</text>
+          <text class="d-s" x="238" y="170">newest-first windows</text>
+          <text class="d-a" x="238" y="192">scan budget check</text>
+          <path class="d-arrow" d="M430 120 C460 120 460 52 488 52" marker-end="url(#ah)"/>
+          <path class="d-arrow" d="M430 145 L488 145" marker-end="url(#ah)"/>
+          <path class="d-arrow" d="M430 170 C460 170 460 238 488 238" marker-end="url(#ah)"/>
+          <text class="d-a" x="436" y="100">rendezvous</text><text class="d-a" x="436" y="114">hashing</text>
+          <rect class="d-box" x="490" y="24" width="150" height="56" rx="8"/><text class="d-t" x="506" y="48" style="font-size:14px">querier A</text><text class="d-s" x="506" y="66">warm cache</text>
+          <rect class="d-box" x="490" y="117" width="150" height="56" rx="8"/><text class="d-t" x="506" y="141" style="font-size:14px">querier B</text><text class="d-s" x="506" y="159">warm cache</text>
+          <rect class="d-box" x="490" y="210" width="150" height="56" rx="8"/><text class="d-t" x="506" y="234" style="font-size:14px">querier C</text><text class="d-s" x="506" y="252">retried on failure</text>
+          <text class="d-l" x="680" y="20">Segments · newest first</text>
+          <g>
+            <rect class="d-amb" x="680" y="32" width="56" height="40" rx="5"/><rect class="d-dim" x="744" y="32" width="56" height="40" rx="5"/><rect class="d-dim" x="808" y="32" width="56" height="40" rx="5"/><rect class="d-dim" x="872" y="32" width="56" height="40" rx="5"/>
+            <rect class="d-dim" x="680" y="125" width="56" height="40" rx="5"/><rect class="d-amb" x="744" y="125" width="56" height="40" rx="5"/><rect class="d-dim" x="808" y="125" width="56" height="40" rx="5"/><rect class="d-dim" x="872" y="125" width="56" height="40" rx="5"/>
+            <rect class="d-dim" x="680" y="218" width="56" height="40" rx="5"/><rect class="d-dim" x="744" y="218" width="56" height="40" rx="5"/><rect class="d-dim" x="808" y="218" width="56" height="40" rx="5"/><rect class="d-dim" x="872" y="218" width="56" height="40" rx="5"/>
+          </g>
+          <path class="d-arrow" d="M640 52 L676 52" marker-end="url(#ah)"/>
+          <path class="d-arrow" d="M640 145 L676 145" marker-end="url(#ah)"/>
+          <path class="d-arrow" d="M640 238 L676 238" marker-end="url(#ah)"/>
+          <text class="d-s" x="680" y="96">read</text><text class="d-s" x="744" y="96">bloom filter: skip</text>
+          <text class="d-s" x="680" y="284">greyed = skipped without reading</text>
+        </svg>
+        <figcaption>Every segment keeps going to the same executor, so caches stay warm. Rows stream back as each window is read, and the search stops once the page is full. Result counts come from the histogram, whose finished hours are cached in Valkey.</figcaption>
+      </figure>
+    </div>
+
+    <div class="arch-block" id="arch-multisite">
+      <h2>Multi-site</h2>
+      <figure class="diagram" style="margin:0">
+        <svg viewBox="0 0 960 330" role="img" aria-labelledby="ms-t">
+          <title id="ms-t">One control plane holds identities, organizations and access grants, and proxies to three Sites. Each Site keeps its own data.</title>
+          <rect class="d-box" x="20" y="40" width="150" height="70" rx="10"/>
+          <text class="d-t" x="36" y="70">People</text><text class="d-s" x="36" y="92">SSO · SCIM · MCP</text>
+          <path class="d-arrow" d="M170 75 L318 75" marker-end="url(#ah)"/>
+          <rect class="d-acc" x="320" y="20" width="320" height="110" rx="12"/>
+          <text class="d-t" x="340" y="52">control plane</text>
+          <text class="d-s" x="340" y="76">one login and UI · organizations · teams</text>
+          <text class="d-s" x="340" y="94">per-Site access grants · plans</text>
+          <text class="d-a" x="340" y="116">bootstrap admin: superadmin</text>
+          <path class="d-arrow" d="M400 130 C400 170 150 170 150 196" marker-end="url(#ah)"/>
+          <path class="d-arrow" d="M480 130 L480 196" marker-end="url(#ah)"/>
+          <path class="d-arrow" d="M560 130 C560 170 810 170 810 196" marker-end="url(#ah)"/>
+          <text class="d-a" x="660" y="165">per-user Site token</text>
+          <g>
+            <rect class="d-box" x="40" y="200" width="220" height="110" rx="10"/>
+            <text class="d-t" x="58" y="230">Site · north</text>
+            <text class="d-s" x="58" y="252">api · worker · broker</text>
+            <rect class="d-amb" x="58" y="266" width="130" height="28" rx="5"/><text class="d-s" x="68" y="285">its own bucket</text>
+          </g>
+          <g>
+            <rect class="d-box" x="370" y="200" width="220" height="110" rx="10"/>
+            <text class="d-t" x="388" y="230">Site · south</text>
+            <text class="d-s" x="388" y="252">api · worker · broker</text>
+            <rect class="d-amb" x="388" y="266" width="130" height="28" rx="5"/><text class="d-s" x="398" y="285">its own bucket</text>
+          </g>
+          <g>
+            <rect class="d-box" x="700" y="200" width="220" height="110" rx="10"/>
+            <text class="d-t" x="718" y="230">Site · staging</text>
+            <text class="d-s" x="718" y="252">single container</text>
+            <rect class="d-amb" x="718" y="266" width="130" height="28" rx="5"/><text class="d-s" x="728" y="285">local disk</text>
+          </g>
+        </svg>
+        <figcaption>Each Site is a normal installation with a couple of extra settings. Its query and admin API is reached through the control plane rather than exposed directly. A Site's local <code>admin</code> stays as a break-glass account.</figcaption>
+      </figure>
+    </div>
+
+    <div class="arch-block" id="arch-synthetics">
+      <h2>Synthetics &amp; cloud</h2>
+      <figure class="diagram" style="margin:0">
+        <svg viewBox="0 0 960 380" role="img" aria-labelledby="syn-t">
+          <title id="syn-t">A probe group pulls monitors and cloud connections from the control plane, checks your endpoints and scans cloud APIs read-only, and sends results as OTLP to a Site project, where the inventory is built. The control plane reads results back through the Site.</title>
+          <rect class="d-acc" x="340" y="20" width="290" height="100" rx="12"/>
+          <text class="d-t" x="360" y="50">control plane</text>
+          <text class="d-s" x="360" y="72">monitors · probe groups</text>
+          <text class="d-s" x="360" y="90">cloud connections · channels</text>
+          <text class="d-a" x="360" y="110">stores no results</text>
+
+          <path class="d-arrow" d="M340 70 C200 70 165 110 165 166" marker-end="url(#ah)"/>
+          <text class="d-a" x="160" y="62">config · pull every 180 s</text>
+
+          <rect class="d-box" x="40" y="170" width="250" height="150" rx="10"/>
+          <text class="d-t" x="58" y="198">probe group · edge-north</text>
+          <rect class="d-acc" x="58" y="214" width="64" height="36" rx="6"/><text class="d-s" x="68" y="237">pod-1</text>
+          <rect class="d-soft" x="133" y="214" width="64" height="36" rx="6"/><text class="d-s" x="143" y="237">pod-2</text>
+          <rect class="d-soft" x="208" y="214" width="64" height="36" rx="6"/><text class="d-s" x="218" y="237">pod-3</text>
+          <text class="d-s" x="58" y="280">one live instance per monitor</text>
+          <text class="d-a" x="58" y="300">failover within a minute</text>
+
+          <path class="d-arrow" d="M290 222 L338 222" marker-end="url(#ah)"/>
+          <rect class="d-box" x="340" y="190" width="236" height="62" rx="8"/>
+          <text class="d-t" x="356" y="214" style="font-size:14px">Your endpoints</text>
+          <text class="d-s" x="356" y="236">HTTP · TLS · TCP · DNS · ICMP</text>
+
+          <path class="d-arrow" d="M290 294 L338 294" marker-end="url(#ah)"/>
+          <rect class="d-amb" x="340" y="264" width="236" height="62" rx="8"/>
+          <text class="d-t" x="356" y="288" style="font-size:14px">Cloud APIs, read-only</text>
+          <text class="d-s" x="356" y="310">AWS 111122223333 · Azure</text>
+
+          <path class="d-arrow acc" d="M165 320 L165 356 L785 356 L785 334" marker-end="url(#aha)"/>
+          <text class="d-a" x="410" y="349">results · OTLP</text>
+
+          <rect class="d-box" x="660" y="170" width="270" height="162" rx="10"/>
+          <text class="d-t" x="678" y="198">Site · north</text>
+          <text class="d-s" x="678" y="222">project: synthetics</text>
+          <text class="d-s" x="678" y="246">alert rules per monitor</text>
+          <text class="d-s" x="678" y="270">inventory every 5 min</text>
+          <text class="d-a" x="678" y="294">cloud VMs join agent hosts</text>
+
+          <path class="d-dash" d="M795 168 C795 100 700 70 632 70" marker-end="url(#ah)"/>
+          <text class="d-a" x="805" y="134">read through</text><text class="d-a" x="805" y="150">the proxy</text>
+        </svg>
+        <figcaption>Probes push results straight to a Site, so the control plane never carries ingest. Cloud credentials stay with the probe group: its own identity, a role with an external ID, or a short-lived token the control plane signs.</figcaption>
+      </figure>
+    </div>
+
+    <div class="arch-block" id="arch-ha">
+      <h2>Scaling &amp; HA</h2>
+      <div class="two">
+        <div><h3>Durable ingest</h3><p>A batch is acknowledged only after the JetStream buffer has stored it on three replicas. Rows are searchable before they're written to Parquet.</p></div>
+        <div><h3>Backpressure</h3><p>When the buffer is full, clients get <code>429</code> or <code>RESOURCE_EXHAUSTED</code> and OTel Collectors retry.</p></div>
+        <div><h3>One owner per shard</h3><p>Leases give each ingest and compaction shard exactly one worker. Rolling updates drain readiness first.</p></div>
+        <div><h3>Storage layout</h3><p>Parquet is compacted in levels into hour-sorted files of one day each. A partitioned Postgres catalog keeps per-file statistics.</p></div>
+        <div><h3>Cache warmup</h3><p>Queriers keep their cache on a volume, pre-fetch each segment they own as it's uploaded, and warm up on start.</p></div>
+        <div><h3>Self-monitoring</h3><p>Every role serves Prometheus metrics on an internal port and traces its own requests into a system project.</p></div>
+        <div><h3>Inventory per Site</h3><p>A worker on each Site rebuilds the inventory every 5 minutes from data already stored. The control plane keeps none of it and merges the Sites in your browser.</p></div>
+        <div><h3>Alerts survive the control plane</h3><p>Sites fetch the shared channels and email relay every 5 minutes, sealed to their own key, and keep the last copy if the control plane is unreachable.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== COMPARE ============================== -->
+<div class="view" id="view-compare">
+  <div class="wrap">
+    <div class="page-hero">
+      <div class="eyebrow">Compare</div>
+      <h1>How Obzly compares</h1>
+      <p class="lede">Facts from each vendor's own docs and pricing pages, checked on 27 October 2026. Where another tool is ahead, the table says so.</p>
+      <div class="legend" aria-label="Legend">
+        <span class="st yes">Included</span><span class="st part">Partial</span><span class="st paid">Paid feature</span><span class="st saas">SaaS only</span><span class="st no">Not available</span><span class="st unk">Not supported</span>
+      </div>
+    </div>
+    <div class="matrix-wrap" role="region" aria-label="Comparison table" tabindex="0">
+      <table class="matrix"><thead><tr><th scope="col">Capability</th><th scope="col" class="us">Obzly</th><th scope="col"><a href="#compare-grafana">Grafana LGTM</a></th><th scope="col">Elastic</th><th scope="col">OpenObserve</th><th scope="col">SigNoz</th><th scope="col">Datadog</th><th scope="col">Splunk</th></tr></thead><tbody><tr><th scope="row">Self-hosted</th><td><span class="st yes">Included</span><span class="ct">Every feature, one image</span></td><td><span class="st yes">Included</span><span class="ct">OSS or Enterprise</span></td><td><span class="st yes">Included</span><span class="ct">Self-managed cluster</span></td><td><span class="st yes">Included</span><span class="ct">Open source or Enterprise</span></td><td><span class="st yes">Included</span><span class="ct">Community or Enterprise</span></td><td><span class="st no">Not available</span><span class="ct">SaaS; BYOC Logs only</span></td><td><span class="st part">Partial</span><span class="ct">Splunk Enterprise for logs</span></td></tr><tr><th scope="row">License</th><td><span class="st yes">Included</span><span class="ct">Apache 2.0, no paid edition</span></td><td><span class="st part">Partial</span><span class="ct">AGPLv3; Enterprise proprietary</span></td><td><span class="st part">Partial</span><span class="ct">SSPL, AGPLv3 or ELv2</span></td><td><span class="st part">Partial</span><span class="ct">AGPL-3.0; Enterprise EULA</span></td><td><span class="st part">Partial</span><span class="ct">MIT; ee/ proprietary</span></td><td><span class="st no">Not available</span><span class="ct">Proprietary</span></td><td><span class="st no">Not available</span><span class="ct">Proprietary</span></td></tr><tr><th scope="row">What you run</th><td><span class="st yes">Included</span><span class="ct">One image, Postgres, Valkey</span></td><td><span class="st part">Partial</span><span class="ct">Grafana, Loki, Mimir, Tempo</span></td><td><span class="st part">Partial</span><span class="ct">Elasticsearch, Kibana, agents</span></td><td><span class="st yes">Included</span><span class="ct">One binary; HA adds Postgres, NATS</span></td><td><span class="st part">Partial</span><span class="ct">ClickHouse, Keeper, Postgres, collector</span></td><td><span class="st no">Not available</span><span class="ct">Nothing (SaaS)</span></td><td><span class="st part">Partial</span><span class="ct">Forwarders, indexers, search heads</span></td></tr><tr><th scope="row">Data in your object storage</th><td><span class="st yes">Included</span><span class="ct">Parquet on S3, GCS, Azure</span></td><td><span class="st yes">Included</span><span class="ct">Primary store for all signals</span></td><td><span class="st paid">Paid feature</span><span class="ct">Searchable snapshots: Enterprise</span></td><td><span class="st yes">Included</span><span class="ct">Parquet on S3, GCS, Azure</span></td><td><span class="st part">Partial</span><span class="ct">Optional S3/GCS cold tier</span></td><td><span class="st part">Partial</span><span class="ct">Log archives to your bucket</span></td><td><span class="st part">Partial</span><span class="ct">SmartStore (Enterprise)</span></td></tr><tr><th scope="row">OTLP in</th><td><span class="st yes">Included</span><span class="ct">Logs, metrics, traces</span></td><td><span class="st yes">Included</span><span class="ct">Logs, metrics, traces</span></td><td><span class="st yes">Included</span><span class="ct">All three; self-managed via collector</span></td><td><span class="st yes">Included</span><span class="ct">All three, plus profiles</span></td><td><span class="st yes">Included</span><span class="ct">Logs, metrics, traces</span></td><td><span class="st yes">Included</span><span class="ct">All three, agentless intake</span></td><td><span class="st part">Partial</span><span class="ct">Traces and metrics; logs via HEC</span></td></tr><tr><th scope="row">PromQL and remote write</th><td><span class="st yes">Included</span><span class="ct">Both</span></td><td><span class="st yes">Included</span><span class="ct">Both (Mimir)</span></td><td><span class="st yes">Included</span><span class="ct">Both, since 9.5</span></td><td><span class="st yes">Included</span><span class="ct">Both</span></td><td><span class="st part">Partial</span><span class="ct">PromQL in dashboards; no remote write</span></td><td><span class="st part">Partial</span><span class="ct">Remote write via Pipelines (preview); no PromQL</span></td><td><span class="st unk">Not supported</span><span class="ct">Collector only; PromQL unsupported</span></td></tr><tr><th scope="row">Grafana dashboards</th><td><span class="st part">Partial</span><span class="ct">Imports layout; you add queries</span></td><td><span class="st yes">Included</span><span class="ct">Native format</span></td><td><span class="st part">Partial</span><span class="ct">Migration CLI, still evolving</span></td><td><span class="st part">Partial</span><span class="ct">Through a migrator tool</span></td><td><span class="st no">Not available</span><span class="ct">Rebuild by hand</span></td><td><span class="st part">Partial</span><span class="ct">Migration tool in preview</span></td><td><span class="st unk">Not supported</span><span class="ct">Dashboard import unsupported</span></td></tr><tr><th scope="row">Synthetic checks</th><td><span class="st part">Partial</span><span class="ct">HTTP, TLS, TCP, DNS, ICMP; no browser</span></td><td><span class="st saas">SaaS only</span><span class="ct">Grafana Cloud, incl. browser</span></td><td><span class="st yes">Included</span><span class="ct">HTTP, TCP, ICMP, browser</span></td><td><span class="st part">Partial</span><span class="ct">Beta; private locations paid</span></td><td><span class="st no">Not available</span><span class="ct">Collector httpcheck only</span></td><td><span class="st yes">Included</span><span class="ct">API, browser, private locations</span></td><td><span class="st yes">Included</span><span class="ct">API, uptime, browser</span></td></tr><tr><th scope="row">RUM and profiling</th><td><span class="st no">Not available</span><span class="ct">Neither</span></td><td><span class="st part">Partial</span><span class="ct">RUM in Cloud; Pyroscope</span></td><td><span class="st part">Partial</span><span class="ct">RUM; profiling Enterprise</span></td><td><span class="st yes">Included</span><span class="ct">RUM, replay, profiling</span></td><td><span class="st part">Partial</span><span class="ct">Frontend monitoring; no profiling</span></td><td><span class="st paid">Paid feature</span><span class="ct">Both, billed separately</span></td><td><span class="st yes">Included</span><span class="ct">Both</span></td></tr><tr><th scope="row">SSO</th><td><span class="st yes">Included</span><span class="ct">OIDC; no SAML</span></td><td><span class="st paid">Paid feature</span><span class="ct">OAuth free; SAML Enterprise</span></td><td><span class="st paid">Paid feature</span><span class="ct">Platinum or Enterprise</span></td><td><span class="st paid">Paid feature</span><span class="ct">Enterprise or Cloud</span></td><td><span class="st paid">Paid feature</span><span class="ct">SAML/OIDC paid; Google free</span></td><td><span class="st paid">Paid feature</span><span class="ct">SAML on Pro and up</span></td><td><span class="st yes">Included</span><span class="ct">SAML</span></td></tr><tr><th scope="row">SCIM and audit log</th><td><span class="st yes">Included</span><span class="ct">Both included</span></td><td><span class="st paid">Paid feature</span><span class="ct">Enterprise or Cloud</span></td><td><span class="st paid">Paid feature</span><span class="ct">Audit Gold+; SCIM unsupported</span></td><td><span class="st paid">Paid feature</span><span class="ct">Audit paid; SCIM not documented</span></td><td><span class="st no">Not available</span><span class="ct">No audit log yet</span></td><td><span class="st paid">Paid feature</span><span class="ct">SCIM Pro+; audit +2% of spend</span></td><td><span class="st part">Partial</span><span class="ct">SCIM platform only; audit on both</span></td></tr><tr><th scope="row">Many regions, one place</th><td><span class="st yes">Included</span><span class="ct">Control plane + Sites</span></td><td><span class="st part">Partial</span><span class="ct">Federation experimental (GEM)</span></td><td><span class="st part">Partial</span><span class="ct">Cross-cluster search</span></td><td><span class="st paid">Paid feature</span><span class="ct">Super Cluster: Enterprise</span></td><td><span class="st unk">Not supported</span><span class="ct">Federation unsupported</span></td><td><span class="st part">Partial</span><span class="ct">Child orgs, same site</span></td><td><span class="st part">Partial</span><span class="ct">Federated Search (platform)</span></td></tr></tbody></table>
+    </div>
+    <p class="fine">"Paid feature" means the self-hosted free edition doesn't include it. "Not supported" means the vendor's own docs don't document it. Every cell links to its source on the tool's own comparison page.</p>
+
+    <section class="vgrid-sec">
+      <div class="section-head"><div class="eyebrow">Side by side</div><h2>Pick a comparison</h2></div>
+      <div class="vgrid"><article class="vcard"><h3>Obzly vs Grafana LGTM</h3><p>Four systems you assemble, or Grafana Cloud.</p><dl><dt>Choose Obzly if</dt><dd>one system instead of four, with SSO, SCIM and audit included</dd><dt>Choose Grafana LGTM if</dt><dd>you need billion-series metrics, browser checks or RUM</dd></dl><a class="more" href="#compare-grafana">Read the comparison →</a></article><article class="vcard"><h3>Obzly vs Elastic</h3><p>Search engine first, observability on top.</p><dl><dt>Choose Obzly if</dt><dd>object storage by default and no license tiers</dd><dt>Choose Elastic if</dt><dd>you depend on full-text search or Elastic&#x27;s built-in machine learning</dd></dl><a class="more" href="#compare">Comparison coming next</a></article><article class="vcard"><h3>Obzly vs OpenObserve</h3><p>Closest in shape: Parquet on object storage.</p><dl><dt>Choose Obzly if</dt><dd>SSO, RBAC, audit and multi-region without a paid edition</dd><dt>Choose OpenObserve if</dt><dd>you need RUM, session replay or browser checks today</dd></dl><a class="more" href="#compare">Comparison coming next</a></article><article class="vcard"><h3>Obzly vs SigNoz</h3><p>OTel-native, built on ClickHouse.</p><dl><dt>Choose Obzly if</dt><dd>no ClickHouse to run, remote write, synthetics</dd><dt>Choose SigNoz if</dt><dd>you already run ClickHouse or want its exceptions view</dd></dl><a class="more" href="#compare">Comparison coming next</a></article><article class="vcard"><h3>Obzly vs Datadog</h3><p>The SaaS reference, priced per host and GB.</p><dl><dt>Choose Obzly if</dt><dd>your data must stay on your infrastructure</dd><dt>Choose Datadog if</dt><dd>you want a fully managed service with RUM and profiling</dd></dl><a class="more" href="#compare">Comparison coming next</a></article><article class="vcard"><h3>Obzly vs Splunk</h3><p>Logs platform plus a separate observability cloud.</p><dl><dt>Choose Obzly if</dt><dd>one product for all three signals, open source</dd><dt>Choose Splunk if</dt><dd>you are standardised on SPL and Splunk apps</dd></dl><a class="more" href="#compare">Comparison coming next</a></article></div>
+    </section>
+
+    <section class="move">
+      <div class="section-head"><div class="eyebrow">Moving to Obzly</div><h2>Keep what already works</h2></div>
+      <div class="move-grid">
+        <div><h3>Change one endpoint</h3><p>Point your OpenTelemetry Collector's OTLP exporter at Obzly. Nothing in your apps changes.</p></div>
+        <div><h3>Keep your Grafana</h3><p>Add Obzly as a Prometheus data source and a Jaeger data source, and keep using your Grafana dashboards.</p></div>
+        <div><h3>Keep Prometheus</h3><p>Send Prometheus remote-write to Obzly, or keep scraping with the Collector.</p></div>
+        <div><h3>Run both for a while</h3><p>Export to both backends until you trust the new one, then switch off the old one.</p></div>
+      </div>
+    </section>
+
+    <p class="fine">Spotted something out of date? <a href="https://github.com/obzly/obzly-website/issues" target="_blank" rel="noopener">Open an issue</a> with a link to the vendor's page and we'll fix it.</p>
+  </div>
+</div>
+
+<!-- ============================== COMPARE: GRAFANA ============================== -->
+<div class="view" id="view-compare-grafana">
+  <div class="wrap">
+    <div class="page-hero">
+      <div class="crumbs"><a href="#compare">Compare</a> / Grafana LGTM</div>
+      <h1>Obzly vs Grafana LGTM</h1>
+      <p class="lede">Grafana's stack is the most common way to self-host observability: Grafana for dashboards, Loki for logs, Mimir for metrics and Tempo for traces. Obzly covers the same three signals in one system, and it can also sit behind the Grafana you already have.</p>
+      <p class="checked">Checked 27 October 2026 against Grafana Labs' docs and pricing. <a href="#cg-sources">Sources</a></p>
+      <nav class="jump" aria-label="On this page"><a href="#cg-choose">Which to choose</a><a href="#cg-run">What you run</a><a href="#cg-table">Feature by feature</a><a href="#cg-both">Use both</a><a href="#cg-move">Moving over</a></nav>
+    </div>
+
+    <div class="arch-block" id="cg-choose">
+      <h2>Which to choose</h2>
+      <div class="choose">
+        <div class="pick us"><h3>Choose Obzly if</h3><ul>
+          <li>you'd rather run one system than four, each with its own components and tuning;</li>
+          <li>you want SSO, SCIM, fine-grained roles and an audit log without an enterprise license;</li>
+          <li>you want synthetic checks and an infrastructure inventory that you host yourself;</li>
+          <li>you need one login across regions, with each region's data staying put;</li>
+          <li>Apache 2.0 suits your legal team better than AGPLv3.</li></ul></div>
+        <div class="pick"><h3>Choose Grafana LGTM if</h3><ul>
+          <li>you run metrics at very large scale: Mimir is built for over a billion active series;</li>
+          <li>you need browser synthetic checks, real-user monitoring or continuous profiling;</li>
+          <li>you visualise many data sources that Obzly doesn't store, such as CloudWatch or SQL databases;</li>
+          <li>you want a managed service with a free tier (Grafana Cloud);</li>
+          <li>you need SAML, which Obzly doesn't support.</li></ul></div>
+      </div>
+    </div>
+
+    <div class="arch-block" id="cg-run">
+      <h2>What you run</h2>
+      <figure class="diagram" style="margin:0"><svg class="g" viewBox="0 0 960 300" role="img" aria-labelledby="run-t">
+  <title id="run-t">To self-host Grafana LGTM you run Grafana, Loki, Mimir and Tempo, each made of several components, plus a SQL database and object storage. Obzly is one image in a few roles, plus Postgres, Valkey and object storage.</title>
+  <text class="d-l" x="20" y="22">Grafana LGTM, self-hosted</text>
+  <rect class="d-box" x="20" y="34" width="440" height="56" rx="8"/><text class="d-t" x="36" y="58" style="font-size:14px">Grafana</text><text class="d-s" x="36" y="78">UI · MySQL or PostgreSQL for HA</text>
+  <rect class="d-soft" x="20" y="100" width="140" height="120" rx="8"/><text class="d-t" x="34" y="122" style="font-size:14px">Loki</text>
+  <text class="d-s" x="34" y="142">distributor</text><text class="d-s" x="34" y="158">ingester</text><text class="d-s" x="34" y="174">querier</text><text class="d-s" x="34" y="190">compactor</text><text class="d-s" x="34" y="206">ruler · …</text>
+  <rect class="d-soft" x="170" y="100" width="140" height="120" rx="8"/><text class="d-t" x="184" y="122" style="font-size:14px">Mimir</text>
+  <text class="d-s" x="184" y="142">distributor</text><text class="d-s" x="184" y="158">ingester</text><text class="d-s" x="184" y="174">store-gateway</text><text class="d-s" x="184" y="190">compactor</text><text class="d-s" x="184" y="206">query-frontend</text>
+  <rect class="d-soft" x="320" y="100" width="140" height="120" rx="8"/><text class="d-t" x="334" y="122" style="font-size:14px">Tempo</text>
+  <text class="d-s" x="334" y="142">distributor</text><text class="d-s" x="334" y="158">ingester</text><text class="d-s" x="334" y="174">querier</text><text class="d-s" x="334" y="190">compactor</text>
+  <rect class="d-amb" x="20" y="230" width="440" height="40" rx="8"/><text class="d-s" x="36" y="255" style="fill:var(--fg)">Object storage · configured per backend</text>
+
+  <line x1="490" y1="20" x2="490" y2="280" stroke="var(--line)"/>
+
+  <text class="d-l" x="520" y="22">Obzly</text>
+  <rect class="d-acc" x="520" y="34" width="420" height="186" rx="10"/><text class="d-t" x="538" y="60">one image</text>
+  <text class="d-s" x="538" y="82">SERVICE_MODE = all, or one role per deployment:</text>
+  <rect class="d-box" x="538" y="98" width="88" height="34" rx="6"/><text class="d-s" x="552" y="120">api</text>
+  <rect class="d-box" x="636" y="98" width="88" height="34" rx="6"/><text class="d-s" x="650" y="120">worker</text>
+  <rect class="d-box" x="734" y="98" width="88" height="34" rx="6"/><text class="d-s" x="748" y="120">broker</text>
+  <rect class="d-box" x="832" y="98" width="92" height="34" rx="6"/><text class="d-s" x="846" y="120">querier</text>
+  <text class="d-s" x="538" y="160">logs, metrics and traces in one store</text>
+  <text class="d-a" x="538" y="182">plus control-plane for many Sites</text>
+  <rect class="d-soft" x="520" y="230" width="130" height="40" rx="8"/><text class="d-s" x="536" y="255" style="fill:var(--fg)">Postgres</text>
+  <rect class="d-soft" x="660" y="230" width="110" height="40" rx="8"/><text class="d-s" x="676" y="255" style="fill:var(--fg)">Valkey</text>
+  <rect class="d-amb" x="780" y="230" width="160" height="40" rx="8"/><text class="d-s" x="796" y="255" style="fill:var(--fg)">Object storage</text>
+</svg>
+        <figcaption>Loki and Mimir can also run as a single binary for small setups; at scale each splits into the components shown. Obzly scales the same way, one role at a time, from the same image.</figcaption>
+      </figure>
+    </div>
+
+    <div class="arch-block" id="cg-table">
+      <h2>Feature by feature</h2>
+      <div class="table-wrap">
+        <table class="roles cmp"><thead><tr><th>Capability</th><th class="us">Obzly</th><th>Grafana OSS stack</th><th>Grafana Enterprise / Cloud</th><th>Source</th></tr></thead><tbody><tr><th scope="row">License</th><td>Apache 2.0, every feature</td><td>AGPLv3 (Grafana, Loki, Tempo, Mimir)</td><td>Proprietary</td><td class="srcs"><a class="src" href="https://grafana.com/licensing/" target="_blank" rel="noopener">grafana.com/licensing</a></td></tr><tr><th scope="row">What you run</th><td>One image in up to five roles, Postgres, Valkey</td><td>Grafana plus Loki, Mimir and Tempo, each a set of components (or single-binary modes)</td><td>Same, or nothing with Grafana Cloud</td><td class="srcs"><a class="src" href="https://grafana.com/docs/loki/latest/get-started/components/" target="_blank" rel="noopener">Loki components</a> <a class="src" href="https://grafana.com/docs/mimir/latest/references/architecture/components/" target="_blank" rel="noopener">Mimir components</a></td></tr><tr><th scope="row">Storage</th><td>ZSTD Parquet on S3, GCS, Azure Blob or MinIO</td><td>Object storage for logs, metrics and traces</td><td>Same; Cloud stores it for you</td><td class="srcs"><a class="src" href="https://grafana.com/docs/loki/latest/configure/storage/" target="_blank" rel="noopener">Loki storage</a> <a class="src" href="https://grafana.com/docs/tempo/latest/configuration/" target="_blank" rel="noopener">Tempo storage</a></td></tr><tr><th scope="row">OTLP in</th><td>Logs, metrics and traces, gRPC and HTTP</td><td>All three; Loki and Mimir over HTTP</td><td>All three</td><td class="srcs"><a class="src" href="https://grafana.com/docs/loki/latest/send-data/otel/" target="_blank" rel="noopener">Loki OTLP</a> <a class="src" href="https://grafana.com/docs/mimir/latest/configure/configure-otel-collector/" target="_blank" rel="noopener">Mimir OTLP</a></td></tr><tr><th scope="row">Query languages</th><td>Search bar and SQL for logs, PromQL, Jaeger API for traces</td><td>LogQL, PromQL, TraceQL</td><td>Same</td><td class="srcs"><a class="src" href="https://grafana.com/docs/tempo/latest/traceql/" target="_blank" rel="noopener">TraceQL</a></td></tr><tr><th scope="row">Prometheus</th><td>Remote-write ingest and a PromQL API</td><td>Remote write and PromQL, natively</td><td>Same</td><td class="srcs"><a class="src" href="https://grafana.com/oss/mimir/" target="_blank" rel="noopener">Mimir</a></td></tr><tr><th scope="row">Dashboards</th><td>Own dashboards; imports Grafana layout without queries</td><td>Native, with many data sources</td><td>Same</td><td class="srcs"><a class="src" href="https://grafana.com/docs/grafana/latest/dashboards/build-dashboards/import-dashboards/" target="_blank" rel="noopener">Import dashboards</a></td></tr><tr><th scope="row">Alerting</th><td>Webhook, Slack, PagerDuty, email</td><td>20+ contact points</td><td>Same</td><td class="srcs"><a class="src" href="https://grafana.com/docs/grafana/latest/alerting/configure-notifications/manage-contact-points/" target="_blank" rel="noopener">Contact points</a></td></tr><tr><th scope="row">Synthetic checks</th><td>HTTP, TLS, TCP, DNS, ICMP from your probes; no browser</td><td>Not available</td><td>Grafana Cloud, incl. browser and private probes</td><td class="srcs"><a class="src" href="https://grafana.com/docs/grafana-cloud/testing/synthetic-monitoring/" target="_blank" rel="noopener">Synthetic Monitoring</a></td></tr><tr><th scope="row">Infrastructure inventory</th><td>Clusters to containers, plus AWS and Azure resources</td><td>No inventory view</td><td>Kubernetes and cloud provider apps (Cloud)</td><td class="srcs"><a class="src" href="https://grafana.com/docs/grafana-cloud/monitor-infrastructure/" target="_blank" rel="noopener">Monitor infrastructure</a></td></tr><tr><th scope="row">RUM and profiling</th><td>Neither</td><td>Pyroscope for profiling</td><td>Frontend Observability (Cloud), Pyroscope</td><td class="srcs"><a class="src" href="https://grafana.com/docs/grafana-cloud/monitor-applications/frontend-observability/" target="_blank" rel="noopener">Frontend Observability</a> <a class="src" href="https://grafana.com/docs/pyroscope/latest/" target="_blank" rel="noopener">Pyroscope</a></td></tr><tr><th scope="row">SSO</th><td>OIDC with any provider; no SAML</td><td>OAuth and LDAP; no SAML</td><td>SAML in Enterprise and Cloud Pro and up</td><td class="srcs"><a class="src" href="https://grafana.com/docs/grafana/latest/setup-grafana/configure-security/configure-authentication/saml/" target="_blank" rel="noopener">SAML</a> <a class="src" href="https://grafana.com/grafana/deployment-options/" target="_blank" rel="noopener">Deployment options</a></td></tr><tr><th scope="row">SCIM</th><td>Included</td><td>Not available</td><td>Enterprise and Cloud</td><td class="srcs"><a class="src" href="https://grafana.com/docs/grafana/latest/setup-grafana/configure-access/configure-scim-provisioning/" target="_blank" rel="noopener">SCIM</a></td></tr><tr><th scope="row">RBAC and audit log</th><td>Per-project roles, teams, audit log with CSV export</td><td>Basic roles only</td><td>Fine-grained RBAC and audit log</td><td class="srcs"><a class="src" href="https://grafana.com/docs/grafana/latest/administration/roles-and-permissions/access-control/" target="_blank" rel="noopener">RBAC</a> <a class="src" href="https://grafana.com/docs/grafana/latest/setup-grafana/configure-security/audit-grafana/" target="_blank" rel="noopener">Audit log</a></td></tr><tr><th scope="row">MCP server</th><td>Built in at /mcp, read-only</td><td>Open-source server you run</td><td>Plus a hosted server for Cloud</td><td class="srcs"><a class="src" href="https://grafana.com/docs/grafana/latest/developer-resources/mcp/" target="_blank" rel="noopener">Grafana MCP</a></td></tr><tr><th scope="row">Many regions</th><td>Control plane in front of many Sites</td><td>One Grafana over many data sources</td><td>Cross-cluster query federation in GEM, experimental</td><td class="srcs"><a class="src" href="https://grafana.com/docs/enterprise-metrics/latest/manage/cluster-query-federation/" target="_blank" rel="noopener">GEM federation</a></td></tr><tr><th scope="row">Price</th><td>Free; you run the infrastructure</td><td>Free; you run the infrastructure</td><td>Cloud Pro from $19/month plus usage; Enterprise from $25k/year</td><td class="srcs"><a class="src" href="https://grafana.com/pricing/" target="_blank" rel="noopener">grafana.com/pricing</a></td></tr></tbody></table>
+      </div>
+    </div>
+
+    <div class="arch-block" id="cg-both">
+      <h2>Use both</h2>
+      <p class="lede" style="font-size:1rem">You don't have to give up Grafana. Obzly speaks the APIs Grafana already uses, so it can replace Loki, Mimir and Tempo underneath while your team keeps its dashboards.</p>
+      <div class="move-grid">
+        <div><h3>Prometheus data source</h3><p>Point it at Obzly's PromQL API. PromQL panels and alert queries keep working where metric and label names match; OTLP attributes are stored without dots, for example <code>k8s_pod_name</code>.</p></div>
+        <div><h3>Jaeger data source</h3><p>Point it at Obzly's Jaeger-compatible API to browse traces in Grafana.</p></div>
+        <div><h3>Logs</h3><p>LogQL panels need rewriting. Use Obzly's log search or SQL for those instead.</p></div>
+      </div>
+    </div>
+
+    <div class="arch-block" id="cg-move">
+      <h2>Moving from Grafana LGTM</h2>
+      <ol class="steps-list">
+        <li><b>Send to both.</b> Add an OTLP exporter for Obzly to your Collector or Alloy pipeline next to the existing one. <a href="#docs-kubernetes-otel-collector">Collector guide</a></li>
+        <li><b>Keep Prometheus flowing.</b> Add Obzly as a remote-write target. <a href="#docs-grafana-promql">PromQL and Grafana</a></li>
+        <li><b>Repoint Grafana.</b> Add Obzly as a Prometheus and a Jaeger data source and switch panels over.</li>
+        <li><b>Bring dashboards into Obzly, if you want them there.</b> Importing a Grafana dashboard copies its panels and layout; you add each panel's query in Obzly.</li>
+        <li><b>Move alert rules.</b> PromQL rules carry over once metric and label names are checked; log rules need Obzly's search syntax.</li>
+        <li><b>Switch off the old backends</b> once Obzly has your full retention.</li>
+      </ol>
+    </div>
+
+    <div class="arch-block" id="cg-sources">
+      <h2>Sources</h2>
+      <p class="fine">Every Grafana fact on this page comes from Grafana Labs' own pages, read on 27 October 2026. Plan names and prices change; check the linked page before you decide.</p>
+      <ul class="srclist">
+        <li><a href="https://grafana.com/pricing/" target="_blank" rel="noopener">grafana.com/pricing</a>: Grafana Cloud plans and prices</li>
+        <li><a href="https://grafana.com/grafana/deployment-options/" target="_blank" rel="noopener">grafana.com/grafana/deployment-options</a>: features by edition</li>
+        <li><a href="https://grafana.com/licensing/" target="_blank" rel="noopener">grafana.com/licensing</a>: AGPLv3</li>
+        <li><a href="https://grafana.com/oss/mimir/" target="_blank" rel="noopener">grafana.com/oss/mimir</a>: Prometheus compatibility and scale</li>
+        <li><a href="https://grafana.com/docs/grafana-cloud/testing/synthetic-monitoring/" target="_blank" rel="noopener">Synthetic Monitoring docs</a>: part of Grafana Cloud</li>
+        <li><a href="https://grafana.com/docs/grafana/latest/setup-grafana/configure-security/configure-authentication/saml/" target="_blank" rel="noopener">SAML</a>, <a href="https://grafana.com/docs/grafana/latest/setup-grafana/configure-access/configure-scim-provisioning/" target="_blank" rel="noopener">SCIM</a>, <a href="https://grafana.com/docs/grafana/latest/setup-grafana/configure-security/audit-grafana/" target="_blank" rel="noopener">audit log</a> docs: Enterprise and Cloud</li>
+      </ul>
+      <p class="fine">Spotted something out of date? <a href="https://github.com/obzly/obzly-website/issues" target="_blank" rel="noopener">Open an issue</a>.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== COMMUNITY ============================== -->
+<div class="view" id="view-community">
+  <div class="wrap">
+    <div class="page-hero">
+      <div class="eyebrow">Community</div>
+      <h1>Get help, report bugs, share what you know</h1>
+      <p class="lede">Obzly is built in the open on GitHub. Questions, how-tos and ideas go to Discussions; bugs and feature requests go to Issues, using a short form so nothing important gets left out.</p>
+      <nav class="jump" aria-label="On this page">
+        <a href="#community-where">Where does it go?</a><a href="#community-ways">Ways to take part</a><a href="#community-bugs">Report a good bug</a><a href="#community-howtos">Share a how-to</a><a href="#community-security">Security</a>
+      </nav>
+    </div>
+
+    <section class="cm-sec" id="community-where">
+      <div class="section-head"><div class="eyebrow">Start here</div><h2>Where does it go?</h2></div>
+      <figure class="diagram" style="margin:0">
+        <svg viewBox="0 0 760 384" role="img" aria-labelledby="cw-t cw-d">
+          <title id="cw-t">Where to post</title>
+          <desc id="cw-d">Questions go to Discussions Q&amp;A, bugs to an issue with the bug report form, ideas to Discussions Ideas and then a feature request, how-tos to Discussions How-tos and cheat sheets, and vulnerabilities to a private security report.</desc>
+          <g>
+            <rect class="d-box" x="20" y="20" width="280" height="56" rx="8"/><text class="d-t" x="38" y="44">I have a question</text><text class="d-s" x="38" y="63">install, config, how do I…</text>
+            <rect class="d-acc" x="440" y="20" width="300" height="56" rx="8"/><text class="d-t" x="458" y="44">Discussions · Q&amp;A</text><text class="d-s" x="458" y="63">answered by the community</text>
+            <path class="d-arrow acc" d="M300 48 H436" marker-end="url(#aha)"/>
+          </g>
+          <g>
+            <rect class="d-box" x="20" y="92" width="280" height="56" rx="8"/><text class="d-t" x="38" y="116">Something is broken</text><text class="d-s" x="38" y="135">an error, a crash, wrong data</text>
+            <rect class="d-acc" x="440" y="92" width="300" height="56" rx="8"/><text class="d-t" x="458" y="116">Issues · Bug report</text><text class="d-s" x="458" y="135">version, deployment, logs</text>
+            <path class="d-arrow acc" d="M300 120 H436" marker-end="url(#aha)"/>
+          </g>
+          <g>
+            <rect class="d-box" x="20" y="164" width="280" height="56" rx="8"/><text class="d-t" x="38" y="188">I have an idea</text><text class="d-s" x="38" y="207">something Obzly should do</text>
+            <rect class="d-acc" x="440" y="164" width="300" height="56" rx="8"/><text class="d-t" x="458" y="188">Discussions · Ideas</text><text class="d-s" x="458" y="207">then a feature request</text>
+            <path class="d-arrow acc" d="M300 192 H436" marker-end="url(#aha)"/>
+          </g>
+          <g>
+            <rect class="d-box" x="20" y="236" width="280" height="56" rx="8"/><text class="d-t" x="38" y="260">I wrote a how-to</text><text class="d-s" x="38" y="279">a query, config or recipe</text>
+            <rect class="d-acc" x="440" y="236" width="300" height="56" rx="8"/><text class="d-t" x="458" y="260">Discussions · How-tos</text><text class="d-s" x="458" y="279">and cheat sheets</text>
+            <path class="d-arrow acc" d="M300 264 H436" marker-end="url(#aha)"/>
+          </g>
+          <g>
+            <rect class="d-box" x="20" y="308" width="280" height="56" rx="8"/><text class="d-t" x="38" y="332">I found a vulnerability</text><text class="d-s" x="38" y="351">never post it publicly</text>
+            <rect class="d-amb" x="440" y="308" width="300" height="56" rx="8"/><text class="d-t" x="458" y="332">Private security report</text><text class="d-s" x="458" y="351">Security tab · SECURITY.md</text>
+            <path class="d-dash" d="M300 336 H436" marker-end="url(#ah)"/>
+          </g>
+        </svg>
+      </figure>
+    </section>
+
+    <section class="cm-sec" id="community-ways">
+      <div class="section-head"><div class="eyebrow">On GitHub</div><h2>Ways to take part</h2></div>
+      <div class="vgrid">
+        <article class="vcard cm-card">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="13" rx="5" ry="6.5"/><path d="M12 6.5V19.5M7 11H3M21 11h-4M7.5 16.5 4 19M16.5 16.5 20 19M8.5 7.5 6 5M15.5 7.5 18 5"/></svg>
+          <h3>Report a bug</h3>
+          <p>Something doesn't work as the docs say. The form asks for your version, how you run Obzly and the log lines that matter.</p>
+          <a class="more" href="https://github.com/obzly/obzly/issues/new?template=bug_report.yml" target="_blank" rel="noopener">Open a bug report →</a>
+        </article>
+        <article class="vcard cm-card">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3z"/></svg>
+          <h3>Request a feature</h3>
+          <p>Say what you're trying to do and what gets in the way. Not sure yet? Start a thread in Ideas and shape it with others first.</p>
+          <a class="more" href="https://github.com/obzly/obzly/issues/new?template=feature_request.yml" target="_blank" rel="noopener">Request a feature →</a>
+        </article>
+        <article class="vcard cm-card">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5"/><path d="M12 15v.2"/></svg>
+          <h3>Ask a question</h3>
+          <p>Installing, configuring, sending data, writing a query. Search Q&amp;A first: someone may have asked already, and answers get marked.</p>
+          <a class="more" href="https://github.com/obzly/obzly/discussions/categories/q-a" target="_blank" rel="noopener">Go to Q&amp;A →</a>
+        </article>
+        <article class="vcard cm-card">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h10l4 4v14H5z"/><path d="M15 3v4h4"/><path d="M8 12h8M8 15.5h8M8 19h5"/></svg>
+          <h3>Share how-tos and cheat sheets</h3>
+          <p>A query set, a Collector config, a dashboard, an alert recipe. Short and specific beats complete.</p>
+          <a class="more" href="https://github.com/obzly/obzly/discussions/categories/how-tos-and-cheat-sheets" target="_blank" rel="noopener">Browse how-tos →</a>
+        </article>
+        <article class="vcard cm-card">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M7 13l3-3 2.5 2.5L17 8"/><path d="M9 21h6M12 17v4"/></svg>
+          <h3>Show what you built</h3>
+          <p>How you run Obzly, what you moved from, what you learned. Experiences help the next person decide.</p>
+          <a class="more" href="https://github.com/obzly/obzly/discussions/categories/show-and-tell" target="_blank" rel="noopener">Show and tell →</a>
+        </article>
+        <article class="vcard cm-card">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="9" r="2"/><path d="M6 7v10M18 11c0 4-6 3-11.5 6.5"/></svg>
+          <h3>Contribute</h3>
+          <p>Fix a bug or improve the docs. The contributing guide covers setup, tests and checks. Website fixes go to the obzly-website repo.</p>
+          <a class="more" href="https://github.com/obzly/obzly/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contributing guide →</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="cm-sec" id="community-bugs">
+      <div class="section-head"><div class="eyebrow">Issues</div><h2>Report a bug that gets fixed</h2><p class="lede">A report someone can reproduce gets fixed first. Before you open one:</p></div>
+      <div class="cm-two">
+        <ol class="steps-list">
+          <li><b>Search the open and closed issues.</b> Add what you see to an existing one instead of opening a duplicate.</li>
+          <li><b>Note your version</b> from <b>Settings → Upgrade status</b>, or the image tag, such as <code>v0.58.1</code>.</li>
+          <li><b>Say how you run Obzly</b>: one container, Docker Compose HA, Helm, or a control plane with Sites.</li>
+          <li><b>Write the steps</b> that show the problem, what you expected and what happened.</li>
+          <li><b>Add the log lines</b> from around the time it happened.</li>
+          <li><b>Remove secrets</b>: API keys, tokens, passwords, and real hostnames or IPs if you'd rather not share them.</li>
+        </ol>
+        <div class="cm-code">
+          <div class="d-l" style="margin-bottom:6px">Getting the logs</div>
+<pre><span class="c"># One container (quick install or Compose)</span>
+docker logs --since 30m obzly
+
+<span class="c"># Helm, the api tier</span>
+kubectl -n obzly logs deploy/obzly-api --since=30m
+
+<span class="c"># Helm, the worker</span>
+kubectl -n obzly logs deploy/obzly-worker --since=30m</pre>
+          <a class="btn btn-primary" style="margin-top:14px" href="https://github.com/obzly/obzly/issues/new?template=bug_report.yml" target="_blank" rel="noopener">Open a bug report</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="cm-sec" id="community-howtos">
+      <div class="section-head"><div class="eyebrow">Discussions</div><h2>Share a how-to or a cheat sheet</h2><p class="lede">Found a query you keep reusing, or a config that took an afternoon to get right? Post it, so the next person doesn't start from zero.</p></div>
+      <div class="move-grid">
+        <div><h3>A query set</h3><p>PromQL for your stack, log searches for a common error, SQL for a report.</p></div>
+        <div><h3>A Collector config</h3><p>The receivers, processors and exporters that worked for a database, queue or web server.</p></div>
+        <div><h3>A dashboard or alert</h3><p>An exported dashboard, or an alert rule with the threshold that stopped the noise.</p></div>
+        <div><h3>An install note</h3><p>A cloud, a distribution or a network setup the docs don't cover yet.</p></div>
+      </div>
+      <p class="fine">Use example names such as <code>obzly.harborline.example</code> and <code>10.0.0.10</code>, and take out API keys and tokens before you post.</p>
+    </section>
+
+    <section class="cm-sec" id="community-security" style="padding-bottom:64px">
+      <div class="pick cm-sec-box">
+        <h3>Found a vulnerability? Don't open an issue.</h3>
+        <p>Report it privately from the Obzly repository's Security tab, so it can be fixed before it's public. <a href="https://github.com/obzly/obzly/blob/main/SECURITY.md" target="_blank" rel="noopener">SECURITY.md</a> says what to include and what happens next.</p>
+        <div class="cta" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
+          <a class="btn btn-outline" href="https://github.com/obzly/obzly/security/advisories/new" target="_blank" rel="noopener">Report a vulnerability</a>
+        </div>
+      </div>
+      <p class="fine">Everyone in Obzly's issues, pull requests and Discussions follows the <a href="https://github.com/obzly/obzly/blob/main/CODE_OF_CONDUCT.md" target="_blank" rel="noopener">code of conduct</a>: be respectful, assume good intent, keep it about the work. Like Obzly? <a href="#donate">Here's how to give back</a>.</p>
+    </section>
+  </div>
+</div>
+
+<!-- ============================== DONATE ============================== -->
+<div class="view" id="view-donate">
+  <div class="wrap">
+    <div class="page-hero">
+      <div class="eyebrow">Support Obzly</div>
+      <h1>Give to a cause you care about</h1>
+      <p class="lede">Obzly is Apache 2.0, with no paid edition and nothing to buy. If it saves you time or money, we'd like you to pass some of that on: give to a registered charity or NGO of your choice, any amount, anywhere in the world.</p>
+    </div>
+
+    <figure class="diagram" style="margin:0">
+      <svg viewBox="0 0 760 170" role="img" aria-labelledby="dn-t dn-d">
+        <title id="dn-t">How to support Obzly</title>
+        <desc id="dn-d">Use Obzly for free, give to a charity or NGO you choose, and optionally tell us in Discussions.</desc>
+        <rect class="d-box" x="20" y="30" width="210" height="110" rx="10"/>
+        <g transform="translate(40 50)" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="11"/><path d="M7 12.5l3.5 3.5L17 9"/></g>
+        <text class="d-t" x="40" y="104">Use Obzly</text><text class="d-s" x="40" y="124">free, every feature</text>
+        <path class="d-arrow acc" d="M230 85 H271" marker-end="url(#aha)"/>
+        <rect class="d-acc" x="275" y="30" width="210" height="110" rx="10"/>
+        <g transform="translate(295 50)" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6-8 11-8 11z"/></g>
+        <text class="d-t" x="295" y="104">Give to a cause</text><text class="d-s" x="295" y="124">any charity or NGO</text>
+        <path class="d-dash" d="M485 85 H526" marker-end="url(#ah)"/>
+        <rect class="d-soft" x="530" y="30" width="210" height="110" rx="10" stroke-dasharray="5 4"/>
+        <g transform="translate(550 50)" fill="none" stroke="var(--muted)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18v11H9l-6 5z"/></g>
+        <text class="d-t" x="550" y="104">Tell us, if you like</text><text class="d-s" x="550" y="124">optional · Discussions</text>
+      </svg>
+    </figure>
+
+    <section class="cm-sec">
+      <div class="section-head"><div class="eyebrow">Not sure where?</div><h2>Some ideas</h2><p class="lede">Any registered charity or NGO is fine, large or small, near you or far away. A few places people often start:</p></div>
+      <div class="move-grid">
+        <div><h3>Food and shelter</h3><p>A local food bank, soup kitchen or homeless shelter.</p></div>
+        <div><h3>Children and education</h3><p>A school programme, a library, or a charity for children's health or learning.</p></div>
+        <div><h3>Health and relief</h3><p>Medical care, or relief after a disaster or conflict.</p></div>
+        <div><h3>Environment</h3><p>Conservation, climate or clean water.</p></div>
+        <div><h3>Animal shelters</h3><p>A pet or dog shelter, a rehoming charity, or a wildlife rescue.</p></div>
+        <div><h3>Open source</h3><p>A foundation or project behind software you rely on every day.</p></div>
+        <div><h3>Your own community</h3><p>A hospice, a youth club, a mutual-aid group: whoever does good where you live.</p></div>
+      </div>
+    </section>
+
+    <section class="cm-sec">
+      <div class="pick us cm-sec-box">
+        <h3>Tell us, if you like</h3>
+        <p>It's entirely optional, but it's lovely to hear. Post in the Thank you category of Discussions with the cause you chose and, if you want, why. No amounts and no receipts: we don't need to know, and we don't check.</p>
+        <div class="cta" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
+          <a class="btn btn-outline" href="https://github.com/obzly/obzly/discussions/categories/thank-you" target="_blank" rel="noopener">Post a thank-you</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="cm-sec">
+      <div class="section-head"><div class="eyebrow">No money needed</div><h2>Other ways to help</h2></div>
+      <div class="move-grid">
+        <div><h3>Star the repo</h3><p>It helps other people find Obzly on GitHub.</p></div>
+        <div><h3>Report bugs well</h3><p>A clear report with steps and logs is a gift. <a href="#community-bugs">Here's how</a>.</p></div>
+        <div><h3>Answer a question</h3><p>Help someone in Q&amp;A with what you've already worked out.</p></div>
+        <div><h3>Write a how-to</h3><p>Share a query, config or recipe, or tell a colleague who'd find Obzly useful.</p></div>
+      </div>
+    </section>
+
+    <p class="fine" style="padding-bottom:64px">Obzly doesn't collect, route, match or receive donations, and isn't affiliated with any charity. Give directly to the organisation you choose, and check it's registered where you are if you want a tax receipt.</p>
+  </div>
+</div>
+
+<!-- ============================== DOCS ============================== -->
+<div class="view" id="view-docs">
+  <div class="wrap">
+    <div class="docs">
+      <div>
+        <button class="docs-menu" id="docs-menu" type="button" aria-expanded="false" aria-controls="sidebar">Docs menu <span aria-hidden="true">▾</span></button>
+        <aside class="sidebar" id="sidebar" aria-label="Docs navigation">
+          <div class="search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input id="doc-search" type="search" placeholder="Search docs" aria-label="Search docs" autocomplete="off">
+            <kbd>/</kbd>
+          </div>
+          <div id="side-groups"></div>
+          <p class="no-hits" id="no-hits" hidden>No pages match. Try “helm” or “mcp”.</p>
+        </aside>
+      </div>
+      <article class="doc" id="doc"></article>
+      <nav class="toc" id="toc" aria-label="On this page"></nav>
+    </div>
+  </div>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#home" style="color:var(--fg);font-size:1.1rem"><svg style="width:26px;height:26px"><use href="#logo"/></svg>Obzly</a>
+    <nav aria-label="Footer">
+      <a href="#features">Features</a><a href="#architecture">Architecture</a><a href="#compare">Compare</a><a href="#community">Community</a><a href="#docs">Docs</a><a href="#donate">Support Obzly</a>
+      <a href="https://github.com/obzly/obzly" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/obzly/obzly/releases" target="_blank" rel="noopener">Releases</a>
+      <a href="https://github.com/obzly/obzly/blob/main/LICENSE" target="_blank" rel="noopener">Apache 2.0</a>
+      <a href="https://github.com/obzly/obzly/blob/main/CODE_OF_CONDUCT.md" target="_blank" rel="noopener">Code of conduct</a>
+      <a href="https://github.com/obzly/obzly/blob/main/SECURITY.md" target="_blank" rel="noopener">Security</a>
+    </nav>
+    <span class="mock-note">Mockup for sign-off · obzly.com</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  /* ---------- Theme ---------- */
+  var root = document.documentElement;
+  try { var saved = localStorage.getItem('obzly-theme'); if (saved) root.setAttribute('data-theme', saved); } catch (e) {}
+  document.getElementById('theme-btn').addEventListener('click', function () {
+    var cur = root.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    var next = cur === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('obzly-theme', next); } catch (e) {}
+  });
+
+  /* ---------- Mobile menus ---------- */
+  var nav = document.getElementById('nav'), menuBtn = document.getElementById('menu-btn');
+  menuBtn.addEventListener('click', function () {
+    var open = nav.classList.toggle('open'); menuBtn.setAttribute('aria-expanded', open);
+  });
+  var sidebar = document.getElementById('sidebar'), docsMenu = document.getElementById('docs-menu');
+  docsMenu.addEventListener('click', function () {
+    var open = sidebar.classList.toggle('open'); docsMenu.setAttribute('aria-expanded', open);
+  });
+
+  /* ---------- Docs content ---------- */
+  var SAMPLE = 'synthetics';
+  var DOCS = [
+    { group: 'Getting started', pages: [
+      ['overview', 'Overview', 'What Obzly is, system requirements and where to start.', 'README.md'],
+      ['quick-install', 'Quick install', 'One script installs Docker if needed, pulls the image, starts Postgres and Valkey alongside it and restarts on reboot. Open http://localhost:4005 when it finishes.', 'README.md, install-obzly.sh'],
+      ['docker-compose', 'Docker Compose', 'Copy docker-compose.yml.example and .env.example, set a real POSTGRES_PASSWORD, then run docker compose up -d.', 'README.md, deploy/docker/README.md'],
+      ['first-project', 'First project & API key', 'Create a project, copy its ID and API key, add members or teams, and see which keys have gone unused.', 'README.md'],
+      ['send-first-logs', 'Send your first logs', 'Send a log with one curl request, or point any OTLP exporter at port 4317 (gRPC) or 4005 (HTTP).', 'README.md, docs/configuration.md']
+    ]},
+    { group: 'Deploy', pages: [
+      ['docker', 'Docker', 'Single container, the HA compose file with every role, a control plane, and object storage with MinIO.', 'deploy/docker/README.md'],
+      ['helm', 'Helm chart', 'Install a Site in mode ha (brokers, api, worker, querier) or single, or a control plane. Postgres and object storage are yours.', 'deploy/helm/obzly/README.md'],
+      ['kubernetes-eks', 'Kubernetes on EKS', 'Plain manifests for kubectl apply -k: single replica, ha/ with three brokers, and control-plane/.', 'deploy/kubernetes/eks/README.md'],
+      ['multi-site', 'Control plane & Sites', 'Put one control plane in front of many Sites and enroll each Site with a couple of extra settings.', 'deploy/README.md, ARCHITECTURE.md'],
+      ['probe', 'Synthetics probe', 'Install obzly-probe as a systemd service, a container or the Helm chart, and run several instances as one probe group.', 'deploy/probe/, deploy/helm/obzly-probe/README.md']
+    ]},
+    { group: 'How-tos', pages: [
+      ['kubernetes-otel-collector', 'Kubernetes logs & metrics', 'Apply the generated Collector manifest: pod logs with file offsets kept across restarts, node and pod metrics with workload names, and a read-only cluster agent.', 'frontend/src/features/projects/ui/kubernetesOtelConfig.ts'],
+      [SAMPLE, 'Synthetic monitoring', '', 'docs/SYNTHETICS.md, docs/examples/synthetics-checks.yaml'],
+      ['infrastructure', 'Infrastructure inventory', 'What the inventory shows, how health is decided, and how to get pod phase, restarts and replicas from the cluster agent.', 'docs/INFRASTRUCTURE.md'],
+      ['cloud-connections', 'Cloud connections', 'Give a probe group read-only access to an AWS account or Azure subscription with the wizard, and see load balancers, databases and buckets in Infrastructure.', 'docs/INFRASTRUCTURE.md, deploy/cloud/']
+      ,
+      ['grafana-promql', 'Grafana via the PromQL API', 'Add Obzly as a Prometheus datasource in Grafana, send Prometheus remote-write, and import existing dashboards.', 'README.md'],
+      ['mcp', 'Claude & Cursor over MCP', 'Create a token in Profile → AI assistant access (MCP), then add https://obzly.harborline.example/mcp to your assistant.', 'README.md, ARCHITECTURE.md'],
+      ['alerts', 'Alerts & notifications', 'Set up email and shared channels in Obzly settings, then write rules over PromQL, log searches or trace latency.', 'README.md, docs/configuration.md'],
+      ['sso-scim', 'SSO & SCIM', 'Add an OIDC connector, map IdP groups to roles, and provision users and groups from Okta or Entra ID.', 'README.md, ARCHITECTURE.md'],
+      ['promoted-fields', 'Promoting fields', 'Promote up to 12 fields per project to typed columns for fast filters and number ranges.', 'README.md']
+    ]},
+    { group: 'Operations', pages: [
+      ['upgrade', 'Upgrade', 'Check Settings → Updates, then upgrade roles in order. What v0.55.0 and v0.56.0 need from you, and rollback rules.', 'docs/runbooks/upgrade.md'],
+      ['backup-restore', 'Backup & restore', 'Back up Postgres and object storage, restore, then run obzly reconcile.', 'docs/runbooks/backup-restore.md'],
+      ['disaster-recovery', 'Disaster recovery', 'Recover a Site in another region, with a measured restore drill.', 'docs/runbooks/dr.md'],
+      ['monitoring', 'Monitoring Obzly', 'Scrape every role\'s internal metrics port, import the Grafana dashboard and load the SLO alert rules.', 'deploy/observability/README.md']
+    ]},
+    { group: 'Reference', pages: [
+      ['configuration', 'Configuration', 'Every environment variable with its default, from SERVICE_MODE to INVENTORY_RETENTION_DAYS, plus the probe\'s settings.', 'docs/configuration.md'],
+      ['log-query-api', 'Log query API', 'Endpoints, authentication, query syntax and response shapes for searching logs.', 'backend/internal/features/logs/querying/readme.md'],
+      ['data-sources', 'Data sources', 'The 35+ sources with generated OTel Collector configs, grouped by category.', 'frontend/src/features/projects/ui/dataSources/']
+    ]}
+  ];
+  var flat = [];
+  DOCS.forEach(function (g) { g.pages.forEach(function (p) { flat.push({ slug: p[0], title: p[1], summary: p[2], src: p[3], group: g.group }); }); });
+
+  var groupsEl = document.getElementById('side-groups');
+  groupsEl.innerHTML = DOCS.map(function (g) {
+    return '<div class="side-group"><h4>' + g.group + '</h4><ul>' + g.pages.map(function (p) {
+      return '<li><a href="#docs-' + p[0] + '" data-slug="' + p[0] + '">' + p[1] + '</a></li>';
+    }).join('') + '</ul></div>';
+  }).join('');
+
+  var SAMPLE_HTML = [
+    '<div class="crumbs">Docs / How-tos</div>',
+    '<h1>Synthetic monitoring</h1>',
+    '<p class="lede">Check APIs and endpoints on a schedule from your own locations. Probes send results to a Site project as metrics, so dashboards, PromQL and alert rules work on them like on any other data.</p>',
+    '<div class="aside"><b>Needs a control plane</b>Monitors, probes and destinations live on the control plane. To try it on one machine, start the multi-site example: <code>deploy/docker/docker-compose.multisite.yml.example</code>.</div>',
+    '<h2 id="doc-dest">1. Add a destination</h2>',
+    '<p>A destination is where results go: a Site, a project on it, and that project\'s ingest API key. In <b>Synthetics → Destinations</b>, pick the Site and project, then create a key through the control plane or paste one you have.</p>',
+    '<h2 id="doc-probe">2. Add a probe group</h2>',
+    '<p>A probe group is one location, such as <code>edge-north</code> or <code>office-pier</code>, with any number of instances. In <b>Synthetics → Probe groups</b>, choose <b>Add probe group</b> and copy the token. It starts with <code>obz_prb_</code> and is shown once.</p>',
+    '<p>On a Linux VM, the install script sets up a systemd service:</p>',
+    '<pre>curl -fsSL -o install.sh \\\n  https://github.com/obzly/obzly/releases/latest/download/install.sh\nsudo OBZLY_CONTROL_PLANE_URL=<span class="s">https://obzly.harborline.example</span> \\\n  OBZLY_PROBE_TOKEN=<span class="s">obz_prb_...</span> sh install.sh</pre>',
+    '<p>On Kubernetes, the chart runs three instances of the group by default and keeps two running through node drains:</p>',
+    '<pre>helm install edge-north deploy/helm/obzly-probe -n obzly-probe --create-namespace \\\n  --set controlPlaneUrl=<span class="s">https://obzly.harborline.example</span> \\\n  --set token=<span class="s">obz_prb_...</span></pre>',
+    '<p>Each monitor runs on one live instance per interval. If an instance stops, the others take over its monitors within a minute.</p>',
+    '<h2 id="doc-monitor">3. Create a monitor</h2>',
+    '<ol><li>Choose <b>New monitor</b> and a type: HTTP, TLS, TCP, DNS or ICMP.</li>',
+    '<li>Set the target and assertions, for example status <code>200</code> and a response time below 800 ms.</li>',
+    '<li>Pick locations and an interval. The default is 180 s and the minimum is 30 s.</li>',
+    '<li>Optionally put it in a folder, such as <code>Payments/EU</code>, and name its parents.</li>',
+    '<li>Choose <b>Test</b> to run it from every location before saving, then <b>Save</b>, or <b>Test &amp; save</b>.</li></ol>',
+    '<h2 id="doc-deps">Dependencies</h2>',
+    '<p>When <code>quotes-api</code> depends on <code>api-gateway</code> and the gateway goes down, <code>quotes-api</code> shows <b>Impacted</b> and its alerts stay quiet. You get one page, for the root cause.</p>',
+    '<div class="aside caution"><b>Same project for muted alerts</b>Alerts are muted only when parent and child send results to the same destination project. Across projects the child still shows Impacted, but its alerts are sent.</div>',
+    '<h2 id="doc-alerts">Alerts</h2>',
+    '<p>In the editor\'s <b>Alerts</b> section, pick channels from Obzly settings and when to notify: down, degraded, or a certificate expiring within a number of days. The rule is created on the destination Site within 5 minutes and shows in Alerts with a Synthetics tag. Change it from the monitor, not from Alerts.</p>',
+    '<h2 id="doc-yaml">Manage monitors as YAML</h2>',
+    '<p><b>Import YAML</b> previews what will be created, updated or left alone, then applies the whole file or none of it. Monitors match by name, so importing again updates them.</p>',
+    '<pre><span class="k">apiVersion</span>: obzly.com/synthetics/v1\n<span class="k">kind</span>: MonitorList\n<span class="k">monitors</span>:\n  - name: <span class="s">quotes-api</span>\n    type: http\n    folder: <span class="s">Payments/EU</span>\n    depends_on: [<span class="s">api-gateway</span>]\n    request:\n      method: POST\n      url: <span class="s">https://api.harborline.example/v1/quotes</span>\n      headers:\n        Authorization: <span class="s">"Bearer ${env:QUOTES_TOKEN}"</span>\n    assertions:\n      - status: 201\n      - response_time_ms: {below: 800}\n    locations: [edge-north, office-pier]</pre>',
+    '<p>Secrets stay as <code>${env:NAME}</code> placeholders. The importer asks for their values once and stores them encrypted, and exports never contain them.</p>'
+  ].join('');
+  var SAMPLE_TOC = [['doc-dest', '1. Add a destination'], ['doc-probe', '2. Add a probe group'], ['doc-monitor', '3. Create a monitor'], ['doc-deps', 'Dependencies'], ['doc-alerts', 'Alerts'], ['doc-yaml', 'Manage monitors as YAML']];
+
+  var docEl = document.getElementById('doc'), tocEl = document.getElementById('toc');
+  function renderDoc(slug) {
+    var i = flat.findIndex(function (p) { return p.slug === slug; });
+    if (i < 0) { i = 0; slug = flat[0].slug; }
+    var p = flat[i], prev = flat[i - 1], next = flat[i + 1], html, toc;
+    if (slug === SAMPLE) {
+      html = SAMPLE_HTML; toc = SAMPLE_TOC;
+    } else {
+      html = '<div class="crumbs">Docs / ' + p.group + '</div><h1>' + p.title + '</h1><p class="lede">' + p.summary + '</p>' +
+        '<div class="aside"><b>Placeholder in this mockup</b>The site will carry a full page here, adapted from obzly-dev. Open <a href="#docs-' + SAMPLE + '">Kubernetes logs &amp; metrics</a> to see a finished how-to.</div>';
+      toc = [];
+    }
+    html += '<div class="src-note"><span>Adapted from <code>obzly-dev/' + p.src.split(', ').join('</code>, <code>obzly-dev/') + '</code></span><span>Last updated Oct 2026</span></div>';
+    html += '<div class="pager">' + (prev ? '<a href="#docs-' + prev.slug + '"><span>Previous</span>' + prev.title + '</a>' : '<span></span>') +
+      (next ? '<a class="next" href="#docs-' + next.slug + '"><span>Next</span>' + next.title + '</a>' : '<span></span>') + '</div>';
+    docEl.innerHTML = html;
+    tocEl.innerHTML = toc.length ? '<h4>On this page</h4>' + toc.map(function (t) { return '<a href="#' + t[0] + '">' + t[1] + '</a>'; }).join('') : '';
+    Array.prototype.forEach.call(groupsEl.querySelectorAll('a'), function (a) {
+      if (a.dataset.slug === slug) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    });
+  }
+
+  /* ---------- Docs search (filters the sidebar) ---------- */
+  var search = document.getElementById('doc-search'), noHits = document.getElementById('no-hits');
+  search.addEventListener('input', function () {
+    var q = search.value.trim().toLowerCase(), any = false;
+    Array.prototype.forEach.call(groupsEl.querySelectorAll('.side-group'), function (g) {
+      var shown = 0;
+      Array.prototype.forEach.call(g.querySelectorAll('li'), function (li) {
+        var p = flat.find(function (x) { return x.slug === li.firstChild.dataset.slug; });
+        var hit = !q || (p.title + ' ' + p.summary + ' ' + p.group).toLowerCase().indexOf(q) >= 0;
+        li.hidden = !hit; if (hit) shown++;
+      });
+      g.hidden = shown === 0; if (shown) any = true;
+    });
+    noHits.hidden = any;
+  });
+  search.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { var a = groupsEl.querySelector('li:not([hidden]) a'); if (a) location.hash = a.getAttribute('href'); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === '/' && document.activeElement !== search && document.getElementById('view-docs').classList.contains('active')) { e.preventDefault(); search.focus(); }
+  });
+
+  /* ---------- Router: bare hash tokens ---------- */
+  var views = ['home', 'features', 'architecture', 'compare', 'compare-grafana', 'community', 'donate', 'docs'];
+  function route() {
+    var h = location.hash.replace('#', '') || 'home';
+    var view = 'home', target = null;
+    if (h.indexOf('features') === 0) { view = 'features'; target = h !== 'features' ? h : null; }
+    else if (h.indexOf('arch') === 0) { view = 'architecture'; target = h !== 'architecture' ? h : null; }
+    else if (h === 'compare-grafana' || h.indexOf('cg-') === 0) { view = 'compare-grafana'; target = h !== 'compare-grafana' ? h : null; }
+    else if (h.indexOf('compare') === 0) { view = 'compare'; target = h !== 'compare' ? h : null; }
+    else if (h.indexOf('community') === 0) { view = 'community'; target = h !== 'community' ? h : null; }
+    else if (h === 'donate') { view = 'donate'; }
+    else if (h.indexOf('docs') === 0) { view = 'docs'; renderDoc(h.slice(5) || 'overview'); }
+    else if (h.indexOf('doc-') === 0) { view = 'docs'; target = h; if (!docEl.innerHTML) renderDoc(SAMPLE); }
+    views.forEach(function (v) { document.getElementById('view-' + v).classList.toggle('active', v === view); });
+    Array.prototype.forEach.call(nav.querySelectorAll('a[data-view]'), function (a) {
+      if (a.dataset.view === view || (a.dataset.view === 'compare' && view === 'compare-grafana')) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    });
+    nav.classList.remove('open'); menuBtn.setAttribute('aria-expanded', 'false');
+    sidebar.classList.remove('open'); docsMenu.setAttribute('aria-expanded', 'false');
+    var el = target && document.getElementById(target);
+    if (el) { el.scrollIntoView({ behavior: 'instant' }); } else { window.scrollTo({ top: 0, behavior: 'instant' }); }
+  }
+  window.addEventListener('hashchange', route);
+  route();
+
+  /* ---------- Hero live tail ---------- */
+  var LINES = [
+    ['info', 'checkout', 'POST /api/orders 201 in 84ms'],
+    ['warn', 'checkout', 'payment provider slow: p95 1.8s over 5m'],
+    ['info', 'cart', 'cart merged for session 7c1e'],
+    ['error', 'payments', 'card authorisation timeout after 3000ms'],
+    ['info', 'checkout', 'order 8f3a2c queued for fulfilment'],
+    ['warn', 'inventory', 'stock cache miss rate 12%'],
+    ['info', 'checkout', 'GET /api/orders/8f3a2c 200 in 12ms'],
+    ['error', 'checkout', 'upstream payments returned 504'],
+    ['info', 'shipping', 'label printed for order 8f3a2c'],
+    ['info', 'checkout', 'POST /api/orders 201 in 91ms']
+  ];
+  var tail = document.getElementById('tail'), n = 0, start = Date.UTC(2026, 9, 22, 14, 2, 11);
+  function line(i, isNew) {
+    var l = LINES[i % LINES.length], t = new Date(start + i * 1700);
+    var ts = t.toISOString().substr(11, 12);
+    var li = document.createElement('li'); if (isNew) li.className = 'new';
+    li.innerHTML = '<span class="ts">' + ts + '</span><span class="lvl ' + l[0] + '">' + l[0] + '</span><span class="msg">' + l[1] + ' · ' + l[2] + '</span>';
+    return li;
+  }
+  for (; n < 12; n++) tail.insertBefore(line(n, false), tail.firstChild);
+  var hist = document.getElementById('hist'), bars = [6, 9, 7, 12, 10, 14, 8, 11, 16, 13, 9, 18, 12, 15, 22, 17, 12, 10, 14, 19, 26, 21, 16, 13];
+  hist.innerHTML = bars.map(function (b, i) { return '<i' + (b > 18 ? ' class="e"' : '') + ' style="height:' + (b * 1.6) + 'px"></i>'; }).join('');
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    setInterval(function () {
+      if (!document.getElementById('view-home').classList.contains('active')) return;
+      tail.insertBefore(line(n++, true), tail.firstChild);
+      if (tail.children.length > 14) tail.removeChild(tail.lastChild);
+    }, 1800);
+  }
+})();
+</script>
