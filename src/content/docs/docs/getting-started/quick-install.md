@@ -18,6 +18,8 @@ sudo curl -sSL https://raw.githubusercontent.com/obzly/obzly/main/install-obzly.
 Check the [system requirements](/docs/getting-started/requirements/) first: at least 2 CPU cores, 4 GB of
 RAM and 20 GB of disk.
 
+Want to look around first? The [live demo](https://demo.obzly.com) runs the real UI in your browser with sample data.
+
 ## What the script does
 
 1. Installs Docker and the Docker Compose plugin if they are missing, and enables Docker on boot so
