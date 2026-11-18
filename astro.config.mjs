@@ -17,6 +17,8 @@ export default defineConfig({
 			social: [{ icon: 'github', label: 'GitHub', href: GITHUB }],
 			components: { SocialIcons: './src/components/HeaderLinks.astro' },
 			customCss: ['@fontsource-variable/jost', './src/styles/custom.css'],
+			// Share image and breadcrumb structured data on every docs page (src/seo/).
+			routeMiddleware: './src/routeData.ts',
 			// The marketing pages are plain Astro pages in src/pages/, outside the docs collection.
 			plugins: [starlightLinksValidator({ exclude: ['/', '/features/', '/architecture/', '/community/', '/donate/', '/disclaimer/'] })],
 			sidebar: [

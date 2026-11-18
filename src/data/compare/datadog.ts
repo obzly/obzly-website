@@ -4,6 +4,7 @@ import type { ToolPage } from './types';
 const page: ToolPage = {
 	slug: 'datadog',
 	name: 'Datadog',
+	searchTitle: 'Self-hosted Datadog alternative: Obzly vs Datadog',
 	tagline: 'The SaaS reference, priced per host and GB.',
 	summary:
 		'Datadog is a hosted platform. You run its Agent or an OpenTelemetry Collector on your hosts, and Datadog stores and processes the data in the site you choose. Obzly covers logs, metrics and traces in one system that runs on your own infrastructure, so the data stays where you run it.',

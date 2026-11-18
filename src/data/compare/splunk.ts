@@ -4,6 +4,7 @@ import type { ToolPage } from './types';
 const page: ToolPage = {
 	slug: 'splunk',
 	name: 'Splunk',
+	searchTitle: 'Open-source Splunk alternative: Obzly vs Splunk',
 	tagline: 'Logs platform plus a separate observability cloud.',
 	summary:
 		'Splunk is two products. The Splunk platform handles logs and search with SPL: Splunk Enterprise runs on your infrastructure, and Splunk Cloud Platform is the same as a managed service. Splunk Observability Cloud is a separate SaaS service for metrics, traces, RUM and synthetics. Obzly covers logs, metrics and traces in one open-source system that you host.',

@@ -4,16 +4,23 @@
 import '@fontsource-variable/jost';
 import '@fontsource-variable/jetbrains-mono';
 import '../styles/marketing.css';
+import { hasMarketingCard } from '../seo/cards';
+import { OG_HEIGHT, OG_WIDTH, jsonLd, ogImageUrl } from '../seo/site';
 
 interface Props {
 	title: string;
 	description: string;
 	current?: 'features' | 'architecture' | 'compare' | 'community' | 'donate';
+	/** schema.org nodes for this page (src/seo/site.ts), written as one JSON-LD script. */
+	structuredData?: object[];
 }
 
-const { title, description, current } = Astro.props;
+const { title, description, current, structuredData } = Astro.props;
 const GITHUB = 'https://github.com/obzly/obzly';
 const canonical = new URL(Astro.url.pathname, Astro.site);
+// Compare pages and the pages in src/seo/cards.ts have their own image; anything else uses the home page's.
+const path = Astro.url.pathname;
+const image = ogImageUrl(path.startsWith('/compare/') || hasMarketingCard(path) ? path : '/');
 ---
 
 <!doctype html>
@@ -29,7 +36,16 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonical} />
-		<meta property="og:image" content={new URL('/logo.svg', Astro.site)} />
+		<meta property="og:site_name" content="Obzly" />
+		<meta property="og:locale" content="en" />
+		<meta property="og:image" content={image} />
+		<meta property="og:image:width" content={String(OG_WIDTH)} />
+		<meta property="og:image:height" content={String(OG_HEIGHT)} />
+		<meta property="og:image:alt" content={title} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:image" content={image} />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		{structuredData && <script type="application/ld+json" set:html={jsonLd(structuredData)} />}
 		<script is:inline>
 			// Same key as Starlight's theme picker, so the docs and these pages agree.
 			try {

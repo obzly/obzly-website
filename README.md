@@ -9,7 +9,10 @@ platform: marketing pages plus the user docs, built with [Astro](https://astro.b
 | `src/pages/` | Marketing pages: `/`, `/features/`, `/architecture/` |
 | `src/content/docs/docs/` | Docs, served under `/docs/` (Starlight, with Pagefind search) |
 | `src/styles/custom.css` | Brand colours and Jost on Starlight's CSS variables |
-| `public/` | `logo.svg`, `favicon.svg` (copied from obzly-dev), `CNAME` |
+| `public/` | `logo.svg`, `favicon.svg` (copied from obzly-dev), `CNAME`, `robots.txt` |
+| `src/seo/` | Search and link previews: share-image text per page (`cards.ts`), the image drawing (`render.ts`), schema.org structured data (`site.ts`) |
+| `src/pages/og/`, `logo.png.ts`, `llms.txt.ts` | Built at `npm run build`: a 1200x630 share image per page, a PNG logo, and `/llms.txt` |
+| `src/routeData.ts` | Starlight middleware: share image and breadcrumbs on every docs page |
 | `mockup/index.html` | The one-page clickable mockup used for design sign-off |
 | `.github/workflows/deploy.yml` | Builds on pull requests, deploys to Pages on `main` |
 

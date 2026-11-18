@@ -1,0 +1,5 @@
+# Everything on obzly.com may be crawled. Cloudflare adds its own content-signal comments above this.
+User-agent: *
+Allow: /
+
+Sitemap: https://obzly.com/sitemap-index.xml
