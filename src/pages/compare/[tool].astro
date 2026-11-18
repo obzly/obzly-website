@@ -4,6 +4,7 @@ import RunDiagram from '../../components/compare/RunDiagram.astro';
 import { CHECKED } from '../../data/compare/hub';
 import { PAGES } from '../../data/compare/index';
 import type { ToolPage } from '../../data/compare/types';
+import { breadcrumbs } from '../../seo/site';
 
 export function getStaticPaths() {
 	return PAGES.map((page) => ({ params: { tool: page.slug }, props: { page } }));
@@ -18,8 +19,15 @@ const ISSUES = 'https://github.com/obzly/obzly-website/issues';
 ---
 
 <Marketing
-	title={`Obzly vs ${page.name} · Compare`}
-	description={`Obzly compared with ${page.name}: what you run, features by edition, pricing and how to move over. Checked ${CHECKED}.`}
+	title={page.searchTitle ?? `${page.name} alternative: Obzly vs ${page.name}`}
+	description={`Obzly is an open-source, self-hosted alternative to ${page.name}. Compare what you run, features by edition, pricing and how to move over. Checked ${CHECKED}.`}
+	structuredData={[
+		breadcrumbs([
+			{ name: 'Obzly', path: '/' },
+			{ name: 'Compare', path: '/compare/' },
+			{ name: `Obzly vs ${page.name}` },
+		]),
+	]}
 	current="compare"
 >
 	<div class="wrap">

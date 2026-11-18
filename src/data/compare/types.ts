@@ -29,6 +29,8 @@ export interface ToolPage {
 	slug: string;
 	/** Name as used in headings, e.g. "Grafana LGTM". */
 	name: string;
+	/** Page title for search results; defaults to "<name> alternative: Obzly vs <name>". */
+	searchTitle?: string;
 	/** One-line description for the hub card. */
 	tagline: string;
 	/** Page lede: what the tool is and how Obzly relates to it. */

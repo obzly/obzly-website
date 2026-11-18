@@ -3,15 +3,17 @@ import Marketing from '../../layouts/Marketing.astro';
 import { CHECKED, MOVE, ROWS, TOOLS } from '../../data/compare/hub';
 import { PAGES } from '../../data/compare/index';
 import { STATE_LABEL, type State } from '../../data/compare/types';
+import { breadcrumbs } from '../../seo/site';
 
 const LEGEND: State[] = ['yes', 'part', 'paid', 'saas', 'no', 'unsup'];
 const ISSUES = 'https://github.com/obzly/obzly-website/issues';
 ---
 
 <Marketing
-	title="Compare · Obzly"
+	title="Compare Obzly with Datadog, Grafana, Elastic and others"
 	description={`How Obzly compares with Grafana LGTM, Elastic, OpenObserve, SigNoz, Datadog and Splunk. Facts from each vendor's own docs, checked ${CHECKED}.`}
 	current="compare"
+	structuredData={[breadcrumbs([{ name: 'Obzly', path: '/' }, { name: 'Compare' }])]}
 >
 	<div class="wrap">
 		<div class="page-hero">

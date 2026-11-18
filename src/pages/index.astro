@@ -2,11 +2,16 @@
 import Marketing from '../layouts/Marketing.astro';
 import LiveTail from '../components/LiveTail.astro';
 import HowItWorks from '../components/diagrams/HowItWorks.astro';
+import { organization, softwareApplication, website } from '../seo/site';
+
+const description =
+	'Open-source, self-hosted observability: logs, traces and metrics, plus synthetic monitoring and an infrastructure inventory. OTLP in, Parquet on S3, from one container to an enterprise cluster. Apache 2.0.';
 ---
 
 <Marketing
-	title="Obzly: self-hosted observability"
-	description="Logs, traces and metrics you run yourself, plus synthetic monitoring and an infrastructure inventory. OTLP in, Parquet on S3, from one container to an enterprise cluster. Apache 2.0."
+	title="Obzly: open-source, self-hosted observability"
+	description={description}
+	structuredData={[organization, website, softwareApplication(description)]}
 >
 	<div class="hero">
 		<div class="wrap">
