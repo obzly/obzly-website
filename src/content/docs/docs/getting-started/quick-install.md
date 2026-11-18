@@ -3,7 +3,7 @@ title: Quick install
 description: Install Obzly on a single Debian or Ubuntu host with one command.
 ---
 
-<!-- Source: obzly-dev/README.md, obzly-dev/install-obzly.sh, obzly-dev/backend/cmd/main.go, obzly-dev/deploy/helm/obzly/templates/NOTES.txt -->
+<!-- Source: obzly-dev/README.md, obzly-dev/install-obzly.sh, obzly/install-obzly.sh, obzly-dev/backend/cmd/main.go, obzly-dev/deploy/helm/obzly/templates/NOTES.txt -->
 
 The install script is the fastest way to run Obzly on one Linux host. It works on **Ubuntu,
 Debian and Raspberry Pi OS** and must run as root. On other systems, use
@@ -11,7 +11,7 @@ Debian and Raspberry Pi OS** and must run as root. On other systems, use
 
 ```bash
 sudo apt-get install -y curl && \
-sudo curl -sSL https://raw.githubusercontent.com/obzly/obzly/main/install-obzly.sh \
+sudo curl -sSL https://github.com/obzly/obzly/releases/latest/download/install-obzly.sh \
 | sudo bash
 ```
 
@@ -36,7 +36,9 @@ The install log is written to `/var/log/obzly-install.log`.
 
 :::note[Safe to re-run]
 Re-running the script never overwrites an existing `docker-compose.yml` or `.env`, so your edits
-and your Postgres password are kept. A re-run just pulls the latest image and restarts.
+and your Postgres password are kept. A re-run sets `OBZLY_IMAGE_TAG` in `.env` to the installer's
+own release, pulls that image and restarts, so running the latest release's installer upgrades
+Obzly.
 :::
 
 ## Options
@@ -45,13 +47,13 @@ Set these environment variables to change the defaults. Because the script runs 
 them after `sudo`:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/obzly/obzly/main/install-obzly.sh \
-| sudo OBZLY_IMAGE_TAG=v0.48.1 OBZLY_HTTP_PORT=8080 bash
+curl -sSL https://github.com/obzly/obzly/releases/latest/download/install-obzly.sh \
+| sudo OBZLY_IMAGE_TAG=v1.2.0 OBZLY_HTTP_PORT=8080 bash
 ```
 
 | Variable | Default | What it does |
 | --- | --- | --- |
-| `OBZLY_IMAGE_TAG` | `latest` | Image tag to install |
+| `OBZLY_IMAGE_TAG` | the installer's release (for example `v1.2.0`) | Image tag to install |
 | `OBZLY_HTTP_PORT` | `4005` | Host port for the web UI, API and OTLP/HTTP |
 | `OBZLY_OTLP_PORT` | `4317` | Host port for the OTLP gRPC receiver |
 | `ADMIN_EMAIL` | `admin` (`superadmin` for a control plane) | Login of the bootstrap admin account. Only applied on the first install; edit `.env` later to change it |
@@ -69,7 +71,7 @@ curl -sSL https://raw.githubusercontent.com/obzly/obzly/main/install-obzly.sh \
   [configuration reference](/docs/reference/configuration/).
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/obzly/obzly/main/install-obzly.sh \
+curl -sSL https://github.com/obzly/obzly/releases/latest/download/install-obzly.sh \
 | sudo OBZLY_ROLE=site SITE_ID=site-north CONTROL_PLANE_ISSUER=https://cp.harborline.example bash
 ```
 
@@ -114,10 +116,12 @@ This works only while the bootstrap admin has no password yet. Once it has one, 
 ```bash
 cd /opt/obzly && docker compose ps                          # status
 cd /opt/obzly && docker compose logs -f                     # logs
-cd /opt/obzly && docker compose pull && docker compose up -d   # update to the latest image
+cd /opt/obzly && docker compose pull && docker compose up -d   # apply a new OBZLY_IMAGE_TAG
 ```
 
-Before updating, check **Obzly settings → Updates** and read [Upgrade](/docs/operations/upgrade/).
+To update, re-run the latest release's installer (the command at the top of this page), or set
+`OBZLY_IMAGE_TAG` in `/opt/obzly/.env` to the new release and pull. Before updating, check
+**Obzly settings → Updates** and read [Upgrade](/docs/operations/upgrade/).
 
 ## Reset the admin password
 

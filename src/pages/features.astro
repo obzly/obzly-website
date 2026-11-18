@@ -4,7 +4,7 @@ import Marketing from '../layouts/Marketing.astro';
 
 <Marketing
 	title="Features · Obzly"
-	description="Logs, traces, metrics, synthetic monitoring, infrastructure and cloud inventory, dashboards, alerts, MCP and enterprise features in the open source Obzly image."
+	description="Logs, traces, metrics, web analytics, synthetic monitoring, infrastructure, cloud cost and posture, dashboards, alerts, MCP and enterprise features in the open source Obzly image."
 	current="features"
 >
 	<div class="wrap">
@@ -14,7 +14,7 @@ import Marketing from '../layouts/Marketing.astro';
 			<p class="lede">Every feature on this page is in the open source image. Nothing here needs a licence key.</p>
 			<nav class="jump" aria-label="Feature sections">
 				<a href="#logs">Logs</a><a href="#traces">Traces</a><a href="#metrics">Metrics</a>
-				<a href="#synthetics">Synthetics</a><a href="#infrastructure">Infrastructure</a>
+				<a href="#synthetics">Synthetics</a><a href="#infrastructure">Infrastructure</a><a href="#cloud">Cost &amp; posture</a>
 				<a href="#dashboards">Dashboards &amp; Alerts</a><a href="#ai">AI observability &amp; MCP</a><a href="#enterprise">Enterprise</a>
 			</nav>
 		</div>
@@ -28,6 +28,9 @@ import Marketing from '../layouts/Marketing.astro';
 					<li><b>Live tail</b> with cursor paging, so new arrivals don't shift the page you're reading.</li>
 					<li><b>Patterns and anomalies</b>: new, spiking and dropping patterns against an earlier period.</li>
 					<li><b>Log context</b>: the logs before and after any result, from the same pod or service.</li>
+					<li><b>More ways to look</b>: chart any search or SQL result (then save it to a dashboard or alert on it), time heatmaps, compare two ranges, and <b>Explain this spike</b>.</li>
+					<li><b>Pattern trends and Volume &amp; noise</b>: which patterns grow, which are noise, and sampling rules to keep the noisy ones in check.</li>
+					<li><b>Web analytics</b> from the access logs you already send (nginx, Apache, Envoy, Traefik, IIS): visitors, URLs, 404s, referrers, browsers and countries, with client IPs truncated by default.</li>
 					<li><b>Promoted fields</b>: up to 12 per project become typed columns for fast filters and number ranges.</li>
 					<li><b>Wide searches</b> read newest-first and stop once the page is full. Searching for an ID skips every segment whose bloom filter lacks it.</li>
 				</ul>
@@ -202,17 +205,54 @@ import Marketing from '../layouts/Marketing.astro';
 			</div>
 		</article>
 
+		<article class="feat" id="cloud">
+			<div class="txt">
+				<div class="eyebrow">Cloud cost &amp; posture</div>
+				<h2>What your cloud costs, and how well it's secured</h2>
+				<ul>
+					<li><b>Cost</b> for AWS accounts and Organizations, Azure subscriptions and management groups, from a FOCUS export, the billing API, or both with the export taking over day by day. The wizard shows what each costs.</li>
+					<li><b>Explorer</b> by provider, account, region, service, resource or tag, daily to yearly, with saved views. Amounts are never added across currencies, and a day without data shows n/a, not 0.</li>
+					<li><b>Budgets and anomalies</b> alert on the forecast and on unusual days, through the shared channels.</li>
+					<li><b>Security posture</b> from Security Hub or Defender for Cloud where they're on, and Obzly's own baseline checks elsewhere. A score per standard, findings with fix steps, and coverage per region with the reason.</li>
+					<li><b>Recommendations</b>: rightsizing and idle resources (with the Obzly agent's memory figures on EC2), a commitment planner for Savings Plans and reservations, and posture actions ranked by what they close.</li>
+					<li><b>Read-only</b>: Obzly never buys, changes or deletes anything in your clouds.</li>
+				</ul>
+			</div>
+			<div class="specimen">
+				<div class="lbl">Cost · month to date · USD</div>
+				<div class="mini">
+					<div class="row"><span class="dot up"></span><span class="nm">Amazon EC2</span><span class="v">$4,812 · +6%</span></div>
+					<div class="row"><span class="dot up"></span><span class="nm">Amazon RDS</span><span class="v">$2,140</span></div>
+					<div class="row"><span class="dot warn"></span><span class="nm">Amazon S3 · anomaly on 14 Nov</span><span class="v">$612</span></div>
+					<div class="row"><span class="dot unk"></span><span class="nm">Forecast · budget $12,000</span><span class="v">$11,900</span></div>
+				</div>
+				<div class="lbl">Posture · AWS Foundational Security Best Practices</div>
+				<div class="mini">
+					<div class="row"><span class="dot down"></span><span class="nm">S3 bucket allows public read</span><span class="v">critical · 1</span></div>
+					<div class="row"><span class="dot warn"></span><span class="nm">EC2 instances don't require IMDSv2</span><span class="v">high · 14</span></div>
+					<div class="row"><span class="dot up"></span><span class="nm">EBS encryption by default</span><span class="v">passing</span></div>
+				</div>
+				<div class="lbl">Recommendations</div>
+				<div class="mini">
+					<div class="row"><span class="dot unk"></span><span class="nm">Rightsize orders-db · db.r6g.2xlarge → xlarge</span><span class="v">−$310/mo</span></div>
+					<div class="row"><span class="dot unk"></span><span class="nm">Compute Savings Plan · 1 year · no upfront</span><span class="v">−$1,050/mo</span></div>
+				</div>
+			</div>
+		</article>
+
 		<article class="feat" id="dashboards">
 			<div class="txt">
 				<div class="eyebrow">Dashboards &amp; Alerts</div>
 				<h2>Bring your dashboards, get paged quickly</h2>
 				<ul>
-					<li><b>Dashboards</b>: build your own, or import a Grafana or OpenObserve dashboard's panels and layout, then add each panel's query.</li>
+					<li><b>Project overview</b>: log volume, error rate, p95, incidents, the services with the most errors, budgets, synthetics and infrastructure, each linking to its page.</li>
+					<li><b>Dashboards</b>: build your own, or import a Grafana or OpenObserve dashboard's panels and layout, then add each panel's query. Widgets include stats with a trend, ranked lists, donuts, gauges, stacked bars and status strips.</li>
 					<li><b>Alert rules</b> over metrics (PromQL), logs (counts of a search, optionally per field) or traces (count, errors, latency percentiles).</li>
-					<li><b>for durations, repeat intervals, labels</b> and a live preview.</li>
+					<li><b>Severity</b> (Critical, High, Medium, Low), a runbook description, <b>for durations, repeat intervals, labels</b> and a live preview.</li>
 					<li><b>Notifications</b> to webhooks, Slack, PagerDuty or email, through an outbox with retries and silences. About 15 seconds from rule to notification.</li>
 					<li><b>Channels and email</b> are set up once in Obzly settings and shared by every project. On a control plane they are central, and each Site keeps a copy so alerts still go out if the control plane is down.</li>
-					<li><b>Incidents</b> group error logs, failed spans and their shared traces.</li>
+					<li><b>Message templates</b>: edit what email, Slack, PagerDuty and webhooks send, for the whole organisation or one channel, with a live preview and a test send.</li>
+					<li><b>Incidents</b> group error logs, failed spans and their shared traces, show the impact by service, and can notify a project's channels when one opens and ends.</li>
 				</ul>
 			</div>
 			<div class="specimen">
@@ -247,11 +287,13 @@ import Marketing from '../layouts/Marketing.astro';
 				<div class="eyebrow">AI observability &amp; MCP</div>
 				<h2>Let your assistant read production</h2>
 				<ul>
-					<li><b>MCP server at /mcp</b>: Claude Code, Cursor, claude.ai and Claude Desktop can search logs, run SQL over them, inspect traces and service maps, and run PromQL.</li>
-					<li><b>Read-only</b>, with exactly the access your account has. Tokens work only on <code>/mcp</code>.</li>
+					<li><b>MCP server at /mcp</b>: Claude Code, Cursor, claude.ai and Claude Desktop can search logs, run SQL over them, inspect traces and service maps, run PromQL, and read alerts, incidents, dashboards, synthetics, inventory, web analytics, cost and posture.</li>
+					<li><b>Read-only by default</b>, with exactly the access your account has. Tokens work only on <code>/mcp</code>.</li>
+					<li><b>Optional write tools</b>: create or expire a silence, create a dashboard or add a panel. They need the <code>mcp:write</code> scope, an MFA session and confirmation, and every call is audit-logged.</li>
 					<li><b>Browser sign-in</b> for claude.ai and Claude Desktop, with connected apps listed and revocable in your profile.</li>
 					<li><b>Multi-site aware</b>: one endpoint covers every Site you can access.</li>
 					<li><b>Claude Code usage</b> per project: cost, tokens, cache use and sessions.</li>
+					<li><b>LLM apps</b> instrumented with OpenTelemetry's <code>gen_ai</code> conventions: calls, tokens, errors, latency and estimated cost, linked to traces. <b>Budgets</b> alert per project, user or model.</li>
 				</ul>
 			</div>
 			<div class="specimen">
@@ -286,6 +328,7 @@ import Marketing from '../layouts/Marketing.astro';
 					<li><b>Durable ingest</b>: losing an api pod, a worker or one broker loses no acknowledged data.</li>
 					<li><b>Disaster recovery</b> runbooks with a measured restore drill (RPO under a minute) and a weekly integrity audit.</li>
 					<li><b>Audit log</b> of every change and every denied request, with CSV export.</li>
+					<li><b>Themes</b>: six themes, a System mode and colour-blind safe chart colours. Each person picks their own; admins set the defaults.</li>
 				</ul>
 			</div>
 			<div class="specimen">

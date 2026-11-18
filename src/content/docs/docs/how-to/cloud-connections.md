@@ -1,18 +1,20 @@
 ---
 title: Cloud connections
-description: Give a probe group read-only access to AWS accounts and Azure subscriptions so the infrastructure inventory lists what runs there.
+description: Give a probe group read-only access to AWS accounts and Azure subscriptions for the infrastructure inventory, cloud cost and security posture.
 ---
 
-<!-- Source: obzly-dev/docs/INFRASTRUCTURE.md, obzly-dev/deploy/cloud/aws/obzly-readonly-role.yaml, obzly-dev/deploy/cloud/azure/obzly-reader.bicep, obzly-dev/deploy/cloud/azure/obzly-identity.bicep, obzly-dev/deploy/cloud/README.md, obzly-dev/frontend/src/features/infrastructure/lib/cloudTemplates.ts, obzly-dev/docs/runbooks/upgrade.md -->
+<!-- Source: obzly-dev/docs/INFRASTRUCTURE.md, obzly-dev/deploy/cloud/aws/obzly-readonly-role.yaml, obzly-dev/deploy/cloud/azure/obzly-reader.bicep, obzly-dev/deploy/cloud/azure/obzly-identity.bicep, obzly-dev/deploy/cloud/README.md, obzly-dev/frontend/src/features/infrastructure/lib/cloudTemplates.ts, obzly-dev/docs/runbooks/upgrade.md, obzly/docs/INFRASTRUCTURE.md, obzly/docs/CLOUD_COST_POSTURE.md, obzly/docs/runbooks/upgrade.md, obzly/deploy/cloud/aws/obzly-readonly-role.yaml, obzly/deploy/cloud/azure/obzly-reader.bicep, obzly/deploy/cloud/azure/obzly-cost-export.bicep, obzly/frontend/src/features/infrastructure/ui/CloudWizard.tsx, obzly/frontend/src/features/infrastructure/ui/CloudConnectionsComponent.tsx, obzly/frontend/src/features/infrastructure/lib/cloudTemplates.ts -->
 
 A **cloud connection** is **read-only** access to one AWS account (or a whole AWS Organization) or
 one Azure subscription (or a management group). A [probe group](/docs/deploy/probe/) uses it to
 scan the cloud for resources that run no agent, such as load balancers, databases, buckets,
 functions and scaling groups, and the [infrastructure inventory](/docs/how-to/infrastructure/)
-lists them next to what your agents report.
+lists them next to what your agents report. Since v1.1.0 the same connection can also read
+**cost** and **security posture** for the Cost and Posture tabs; see
+[Cloud cost and security posture](/docs/how-to/cloud-cost-posture/).
 
 Cloud connections live on the [control plane](/docs/deploy/multi-site/). Admins manage them in
-**Settings → Cloud connections**; **Infrastructure → Cloud connections** shows the same list
+**Obzly settings → Cloud connections**; **Infrastructure → Cloud connections** shows the same list
 read-only, with a link to Settings for admins.
 
 :::note[Credentials are never stored in Obzly]
@@ -20,7 +22,7 @@ The probe gets cloud credentials from its own identity, by assuming a role, or b
 short-lived token from the control plane. Obzly stores only identifiers: the account or
 subscription ID, the role ARN or client ID, and the external ID. Every permission the templates
 grant is read-only; nothing lets Obzly change a resource or read the data in buckets, databases or
-secrets.
+secrets, apart from the billing export's prefix when the cost use reads one.
 :::
 
 ## Before you start
@@ -33,11 +35,14 @@ secrets.
 
 ## The connection wizard
 
-**Settings → Cloud connections → New cloud connection** walks through six steps, with Back and Next.
-After the first step, every step shows only the chosen provider's options and templates.
+**Obzly settings → Cloud connections → New cloud connection** walks through six steps, plus a
+**Cost** and a **Posture** step when you tick those uses, with Back and Next. After the first step,
+every step shows only the chosen provider's options and templates.
 
 1. **Provider:** AWS or Azure.
-2. **Scan types:** **Infrastructure inventory**. The step lists the read-only permissions it needs.
+2. **Scan types:** tick one or more of **Infrastructure inventory**, **Cost and billing** and
+   **Security posture**. The step lists the read-only permissions they need. Adding a use later
+   gives you an updated template to run.
 3. **Scope:**
    - AWS: **One AWS account** (account ID), or the **Whole AWS Organization** (Organization ID),
      deployed as a StackSet from the management account;
@@ -45,29 +50,47 @@ After the first step, every step shows only the chosen provider's options and te
      Entra tenant ID;
    - and for both: the connection's name, the **probe group that runs the scans**, and where the
      results go (a destination).
-4. **Access method** (see [below](#access-methods)).
-5. **Run template:** the wizard generates what to run with every value filled in, as a template
+4. **Cost** (when ticked): whose bills, the data source (Automatic, FOCUS export only or billing
+   API only) with what each costs, where the FOCUS export lands, and how often to refresh. The
+   export's location goes into the template, which then grants read access to that prefix or
+   storage account only.
+5. **Posture** (when ticked): where findings come from (Automatic, the native service only, or the
+   Obzly baseline only), with what each costs, and how often to refresh. See
+   [Cloud cost and security posture](/docs/how-to/cloud-cost-posture/) for both steps.
+6. **Access method** (see [below](#access-methods)).
+7. **Run template:** the wizard generates what to run with every value filled in, as a template
    (**CloudFormation** or **Bicep**) or a CLI script (**AWS CLI** or **az CLI**). Copy it or
    download it with its files, run it, then paste the identifier it prints (the **Role ARN** for
    AWS, the **Client ID** for Azure; not needed when the probe uses its own identity) and tick
    **I've run it**.
-6. **Settings and test:**
-   - regions (AWS; empty means every enabled region) or locations (Azure; empty means all);
-   - resource types (none ticked means all);
-   - **Full discovery every** 30 minutes to 24 hours (4 hours by default) and **Health scan
-     every** 5 minutes to 1 hour (15 minutes by default, never less often than discovery). See
-     [Scan schedule](#scan-schedule);
-   - **Test access** runs one dry scan on a live member of the probe group and shows the result,
-     without sending anything to the Site. So that it answers quickly, it samples the first
-     account and up to two regions. Then **Save connection**.
+8. **Settings and test:**
+   - with inventory ticked:
+     - regions (AWS; empty means every enabled region) or locations (Azure; empty means all);
+     - resource types (none ticked means all);
+     - **Full discovery every** 30 minutes to 24 hours (4 hours by default) and **Health scan
+       every** 5 minutes to 1 hour (15 minutes by default, never less often than discovery). See
+       [Scan schedule](#scan-schedule);
+   - **Test access** runs one dry scan per use on a live member of the probe group and shows the
+     result, without sending anything to the Site. So that it answers quickly, it samples the
+     first account and up to two regions. Then **Save connection**.
 
-**Test access** reports **Works** (with the number of resources found), **Needs permission** or
-**Failed**. After saving, the list shows each connection's status (**Scanning**, **Waiting for the
-first discovery**, **Needs permission**, **Late** when no scan has reported for three intervals,
-**Failing** or **Disabled**), with its schedule, resource count and last scans. When a call is
-denied, the connection shows **Needs permission** with the exact missing action, and the rest is
-still scanned. When AWS or Azure throttled calls, the status says how many and how long the probe
-waited.
+**Test access** reports **Works** (for inventory, with the number of resources found), **Needs
+permission** or **Failed** for each of **Inventory**, **Cost** and **Posture**. After saving, the
+list shows each connection's status (**Scanning**, **Waiting for the first discovery**, or **Waiting
+for the first refresh** for a connection without inventory, **Needs permission**, **Late** when
+nothing has reported for three intervals, **Failing** or **Disabled**), with its schedule
+(discovery, health, **Cost every** and **Posture every**), resource count, last scans, and its cost
+and posture source with when each last refreshed. A connection that reads its cost through a payer
+connection shows **Via** and that connection's name. When a call is denied, the connection shows
+**Needs permission** with the exact missing action, and the rest is still scanned. When AWS or
+Azure throttled calls, the status says how many and how long the probe waited.
+
+Once a connection reads cost, admins also see **Tracked cost tags** above the list: up to 10 tag
+keys kept on cost rows to group, filter and budget by.
+
+To add cost or posture to an existing connection, edit it, tick the use on **Scan types**, fill in
+the new step and run the updated CloudFormation stack, Bicep deployment or CLI script. An
+inventory-only connection needs nothing new.
 
 ## Access methods
 
@@ -75,7 +98,7 @@ waited.
 
 | Method | Pick it when | What you run |
 | --- | --- | --- |
-| **The probe's own IAM identity** | The probe group runs in AWS with an IAM identity: an EC2 instance profile, IRSA, or EKS Pod Identity | A policy for the probe group's own role with exactly the calls discovery makes |
+| **The probe's own IAM identity** | The probe group runs in AWS with an IAM identity: an EC2 instance profile, IRSA, or EKS Pod Identity | A policy for the probe group's own role with exactly the calls each use makes |
 | **A read-only role in the target account** | The probe group has an AWS identity, and the resources are in another account | A read-only role that only the probe group's role can assume, with an **external ID** Obzly generates |
 | **Federated through the Obzly control plane** | The probe group runs outside AWS (on premises or in another cloud) and has no AWS identity | A read-only role that trusts the control plane as an OIDC provider |
 
@@ -101,18 +124,33 @@ to sign in to a Site.
 
 ## Permissions
 
-| Provider | Inventory |
-| --- | --- |
-| AWS | The `ViewOnlyAccess` managed policy, plus `elasticloadbalancing:DescribeTargetHealth`, `tag:GetResources`, `eks:DescribeCluster` and `ec2:DescribeInstanceStatus` |
-| Azure | `Reader` on the subscription or management group |
+Each use adds only its own read-only permissions:
 
-With the probe's own AWS identity, the wizard writes a policy with exactly the calls discovery
-makes instead (CloudFormation can't attach AWS managed policies to an existing role):
-`ec2:DescribeRegions`, `ec2:DescribeInstances`, `ec2:DescribeInstanceStatus`, `elasticloadbalancing:DescribeLoadBalancers`,
-`elasticloadbalancing:DescribeTargetGroups`, `elasticloadbalancing:DescribeTargetHealth`,
-`eks:ListClusters`, `eks:DescribeCluster`, `rds:DescribeDBInstances`,
-`autoscaling:DescribeAutoScalingGroups`, `lambda:ListFunctions`, `s3:ListAllMyBuckets` and
-`tag:GetResources`.
+| Use | AWS | Azure |
+| --- | --- | --- |
+| Inventory | The `ViewOnlyAccess` managed policy, plus `elasticloadbalancing:DescribeTargetHealth`, `tag:GetResources`, `eks:DescribeCluster` and `ec2:DescribeInstanceStatus` | `Reader` on the subscription or management group |
+| Cost | Cost Explorer (`ce:GetCostAndUsage`, `GetCostForecast`, `GetDimensionValues`, `GetTags`, and the Savings Plans and reservation coverage, utilization and purchase recommendation calls), Compute Optimizer recommendations, `ec2:DescribeRegions`, `DescribeInstances`, `DescribeVolumes` and `DescribeAddresses`, `bcm-data-exports:GetExport` and `ListExports`, and, with an export, `s3:GetObject` and `s3:ListBucket` on the export's prefix only | `Cost Management Reader`, plus `Storage Blob Data Reader` on the export's storage account. `Reservations Reader` at `/providers/Microsoft.Capacity` (optional, assigned by a tenant admin) for existing reservations and savings plans |
+| Posture | The `SecurityAudit` managed policy, plus `securityhub:DescribeHub`, `securityhub:GetEnabledStandards` and `securityhub:GetFindings` | `Security Reader`, and `Reader` for the baseline checks |
+
+The full list of cost actions is in
+[Cloud cost and security posture](/docs/how-to/cloud-cost-posture/#permissions). A member
+connection that reads its cost through a payer connection needs no cost permissions.
+
+With the probe's own AWS identity, the wizard writes a policy with exactly the calls each use makes
+instead (CloudFormation can't attach AWS managed policies to an existing role):
+
+- inventory: `ec2:DescribeRegions`, `ec2:DescribeInstances`, `ec2:DescribeInstanceStatus`,
+  `elasticloadbalancing:DescribeLoadBalancers`, `elasticloadbalancing:DescribeTargetGroups`,
+  `elasticloadbalancing:DescribeTargetHealth`, `eks:ListClusters`, `eks:DescribeCluster`,
+  `rds:DescribeDBInstances`, `autoscaling:DescribeAutoScalingGroups`, `lambda:ListFunctions`,
+  `s3:ListAllMyBuckets` and `tag:GetResources`;
+- cost: the cost actions above, and the export statements when there is an export;
+- posture: `securityhub:DescribeHub`, `securityhub:GetEnabledStandards`,
+  `securityhub:GetFindings`, `ec2:DescribeRegions`, `ec2:DescribeSecurityGroups`,
+  `ec2:DescribeInstances`, `ec2:GetEbsEncryptionByDefault`, `rds:DescribeDBInstances`,
+  `iam:GetAccountSummary`, `iam:GetAccountPasswordPolicy`, `cloudtrail:DescribeTrails`,
+  `cloudtrail:GetTrailStatus`, `s3:ListAllMyBuckets`, `s3:GetBucketPublicAccessBlock` and
+  `s3:GetBucketLogging`.
 
 ## Deploying the templates
 
@@ -120,7 +158,15 @@ The wizard fills in these templates for you. Use them directly when you deploy t
 pipeline: [`deploy/cloud/aws/obzly-readonly-role.yaml`](https://github.com/obzly/obzly/blob/main/deploy/cloud/aws/obzly-readonly-role.yaml)
 (CloudFormation), and [`deploy/cloud/azure/obzly-reader.bicep`](https://github.com/obzly/obzly/blob/main/deploy/cloud/azure/obzly-reader.bicep)
 with [`obzly-identity.bicep`](https://github.com/obzly/obzly/blob/main/deploy/cloud/azure/obzly-identity.bicep)
-beside it (Bicep).
+and [`obzly-cost-export.bicep`](https://github.com/obzly/obzly/blob/main/deploy/cloud/azure/obzly-cost-export.bicep)
+beside it (Bicep; the reader references both).
+
+Both templates take the uses as parameters: `Inventory` (default `true`), `Cost` and `Posture`
+(default `false`) for AWS, and `inventory`, `cost` and `posture` for Azure. For a cost export, add
+`ExportBucket` and `ExportPrefix` (AWS), or `costExportStorageAccount` and
+`costExportResourceGroup` (Azure). The examples below are for inventory; see
+[Set up the FOCUS export](/docs/how-to/cloud-cost-posture/#set-up-the-focus-export) for cost and
+posture.
 
 ### AWS: one account
 
@@ -200,8 +246,8 @@ az deployment sub show --name obzly-readonly \
   `system:serviceaccount:obzly-probe:obzly-probe`.
 - **The probe's managed identity:** `accessMode=probe principalId=<object ID>`. No new identity or
   resource group is created, and there is no client ID to paste.
-- **A management group:** the wizard generates an az CLI script that assigns `Reader` at the
-  management group.
+- **A management group:** the wizard generates an az CLI script that assigns the roles (`Reader`,
+  and those of cost and posture) at the management group.
 
 ## What is discovered
 

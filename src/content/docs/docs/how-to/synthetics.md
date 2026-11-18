@@ -180,7 +180,7 @@ The control plane sends each monitor's alert settings to the destination Site, w
 **managed alert rule** for it in the destination project. These rules show on the Site's **Alerts →
 Rules** tab with a **Synthetics** tag and are read-only there; change them in the monitor's editor.
 They are removed with the monitor. See
-[Rules managed by Synthetics](/docs/how-to/alerts/#rules-managed-by-synthetics).
+[Rules managed by Synthetics](/docs/how-to/alerts/#synthetics).
 
 The down rule fires when at least the Down threshold of locations fail. New or changed alert
 settings reach the Site **within 5 minutes**. Monitor alerts need the destination Site on v0.56.0

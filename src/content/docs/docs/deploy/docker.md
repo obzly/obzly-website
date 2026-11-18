@@ -18,7 +18,9 @@ examples build the image from source, with the repository root as build context)
 | `docker-compose.multisite.yml.example` | A control plane and one Site in one file, for trying multi-site locally. |
 
 To run a published release instead of building, replace each service's `build:` block with
-`image: ghcr.io/obzly/obzly:${OBZLY_IMAGE_TAG:-latest}` and set `OBZLY_IMAGE_TAG` in `.env`.
+`image: ghcr.io/obzly/obzly:${OBZLY_IMAGE_TAG:-v1.2.0}` and set `OBZLY_IMAGE_TAG` in `.env` to a
+[release](https://github.com/obzly/obzly/releases) such as `v1.2.0`. Pin a version rather than
+`latest`.
 Images are published for `linux/amd64` and `linux/arm64`. For the CPU, memory and disk each
 layout needs, see [System requirements](/docs/getting-started/requirements/#docker).
 
@@ -132,7 +134,8 @@ git pull
 docker compose up -d --build
 ```
 
-Or, with the published image, `docker compose pull && docker compose up -d`. Postgres and Valkey
+Or, with the published image, set `OBZLY_IMAGE_TAG` in `.env` to the new release, then
+`docker compose pull && docker compose up -d`. Postgres and Valkey
 data aren't touched, and migrations run automatically at startup. Read
 [Upgrade](/docs/operations/upgrade/) before moving to a new version.
 

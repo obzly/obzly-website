@@ -164,7 +164,9 @@ projects, plans, API keys and root admin:
    with an ALB `alb.ingress.kubernetes.io/inbound-cidrs` allow-list or a WAF rule for the control
    plane's egress addresses (and set `CONTROL_PLANE_EGRESS_CIDRS` to the same range), or with mTLS.
    On `ha/`, only `obzly-api` needs this. Keep ingest open: `/v1/logs`, `/v1/traces`,
-   `/api/v1/logs/receiving` and the OTLP gRPC port (`4317`) stay reachable by collectors directly.
+   `/v1/metrics`, `/api/v1/logs/receiving`, the probes' `/v1/cloud/cost`, `/v1/cloud/posture` and
+   `/v1/cloud/advice`, and the OTLP gRPC port (`4317`) stay reachable by collectors and probes
+   directly.
 4. The Site's own root admin and local accounts keep working as a break-glass path.
 
 ## Control plane manifests

@@ -1,49 +1,58 @@
-/* Obzly brand on Starlight: Jost, emerald accent, navy-tinted greys.
-   Brand values come from obzly-dev: assets/logo.svg (navy #14192B, amber #F2A73B)
-   and frontend/tailwind.config.js (primary #10b981 / #059669). */
+/* Obzly brand on Starlight, in the app's UI v2 "Emerald" palette
+   (obzly/frontend/src/index.css --v2-* and shared/theme/themes.ts):
+   Jost, emerald accent, greys that lean toward the accent. Dark mode is
+   "Emerald dark"; light mode is "Emerald light", with links in accent-700
+   (#047857) because #009966 is under 4.5:1 on white. */
 :root {
 	--sl-font: 'Jost Variable', 'Jost', 'Avenir Next', 'Segoe UI', system-ui, sans-serif;
 
-	/* Dark theme (Starlight's default) */
-	--sl-color-accent-low: #10302a;
+	/* Dark theme (Starlight's default): Emerald dark */
+	--sl-color-accent-low: #11291f;
 	--sl-color-accent: #10b981;
 	--sl-color-accent-high: #a7f3d0;
 	--sl-color-white: #ffffff;
-	--sl-color-gray-1: #e9ecf3;
-	--sl-color-gray-2: #c3c9d8;
-	--sl-color-gray-3: #9aa3b8;
-	--sl-color-gray-4: #566078;
-	--sl-color-gray-5: #262e45;
-	--sl-color-gray-6: #141a2b;
-	--sl-color-black: #0d111d;
+	--sl-color-gray-1: #e8f0ec;
+	--sl-color-gray-2: #c4d0cb;
+	--sl-color-gray-3: #9aaba4;
+	--sl-color-gray-4: #6b7d76;
+	--sl-color-gray-5: #26352f;
+	--sl-color-gray-6: #111c18;
+	--sl-color-black: #0a1210;
 }
 
 :root[data-theme='light'] {
 	--sl-color-accent-low: #d1fae5;
 	--sl-color-accent: #047857;
 	--sl-color-accent-high: #064e3b;
-	--sl-color-white: #14192b;
-	--sl-color-gray-1: #1e2538;
-	--sl-color-gray-2: #353d55;
-	--sl-color-gray-3: #566078;
-	--sl-color-gray-4: #8a93a8;
-	--sl-color-gray-5: #c9ceda;
-	--sl-color-gray-6: #eef1f6;
-	--sl-color-gray-7: #f6f7fa;
+	--sl-color-white: #0f1a16;
+	--sl-color-gray-1: #111c18;
+	--sl-color-gray-2: #26352f;
+	--sl-color-gray-3: #4b5b55;
+	--sl-color-gray-4: #6b7d76;
+	--sl-color-gray-5: #c4d0cb;
+	--sl-color-gray-6: #eaf0ed;
+	--sl-color-gray-7: #f3f6f5;
 	--sl-color-black: #ffffff;
 }
 
-/* The header stays brand navy in both themes, like the marketing pages. */
+/* The header stays dark emerald in both themes, like the marketing pages and
+   the app's dark chrome. */
 .header {
-	background-color: #14192b;
-	border-bottom-color: #2b3350;
-	--sl-color-white: #f3f4f6;
-	--sl-color-gray-1: #e9ecf3;
-	--sl-color-gray-2: #c3c9d8;
-	--sl-color-gray-5: #2b3350;
-	--sl-color-gray-6: #0f1322;
-	--sl-color-black: #14192b;
+	background-color: #0a1210;
+	border-bottom-color: #21312b;
+	--sl-color-white: #e8f0ec;
+	--sl-color-gray-1: #e8f0ec;
+	--sl-color-gray-2: #c4d0cb;
+	--sl-color-gray-5: #21312b;
+	--sl-color-gray-6: #111c18;
+	--sl-color-black: #0a1210;
 }
 .site-title {
 	font-weight: 600;
+}
+
+/* Rounded cards, as in the app (antd borderRadiusLG 14). */
+.sl-markdown-content .card,
+.sl-link-card {
+	border-radius: 14px;
 }

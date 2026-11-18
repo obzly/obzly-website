@@ -45,9 +45,12 @@ export default defineConfig({
 					label: 'How-tos',
 					items: [
 						'docs/how-to/kubernetes-otel-collector',
+						'docs/how-to/explore-logs',
+						'docs/how-to/web-analytics',
 						'docs/how-to/synthetics',
 						'docs/how-to/infrastructure',
 						'docs/how-to/cloud-connections',
+						'docs/how-to/cloud-cost-posture',
 						'docs/how-to/grafana-promql',
 						'docs/how-to/mcp',
 						'docs/how-to/alerts',
