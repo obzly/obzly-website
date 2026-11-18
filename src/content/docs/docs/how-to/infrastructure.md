@@ -3,7 +3,7 @@ title: Infrastructure inventory
 description: See every cluster, node, host, workload, pod, container and service your agents report, with health, lifecycle and changes.
 ---
 
-<!-- Source: obzly-dev/docs/INFRASTRUCTURE.md, obzly-dev/README.md, obzly-dev/docs/configuration.md, obzly-dev/docs/runbooks/upgrade.md -->
+<!-- Source: obzly-dev/docs/INFRASTRUCTURE.md, obzly-dev/README.md, obzly-dev/docs/configuration.md, obzly-dev/docs/runbooks/upgrade.md, obzly/docs/INFRASTRUCTURE.md, obzly/docs/releases/v1.1.0.md, obzly/docs/releases/v1.2.0.md, obzly/frontend/src/features/infrastructure/ui/OverviewComponent.tsx, obzly/frontend/src/features/infrastructure/ui/AssetDetailDrawer.tsx, obzly/frontend/src/features/cost/ui/ResourceCostPanel.tsx, obzly/frontend/src/features/posture/ui/ResourcePosturePanel.tsx -->
 
 The **Infrastructure** tab lists every asset Obzly knows about, with its health and the reason for
 it, its lifecycle, and recent changes. It is built from the data your agents already send:
@@ -73,12 +73,20 @@ Each asset has a colour and the reasons for it. The default thresholds are:
 The **change feed** records new assets, state changes (such as a pod terminating) and health
 changes. It is kept **7 days**.
 
+Each build also keeps the hour's asset counts by kind and health for **30 days**. They give the
+Overview's kind tiles their 7-day trend and the change against 24 hours ago. On a control plane,
+the trend and change are left out while a Site has no history (a Site older than v1.2.0), the
+change until every Site has counts from 24 hours ago, and the change also while a Site has more
+assets than it returns (see [Limits and retention](#limits-and-retention)).
+
 ## Using the tab
 
-- **Overview:** health across all assets that aren't terminated, **Needs attention** (critical
-  first, with the reason), recent changes over the last 24 hours, top CPU and memory consumers
-  (pods, nodes and hosts), and breakdowns by Site (or project on a standalone Site) and by cloud
-  and region.
+- **Overview:** a tile per kind (**Clusters**, **Nodes**, **Hosts / VMs**, **Workloads**,
+  **Pods**, **Services**) with its count, its health split, a 7-day trend and the change against
+  24 hours ago; click one to list that kind. Then health across all assets that aren't terminated,
+  **Needs attention** (critical first, with the reason), recent changes over the last 24 hours,
+  top CPU and memory consumers (pods, nodes and hosts), and breakdowns by Site (or project on a
+  standalone Site) and by cloud and region.
 - **Assets:** kind and health filters, Site and cluster filters, a search by name, label or IP,
   and sorting from the table headers. Columns include CPU, memory, restarts in
   24 hours, age, last seen and lifecycle. Switch between **Flat** and **Tree**: cluster → node →
@@ -87,6 +95,17 @@ changes. It is kept **7 days**.
   and what runs under it), CPU, memory, network and disk charts, the lifecycle timeline, every
   resource attribute, and where Obzly sees it. **Open logs** (with a search for the asset),
   **Open traces** (for a service) and **Open dashboards** jump to the asset's project.
+- For a cloud resource a [cloud connection](/docs/how-to/cloud-connections/) found, including an
+  EC2 instance, Azure VM or managed cluster joined to what the agents report, the panel also
+  shows:
+  - **Cost:** its effective cost over the last 30 days with a daily trend and a split by charge
+    type, plus its open cost recommendations. This needs a FOCUS export on the connection's cost
+    use; the billing API only splits cost by account, service and region.
+  - **Posture:** its open findings with their severity and control. Click one to see its evidence
+    and fix steps, or to suppress it. A resource in a region or subscription that posture doesn't
+    cover shows no findings either; see **Posture → Coverage**.
+
+  See [Cloud cost and security posture](/docs/how-to/cloud-cost-posture/).
 
 ## Pod phase, restarts and replicas (Kubernetes)
 
@@ -123,4 +142,6 @@ directly under their namespace.
 
 [Cloud connections](/docs/how-to/cloud-connections/) add what runs in your AWS accounts and Azure
 subscriptions without an agent, and join cloud VMs and managed clusters to the hosts and clusters
-the agents report. On a control plane, **Infrastructure → Cloud connections** lists them.
+the agents report. On a control plane, **Infrastructure → Cloud connections** lists them. The same
+connections can read cost and security posture, shown in the asset panel and in the **Cost** and
+**Posture** tabs; see [Cloud cost and security posture](/docs/how-to/cloud-cost-posture/).

@@ -31,6 +31,7 @@ and notification channels (see [below](#email-and-notification-channels)).
 | `SERVICE_MODE` | `all` | `all`, `api`, `worker`, `broker`, `querier` or `control-plane`. See [Roles](#roles) |
 | `HTTP_PORT` | `4005` | UI, REST API and OTLP/HTTP (`/v1/logs`, `/v1/traces`, `/v1/metrics`) |
 | `OTLP_GRPC_PORT` | `4317` | OTLP/gRPC receiver |
+| `OTLP_GRPC_TLS_CERT_FILE`, `OTLP_GRPC_TLS_KEY_FILE` | empty (plaintext) | PEM certificate and key the OTLP/gRPC receiver serves TLS 1.2+ with; set both or neither. Re-read when the files change, so cert-manager rotation needs no restart. Set them whenever port 4317 is reachable without a TLS-terminating proxy, since API keys travel in the request |
 | `METRICS_ADDR` | `:9464` | Prometheus `/metrics` listener (`off` disables it). Keep it internal |
 | `LOGS_DATA_DIR` | `/obzly-data/segments` | Local segments, caches and (in `all` mode) the embedded broker's store |
 | `ADMIN_EMAIL` | `admin` (`superadmin` on a control plane) | The bootstrap super-admin's login. Changing it renames the existing account |
@@ -40,6 +41,8 @@ and notification channels (see [below](#email-and-notification-channels)).
 | `SELF_TRACING_SAMPLE_RATE` | `0.01` | Fraction of the replica's own requests and background passes traced into the system project. `0` turns it off |
 | `WEBSITE_URL` | empty | Product website linked from the UI |
 | `APP_VERSION` | `dev` | Set by the image build. Shown in Settings → Updates and Site info |
+| `UPDATE_CHECK` | `true` | **Obzly settings → Updates** asks GitHub for the latest Obzly release (an anonymous request, cached 6 hours). `false` turns it off, for example on an air-gapped deployment |
+| `API_MAX_BODY_MB` | `5` | Largest request body on `/api/v1` routes. Log receiving, OTLP and remote write keep their own limits |
 | `BACKEND_ROOT_PATH` | working directory | Where `migrations/` is found |
 
 ## Valkey
@@ -90,6 +93,9 @@ Valkey holds caches, rate limits and leases only. Nothing in it needs a backup.
 | `LOG_CONTEXT_DEFAULT_FIELDS` | empty | Comma-separated fields added to the default scope of "Show logs around" (the log's cluster, namespace, deployment/statefulset/daemonset/job, container and service), for example `team` |
 | `QUERY_PARTIAL_DOWNLOADS` | `true` | Read only the columns a query needs from a large cold segment (ranged reads into a sparse cache file) instead of downloading the whole segment |
 | `QUERY_CACHE_DELAY_SECONDS` | `300` | Time partitions ending within this many seconds of now are never cached, because rows are still arriving for them |
+| `QUERY_RESULTS_TLS_CERT_FILE`, `QUERY_RESULTS_TLS_KEY_FILE` | empty (plaintext) | On `querier` replicas: PEM certificate and key the result listener serves TLS 1.2+ with; set both or neither. Re-read when the files change |
+| `QUERY_RESULTS_TLS_CA_FILE` | empty (system roots) | On `api` replicas: the CA that signed the executors' certificate. Setting it, `QUERY_RESULTS_TLS_SERVER_NAME` or the certificate and key turns TLS on for fetching results. An `api` replica with TLS on can't fetch from a plaintext executor (it runs the query itself instead), so switch both tiers together |
+| `QUERY_RESULTS_TLS_SERVER_NAME` | the dialled host | On `api` replicas: the name the executors' certificate is checked against. Executors advertise their pod IP on Kubernetes, so set this to a DNS name the certificate covers, for example `obzly-querier.<namespace>.svc` |
 
 ## Alerting
 
@@ -115,6 +121,12 @@ Both are set up in **Obzly settings → Notifications & alerting**, not in the e
   to that Site's own key. A Site keeps the last copy if the control plane is unreachable and shows
   them read-only. See
   [Alerts & notifications](/docs/how-to/alerts/#multi-site).
+- **Severity, message templates and incident notifications** (v1.2.0): every alert rule has a
+  severity, which picks the message's emoji, Slack's bar colour and PagerDuty's severity. What each
+  channel kind sends is a template you can edit organisation-wide or per channel, and a project can
+  notify its channels when an incident opens. See [Alerts & notifications](/docs/how-to/alerts/).
+- **Links in messages** use `PUBLIC_URL`; on a Site enrolled in a control plane, the control
+  plane's address with the Site selected. Without either, messages have no link.
 - **Upgrading from `ALERT_SMTP_*`:** releases before v0.55.0 read the relay from `ALERT_SMTP_*`
   variables. On the first start of v0.55.0 or later they are imported once (a control plane's as its
   central relay, a Site's as its own) and then ignored. Remove them from your environment.
@@ -124,6 +136,13 @@ Both are set up in **Obzly settings → Notifications & alerting**, not in the e
 | Variable | Default | Description |
 | --- | --- | --- |
 | `INVENTORY_RETENTION_DAYS` | `30` | An asset not seen for this many days is dropped from [Infrastructure](/docs/how-to/infrastructure/). Terminated pods and containers go after 7 days |
+| `INVENTORY_MAX_ASSETS_PER_PROJECT` | `50000` | Past this many assets in a project, the least recently seen are dropped, with a warning in the worker log |
+
+## Web analytics
+
+| Variable | Default | Description |
+| --- | --- | --- |
+| `WEB_ANALYTICS_GEOIP_DB` | `/app/geoip/dbip-country-lite.mmdb` | The country database [Web analytics](/docs/how-to/web-analytics/) looks visitor IPs up in. The image bundles DB-IP Lite (CC BY 4.0; the report shows "IP geolocation by DB-IP"). Any GeoIP2-Country compatible `.mmdb`, such as your own MaxMind GeoLite2-Country, works. A missing or unreadable file only leaves the Countries panel empty |
 
 ## Integrity audit
 
@@ -197,6 +216,7 @@ variables:
 | `OBZLY_PROBE_MAX_CONCURRENCY` | `256` | Checks run at once. Each mostly waits on the network, so a mass outage of slow timeouts still fits |
 | `OBZLY_PROBE_TASK_WAIT` | `25s` | Long-poll for the editor's **Test** runs (1 to 55 seconds). Keep it under the read timeout of any proxy in front of the control plane (CloudFront's default is 30 seconds) |
 | `OBZLY_PROBE_DENY_CIDRS` | empty | CIDRs checks may never reach. Loopback and link-local (cloud metadata) are always refused. [Cloud connection](/docs/how-to/cloud-connections/) scans don't go through this policy: they call the AWS and Azure APIs, and Azure's instance metadata for a managed identity |
+| `OBZLY_PROBE_ENV_ALLOW` | empty | Comma-separated environment variable names (a trailing `*` is a prefix, for example `TEAM_A_*`) that monitors' `${env:NAME}` placeholders may read, besides names starting with `OBZLY_SECRET_`. `OBZLY_PROBE_*`, `AWS_*`, `AZURE_*` and `GOOGLE_*` are never read, even when listed; a placeholder naming anything else fails the run |
 | `OBZLY_PROBE_HEALTH_ADDR` | off | For example `:8080` serves `/healthz`: `200` once the probe has a config and the control plane answered recently |
 
 Values for a monitor's `${env:NAME}` placeholders that aren't stored on the monitor are read from

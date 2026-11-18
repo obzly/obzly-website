@@ -3,7 +3,7 @@ title: Docs overview
 description: What Obzly is, what it needs to run, and where to find each part of the documentation.
 ---
 
-{/* Source: obzly-dev/README.md */}
+{/* Source: obzly-dev/README.md, obzly/README.md, obzly/docs/releases/v1.2.0.md */}
 
 import { CardGrid, LinkCard } from '@astrojs/starlight/components';
 
@@ -15,8 +15,10 @@ standard SDK for your language, or an OTel Collector in front of a database, web
 you don't control) can send it data with no proprietary client library. Data is stored as
 ZSTD-compressed Parquet, on local disk or on object storage such as S3. It also includes
 [synthetic monitoring](/docs/how-to/synthetics/), which checks your endpoints from your own
-locations, and an [infrastructure inventory](/docs/how-to/infrastructure/) built from what your
-agents already send.
+locations, an [infrastructure inventory](/docs/how-to/infrastructure/) built from what your
+agents already send, [cloud cost and security posture](/docs/how-to/cloud-cost-posture/) for your
+AWS and Azure accounts, and [web analytics](/docs/how-to/web-analytics/) from the access logs you
+already collect.
 
 Obzly starts as a single app container (plus Postgres and Valkey) with no cluster to operate. The
 same image runs each role on its own (`api`, `worker`, `broker`, `querier`, `control-plane`) when
@@ -107,18 +109,28 @@ volumes, and which parts can run on Spot nodes, see [System requirements](/docs/
 		href="/docs/how-to/kubernetes-otel-collector/"
 	/>
 	<LinkCard
+		title="Explore logs"
+		description="Layouts, charts, heatmaps, range comparison, pattern trends and themes."
+		href="/docs/how-to/explore-logs/"
+	/>
+	<LinkCard
+		title="Web analytics"
+		description="Visitors, URLs, 404s, referrers and countries from your access logs."
+		href="/docs/how-to/web-analytics/"
+	/>
+	<LinkCard
 		title="Grafana and PromQL"
 		description="Point a Grafana Prometheus data source at Obzly."
 		href="/docs/how-to/grafana-promql/"
 	/>
 	<LinkCard
 		title="AI assistants (MCP)"
-		description="Connect Claude Code, Cursor and others to your data."
+		description="Connect Claude Code, Cursor and others to your data, read-only or with opt-in write tools."
 		href="/docs/how-to/mcp/"
 	/>
 	<LinkCard
 		title="Alerts"
-		description="Rules over metrics, logs and traces, and shared notification channels."
+		description="Rules with severities, shared channels, message templates and incident notifications."
 		href="/docs/how-to/alerts/"
 	/>
 	<LinkCard
@@ -135,6 +147,11 @@ volumes, and which parts can run on Spot nodes, see [System requirements](/docs/
 		title="Cloud connections"
 		description="Read-only discovery of AWS accounts and Azure subscriptions."
 		href="/docs/how-to/cloud-connections/"
+	/>
+	<LinkCard
+		title="Cloud cost & posture"
+		description="Cost explorer, budgets, security findings and recommendations for AWS and Azure."
+		href="/docs/how-to/cloud-cost-posture/"
 	/>
 	<LinkCard
 		title="SSO and SCIM"

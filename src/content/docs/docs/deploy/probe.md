@@ -54,7 +54,7 @@ The script:
 3. writes the URL and token to `/etc/obzly-probe.env` (mode `0600`);
 4. installs `obzly-probe.service`, then enables and starts it.
 
-`OBZLY_PROBE_VERSION=0.56.0` installs a given release instead of the latest; `OBZLY_RELEASES` is
+`OBZLY_PROBE_VERSION=1.2.0` installs a given release instead of the latest; `OBZLY_RELEASES` is
 where releases are downloaded from. Follow the logs with `journalctl -u obzly-probe -f`, and print
 the version with `obzly-probe version`.
 
@@ -81,10 +81,11 @@ docker run -d --name obzly-probe --restart unless-stopped \
   -e OBZLY_PROBE_INSTANCE=edge-north-1 \
   -e OBZLY_PROBE_HEALTH_ADDR=:8080 \
   -v obzly-probe:/var/lib/obzly-probe \
-  ghcr.io/obzly/obzly-probe:v0.56.0
+  ghcr.io/obzly/obzly-probe:v1.2.0
 ```
 
-The image is distroless and runs as a non-root user. Images are tagged `v<version>` and `latest`.
+The image is distroless and runs as a non-root user. Images are tagged `v<version>`; use the same
+release as the control plane.
 
 :::tip[Name each instance]
 Inside a container the host name is the container ID, which changes when the container is

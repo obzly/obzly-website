@@ -1,50 +1,54 @@
 /* Marketing pages (/, /features/, /architecture/, /compare/), ported from mockup/index.html.
-   Layout: a readable console. Navy hero with a live tail, then calm white sections
+   Layout: a readable console. Dark emerald hero with a live tail, then calm white sections
    whose eyebrows are real Obzly identifiers (ports, paths, roles). */
 :root {
-  --bg: #f6f7fa;
+  /* Obzly UI v2 "Emerald" palette (obzly/frontend/src/index.css --v2-* and
+     shared/theme/themes.ts): neutrals lean toward the emerald accent. Small text
+     uses accent-700 (#047857) in light mode, since #009966 is under 4.5:1 there. */
+  --bg: #f3f6f5;
   --surface: #ffffff;
-  --surface-2: #eef1f6;
-  --fg: #14192b;
-  --muted: #566078;
-  --line: #dde1ea;
-  --accent: #059669;
-  --accent-strong: #047857;
-  --accent-soft: #e3f5ee;
-  --amber: #c27a0e;
+  --surface-2: #eaf0ed;
+  --fg: #0f1a16;
+  --muted: #55665f;
+  --line: #e0e7e4;
+  --accent: #047857;
+  --accent-strong: #065f46;
+  --accent-fill: #009966;
+  --accent-soft: #e1f3eb;
+  --amber: #b45309;
   --amber-soft: #fdf1dc;
-  --hero-bg: #14192b;
-  --hero-fg: #f3f4f6;
-  --hero-muted: #a3abc0;
-  --hero-line: #2b3350;
-  --hero-panel: #0f1322;
+  --hero-bg: #0a1210;
+  --hero-fg: #e8f0ec;
+  --hero-muted: #9aaba4;
+  --hero-line: #21312b;
+  --hero-panel: #111c18;
   --amber-hero: #f2a73b;
   --emerald-hero: #10b981;
-  --err: #d14343;
-  --blue: #2563c9;
+  --err: #dc2626;
+  --blue: #2563eb;
   --blue-soft: #e5eefc;
-  --violet: #7344c4;
+  --violet: #7c3aed;
   --violet-soft: #efe8fb;
   --font-display: "Jost Variable", "Jost", "Futura", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --font-body: "Jost Variable", "Jost", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  --radius: 10px;
+  --radius: 14px;
   --wrap: 1160px;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0d111d; --surface: #141a2b; --surface-2: #1a2134; --fg: #e9ecf3; --muted: #9aa3b8;
-    --line: #262e45; --accent: #10b981; --accent-strong: #34d399; --accent-soft: #10302a;
-    --amber: #f2a73b; --amber-soft: #33281a; --hero-bg: #0a0e19; --hero-fg: #f3f4f6;
-    --hero-muted: #9aa3b8; --hero-line: #222a42; --hero-panel: #121829; --err: #f07171; --blue: #82aaff; --blue-soft: #18264a; --violet: #c3a6ff; --violet-soft: #2b2045;
+    --bg: #0a1210; --surface: #111c18; --surface-2: #17241f; --fg: #e8f0ec; --muted: #9aaba4;
+    --line: #21312b; --accent: #10b981; --accent-strong: #34d399; --accent-fill: #10b981; --accent-soft: #11291f;
+    --amber: #f59e0b; --amber-soft: #33281a; --hero-bg: #060c0a; --hero-fg: #e8f0ec;
+    --hero-muted: #9aaba4; --hero-line: #1d2a25; --hero-panel: #0d1714; --err: #f87171; --blue: #60a5fa; --blue-soft: #16273d; --violet: #a78bfa; --violet-soft: #2a2140;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0d111d; --surface: #141a2b; --surface-2: #1a2134; --fg: #e9ecf3; --muted: #9aa3b8;
-  --line: #262e45; --accent: #10b981; --accent-strong: #34d399; --accent-soft: #10302a;
-  --amber: #f2a73b; --amber-soft: #33281a; --hero-bg: #0a0e19; --hero-fg: #f3f4f6;
-  --hero-muted: #9aa3b8; --hero-line: #222a42; --hero-panel: #121829; --err: #f07171; --blue: #82aaff; --blue-soft: #18264a; --violet: #c3a6ff; --violet-soft: #2b2045;
+  --bg: #0a1210; --surface: #111c18; --surface-2: #17241f; --fg: #e8f0ec; --muted: #9aaba4;
+  --line: #21312b; --accent: #10b981; --accent-strong: #34d399; --accent-fill: #10b981; --accent-soft: #11291f;
+  --amber: #f59e0b; --amber-soft: #33281a; --hero-bg: #060c0a; --hero-fg: #e8f0ec;
+  --hero-muted: #9aaba4; --hero-line: #1d2a25; --hero-panel: #0d1714; --err: #f87171; --blue: #60a5fa; --blue-soft: #16273d; --violet: #a78bfa; --violet-soft: #2a2140;
   color-scheme: dark;
 }
 
@@ -127,7 +131,7 @@ section { padding-block: 72px; }
 .lvl { font-weight: 500; }
 .lvl.info { color: #7fb6ff; } .lvl.warn { color: var(--amber-hero); } .lvl.error { color: #ff7a7a; }
 .tail-foot { display: flex; gap: 6px; padding: 10px 14px; border-top: 1px solid var(--hero-line); align-items: flex-end; height: 56px; }
-.tail-foot i { flex: 1; background: #2b3350; border-radius: 2px 2px 0 0; display: block; }
+.tail-foot i { flex: 1; background: var(--hero-line); border-radius: 2px 2px 0 0; display: block; }
 .tail-foot i.e { background: var(--amber-hero); }
 @media (max-width: 900px) { .hero .wrap { grid-template-columns: minmax(0, 1fr); } }
 
@@ -180,8 +184,8 @@ section { padding-block: 72px; }
 .mini .folder:first-child { border-top: 0; }
 .mini .ind1 .nm { padding-left: 14px; } .mini .ind2 .nm { padding-left: 28px; } .mini .ind3 .nm { padding-left: 42px; }
 .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-.dot.up { background: var(--accent); } .dot.warn { background: var(--amber); } .dot.down { background: var(--err); }
-.dot.off { background: #5b8def; } .dot.unk { background: var(--muted); }
+.dot.up { background: var(--accent-fill); } .dot.warn { background: var(--amber); } .dot.down { background: var(--err); }
+.dot.off { background: var(--blue); } .dot.unk { background: var(--muted); }
 .dot.imp { background: linear-gradient(90deg, var(--amber) 50%, transparent 50%); box-shadow: inset 0 0 0 1.5px var(--amber); }
 @media (max-width: 960px) { .beyond { grid-template-columns: minmax(0, 1fr); } }
 
@@ -194,7 +198,7 @@ section { padding-block: 72px; }
 .tools { display: flex; flex-wrap: wrap; gap: 6px; }
 .tools span { font: 0.72rem var(--font-mono); color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 2px 9px; background: var(--bg); }
 .tools span::before { content: "⚙ "; color: var(--accent); }
-.cell .ico { width: 30px; height: 30px; color: var(--accent); margin-bottom: 4px; }
+.cell .ico { width: 30px; height: 30px; color: var(--accent-fill); margin-bottom: 4px; }
 
 /* Shapes strip */
 .shapes { background: var(--surface); border-block: 1px solid var(--line); }
@@ -308,7 +312,7 @@ footer a:hover { color: var(--accent); }
 
 /* Community and Support */
 .cm-sec { padding-block: 40px 8px; }
-.cm-card .ico { width: 30px; height: 30px; color: var(--accent); }
+.cm-card .ico { width: 30px; height: 30px; color: var(--accent-fill); }
 .cm-two { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 32px; align-items: start; }
 .cm-code { min-width: 0; }
 .cm-code pre { margin: 0; }

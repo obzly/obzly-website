@@ -7,7 +7,7 @@ description: What a Docker or Kubernetes installation of Obzly needs - hosts, ve
 
 Obzly runs as one image, `ghcr.io/obzly/obzly`, next to Postgres and Valkey. On Docker it starts
 as a single container on one host; on Kubernetes the Helm chart runs each role as its own tier.
-This page lists what each needs, using the defaults that ship with Obzly v0.57.0.
+This page lists what each needs, using the defaults that ship with Obzly v1.2.0.
 
 ## At a glance
 
