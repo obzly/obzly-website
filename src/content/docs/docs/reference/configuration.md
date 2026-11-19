@@ -127,9 +127,6 @@ Both are set up in **Obzly settings → Notifications & alerting**, not in the e
   notify its channels when an incident opens. See [Alerts & notifications](/docs/how-to/alerts/).
 - **Links in messages** use `PUBLIC_URL`; on a Site enrolled in a control plane, the control
   plane's address with the Site selected. Without either, messages have no link.
-- **Upgrading from `ALERT_SMTP_*`:** releases before v0.55.0 read the relay from `ALERT_SMTP_*`
-  variables. On the first start of v0.55.0 or later they are imported once (a control plane's as its
-  central relay, a Site's as its own) and then ignored. Remove them from your environment.
 
 ## Infrastructure inventory
 

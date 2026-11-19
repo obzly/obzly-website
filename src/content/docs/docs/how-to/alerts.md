@@ -84,14 +84,6 @@ are managed centrally, on the control plane:
   existing channels under the same ids, so its rules keep working, plus its email relay if the
   control plane has none yet.
 
-### Upgrading from `ALERT_SMTP_*`
-
-Before v0.55.0, the relay was set with `ALERT_SMTP_*` environment variables and each project had
-its own channels. On the first start of v0.55.0 or later the variables are imported once (a control
-plane's as its central relay, a Site's as its own) and then ignored, so remove them from your
-environment, Helm values or ConfigMaps. Existing project channels keep their ids, available to their
-own project only, so existing rules keep working. See [Upgrade](/docs/operations/upgrade/).
-
 ## 3. Create a rule
 
 On the **Rules** tab, create a rule and pick its **Data**:
@@ -312,7 +304,7 @@ its destination project: a down rule, and optionally degraded and certificate ru
 plane sends them to the Site with the shared channels, and the Site keeps them in step.
 
 On the **Rules** tab they carry a **Synthetics** tag. Change them in the monitor's editor on the
-control plane. They need the destination Site on v0.56.0 or later.
+control plane.
 
 When a monitor depends on another in the same project, its down and degraded rules stay quiet while
 the parent is failing, so an outage notifies once, for its root cause.

@@ -67,8 +67,8 @@ How this shape is built:
 - **No Ingress**: `service.yaml` is a plain `ClusterIP`. Point your own Ingress or ALB at it.
 - **Valkey in the cluster, without a PVC**: it only holds caches and rate limits. Point
   `VALKEY_HOST` / `VALKEY_PORT` at an external instance (for example ElastiCache) if you prefer.
-- **`nodeSelector: kubernetes.io/arch: arm64`**: pins pods to Graviton nodes. Releases from v0.47.0
-  are also published for `linux/amd64`, so remove it on amd64 nodes.
+- **`nodeSelector: kubernetes.io/arch: arm64`**: pins pods to Graviton nodes. Releases are also
+  published for `linux/amd64`, so remove it on amd64 nodes.
 
 :::caution[Data not yet uploaded]
 The PVC holds segments written in the last ~15 seconds that aren't uploaded to S3 yet, plus rows
@@ -181,8 +181,7 @@ with a Site), `PUBLIC_URL` in `configmap.yaml`, and your own Ingress. See
 Every setting is in the [configuration reference](/docs/reference/configuration/): add it to
 `common/configmap.yaml`, or to `secret.yaml` for credentials. Email (SMTP) and notification
 channels are not among them: set them up in Obzly settings (see
-[Alerts & notifications](/docs/how-to/alerts/)). If an older install still has `ALERT_SMTP_*` in
-its ConfigMap or Secret, it was imported on the first start of v0.55.0 and can be removed. After a Postgres restore, reconcile
+[Alerts & notifications](/docs/how-to/alerts/)). After a Postgres restore, reconcile
 the catalog with the bucket from any Obzly pod:
 
 ```bash

@@ -56,10 +56,10 @@ To run a release instead of building from source, replace the `build:` block of 
 service with:
 
 ```yaml
-image: ghcr.io/obzly/obzly:${OBZLY_IMAGE_TAG:-v1.2.0}
+image: ghcr.io/obzly/obzly:${OBZLY_IMAGE_TAG:-v1.2.1}
 ```
 
-and set `OBZLY_IMAGE_TAG` in `.env` to a release, for example `v1.2.0` (the newest is on the
+and set `OBZLY_IMAGE_TAG` in `.env` to a release, for example `v1.2.1` (the newest is on the
 [releases page](https://github.com/obzly/obzly/releases)). Pin a version rather than `latest`, so an
 upgrade happens only when you change the tag. Images are published for `linux/amd64` and
 `linux/arm64`.

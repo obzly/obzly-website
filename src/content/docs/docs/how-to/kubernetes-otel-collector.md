@@ -78,7 +78,7 @@ For ready-made views, create a dashboard from the **Kubernetes Pods & Nodes** or
 ## Update an existing collector
 
 When Obzly's manifest changes, generate it again from **Data Sources** and re-apply it with
-`kubectl apply -f`. Manifests generated from v0.55.0 on add:
+`kubectl apply -f`. The manifest includes:
 
 - **Saved file offsets.** The collector keeps its read offsets in `/var/lib/otelcol` on each node.
   A small `busybox` init container makes that directory writable for the collector.
