@@ -192,14 +192,11 @@ Each instance keeps one long-poll open to the control plane for **Test** runs. K
 probe and the control plane. The 25-second default fits CloudFront's 30-second default.
 :::
 
-## Upgrading from before v0.56.0
+## Upgrading
 
-Probes became probe groups in v0.56.0. An existing probe becomes a group of one, keeping its token
-and location, and a probe older than v0.56.0 keeps working as one instance named **`default`**.
 Upgrade the probes after the control plane:
 
 - **Linux VM:** run the install command again; it downloads the latest release and restarts the
   service.
 - **Docker:** recreate the container with the new image tag.
-- **Helm:** `helm upgrade` with the new chart. Chart 0.2.0 runs `replicas: 3` with a
-  PodDisruptionBudget and creates a service account; set `replicas: 1` to keep one instance.
+- **Helm:** `helm upgrade` with the new chart.

@@ -183,8 +183,7 @@ They are removed with the monitor. See
 [Rules managed by Synthetics](/docs/how-to/alerts/#synthetics).
 
 The down rule fires when at least the Down threshold of locations fail. New or changed alert
-settings reach the Site **within 5 minutes**. Monitor alerts need the destination Site on v0.56.0
-or later.
+settings reach the Site **within 5 minutes**.
 
 ## Overview and monitor detail
 

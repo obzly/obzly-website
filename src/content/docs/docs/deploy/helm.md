@@ -141,9 +141,7 @@ the group scans [cloud connections](/docs/how-to/cloud-connections/). See
 
 ## Architectures
 
-Releases from v0.47.0 are published for `linux/arm64` and `linux/amd64`, so the chart pins no
-architecture. Earlier releases are arm64 only: on amd64 nodes use v0.47.0 or later (the chart's
-default), or add `nodeSelector: {kubernetes.io/arch: arm64}` for an older tag.
+Releases are published for `linux/arm64` and `linux/amd64`, so the chart pins no architecture.
 
 ## Not included
 
