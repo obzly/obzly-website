@@ -18,8 +18,8 @@ examples build the image from source, with the repository root as build context)
 | `docker-compose.multisite.yml.example` | A control plane and one Site in one file, for trying multi-site locally. |
 
 To run a published release instead of building, replace each service's `build:` block with
-`image: ghcr.io/obzly/obzly:${OBZLY_IMAGE_TAG:-v1.2.0}` and set `OBZLY_IMAGE_TAG` in `.env` to a
-[release](https://github.com/obzly/obzly/releases) such as `v1.2.0`. Pin a version rather than
+`image: ghcr.io/obzly/obzly:${OBZLY_IMAGE_TAG:-v1.2.1}` and set `OBZLY_IMAGE_TAG` in `.env` to a
+[release](https://github.com/obzly/obzly/releases) such as `v1.2.1`. Pin a version rather than
 `latest`.
 Images are published for `linux/amd64` and `linux/arm64`. For the CPU, memory and disk each
 layout needs, see [System requirements](/docs/getting-started/requirements/#docker).

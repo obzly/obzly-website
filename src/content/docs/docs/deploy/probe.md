@@ -81,7 +81,7 @@ docker run -d --name obzly-probe --restart unless-stopped \
   -e OBZLY_PROBE_INSTANCE=edge-north-1 \
   -e OBZLY_PROBE_HEALTH_ADDR=:8080 \
   -v obzly-probe:/var/lib/obzly-probe \
-  ghcr.io/obzly/obzly-probe:v1.2.0
+  ghcr.io/obzly/obzly-probe:v1.2.1
 ```
 
 The image is distroless and runs as a non-root user. Images are tagged `v<version>`; use the same

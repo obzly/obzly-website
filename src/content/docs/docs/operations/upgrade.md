@@ -33,22 +33,15 @@ Warnings don't block an upgrade:
 
 ## Releases that need action
 
-- **v1.0.0**: the first public release, from
-  [github.com/obzly/obzly](https://github.com/obzly/obzly).
-- **v1.1.0** ([cloud cost, security posture and recommendations](/docs/how-to/cloud-cost-posture/)):
-  upgrade the Sites, the control plane, **then the probes**. A probe older than v1.1.0 ignores the
-  Cost and Security posture uses, so their pages stay empty until it's upgraded.
-  - **Migrations:** three, all additive. Rolling back to v1.0.0 works; until you upgrade again, the
-    cost and posture alert rules a project turned on show "unknown rule source" and don't fire.
-  - **Network:** probes post to the destination Site's `/v1/cloud/cost`, `/v1/cloud/posture` and
-    `/v1/cloud/advice`. If the Site's ingress only admits the control plane apart from ingest
-    paths, add these.
-  - **Permissions:** nothing changes for inventory-only connections. To turn on Cost or Security
-    posture, edit the connection, tick the use and run the CloudFormation stack update, Bicep
-    deployment or CLI script the wizard writes; **Test access** checks each use. See
-    [Cloud cost & posture](/docs/how-to/cloud-cost-posture/) for what each needs and costs.
-  - **Fixes:** `./main --email ...`, `--reset-mfa` and `--reset-bootstrap-token` now work in a
-    running container.
+- **v1.2.1** (fixes, SQL dashboard panels, Logs SQL alert rules, ingestion status tile): upgrade
+  the Sites, the control plane, then the probes.
+  - **Migration:** one, additive: alert rules accept the Logs SQL source. Before rolling back to
+    v1.2.0, delete Logs SQL alert rules and SQL dashboard panels (v1.2.0 doesn't know them).
+  - **Worker memory:** no new settings. Web analytics stages an hour's raw rows before shaping them
+    (spilling to the query spill directory past the cap), and the inventory reads series times and
+    labels in two passes. Workers at 4 GiB or less can still run out on very large hours.
+  - **Verify:** no "inventory build failed" or "web analytics rollups failed" lines in the worker
+    logs, and the inventory-build query under v1.2.0 is about 12 again.
 - **v1.2.0** (UI v2, themes, project Overview, [Web analytics](/docs/how-to/web-analytics/),
   [new log views](/docs/how-to/explore-logs/), notification templates, MCP write tools): upgrade
   the Sites, the control plane, then the probes.
@@ -72,6 +65,22 @@ Warnings don't block an upgrade:
   - **Verify:** worker memory stays under its limit, and
     `sum(increase(obzly_leader_task_runs_total{task="inventory-build",result="ok"}[1h]))` is about
     12 across all workers.
+- **v1.1.0** ([cloud cost, security posture and recommendations](/docs/how-to/cloud-cost-posture/)):
+  upgrade the Sites, the control plane, **then the probes**. A probe older than v1.1.0 ignores the
+  Cost and Security posture uses, so their pages stay empty until it's upgraded.
+  - **Migrations:** three, all additive. Rolling back to v1.0.0 works; until you upgrade again, the
+    cost and posture alert rules a project turned on show "unknown rule source" and don't fire.
+  - **Network:** probes post to the destination Site's `/v1/cloud/cost`, `/v1/cloud/posture` and
+    `/v1/cloud/advice`. If the Site's ingress only admits the control plane apart from ingest
+    paths, add these.
+  - **Permissions:** nothing changes for inventory-only connections. To turn on Cost or Security
+    posture, edit the connection, tick the use and run the CloudFormation stack update, Bicep
+    deployment or CLI script the wizard writes; **Test access** checks each use. See
+    [Cloud cost & posture](/docs/how-to/cloud-cost-posture/) for what each needs and costs.
+  - **Fixes:** `./main --email ...`, `--reset-mfa` and `--reset-bootstrap-token` now work in a
+    running container.
+- **v1.0.0**: the first public release, from
+  [github.com/obzly/obzly](https://github.com/obzly/obzly).
 
 The full list, with every detail, is the
 [upgrade runbook](https://github.com/obzly/obzly/blob/main/docs/runbooks/upgrade.md#releases-that-need-action).

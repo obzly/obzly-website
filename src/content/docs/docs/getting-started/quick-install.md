@@ -48,12 +48,12 @@ them after `sudo`:
 
 ```bash
 curl -sSL https://github.com/obzly/obzly/releases/latest/download/install-obzly.sh \
-| sudo OBZLY_IMAGE_TAG=v1.2.0 OBZLY_HTTP_PORT=8080 bash
+| sudo OBZLY_IMAGE_TAG=v1.2.1 OBZLY_HTTP_PORT=8080 bash
 ```
 
 | Variable | Default | What it does |
 | --- | --- | --- |
-| `OBZLY_IMAGE_TAG` | the installer's release (for example `v1.2.0`) | Image tag to install |
+| `OBZLY_IMAGE_TAG` | the installer's release (for example `v1.2.1`) | Image tag to install |
 | `OBZLY_HTTP_PORT` | `4005` | Host port for the web UI, API and OTLP/HTTP |
 | `OBZLY_OTLP_PORT` | `4317` | Host port for the OTLP gRPC receiver |
 | `ADMIN_EMAIL` | `admin` (`superadmin` for a control plane) | Login of the bootstrap admin account. Only applied on the first install; edit `.env` later to change it |
