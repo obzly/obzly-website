@@ -10,7 +10,7 @@ services:
 
   dev:
     profiles: [dev]
-    image: node:26.13.0-alpine
+    image: node:26.13.1-alpine
     working_dir: /site
     command: sh -c "npm ci --no-fund --no-audit && npx astro dev --host 0.0.0.0"
     ports:
